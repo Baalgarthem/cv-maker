@@ -1,0 +1,1 @@
+export { exportResumeToPdf } from "./exportPdf";
