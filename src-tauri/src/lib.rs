@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 mod application;
 mod commands;
 mod domain;
@@ -15,3 +16,4 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running CV Maker");
 }
+
