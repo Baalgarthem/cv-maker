@@ -23,12 +23,12 @@ export function ContactDetails({ mode, profile }: ContactDetailsProps) {
   }
 
   if (profile.hasDrivingLicense) {
-    const type = profile.drivingLicenseType?.trim() ? `Tipo ${profile.drivingLicenseType.trim()}` : "";
-    const number = profile.drivingLicenseNumber?.trim() ? ` - ${profile.drivingLicenseNumber.trim()}` : "";
+    const typeStr = profile.drivingLicenseType?.trim() ? `Tipo ${profile.drivingLicenseType.trim()}` : "";
+    const numStr = profile.drivingLicenseNumber?.trim() ? ` - ${profile.drivingLicenseNumber.trim()}` : "";
     contacts.push({
       kind: "driving",
-      label: "Lic. Conducir",
-      value: `${type} (Vigente)${number}`.trim(),
+      label: "Licencia",
+      value: `${typeStr}${numStr}`.trim() || "Vigente",
     });
   }
 
