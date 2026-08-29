@@ -105,7 +105,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     ),
     portfolio: (
       <ResumeSection title="Portafolio">
-        <ul className="link-list">
+        <ul className="link-list portfolio-list">
           {document.portfolioLinks.map((link) => (
             <li key={link.id} style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'flex-start' }}>
               {link.icon && link.icon !== 'none' && (

@@ -495,3 +495,12 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 
 
 
+
+/* Ensure Portfolio section is always left-aligned in Mindmap left column */
+.template-mindmap .main-sections > div:nth-child(odd) .resume-section:has(.portfolio-list) {
+  text-align: left;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-section:has(.portfolio-list) h2::after {
+  right: auto;
+  left: 0;
+}
