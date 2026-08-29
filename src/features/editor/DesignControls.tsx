@@ -1,3 +1,4 @@
+import { useTranslation } from "../../i18n/LanguageContext";
 import type { ResumeTheme } from "../../types/resume";
 
 interface DesignControlsProps {
@@ -13,6 +14,7 @@ const fonts = [
 ];
 
 export function DesignControls({ theme, onChange }: DesignControlsProps) {
+  const { t } = useTranslation();
   return (
     <section className="control-group" aria-labelledby="design-title">
       <div className="control-heading">
@@ -21,44 +23,41 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
       </div>
 
       <div className="design-subsection">
-        <h3>Estructura y diseño</h3>
-        <label>
-          Tamaño de página
+        <h3>{t("structureAndDesign")}</h3>
+        <label>{t("pageSize")}
           <select value={theme.pageSize} onChange={(event) => onChange({ pageSize: event.target.value as "A4" | "LETTER" })}>
-            <option value="A4">A4 (210 × 297 mm)</option>
-            <option value="LETTER">Carta (8.5 × 11 in)</option>
+            <option value="A4">{t("pageSizeA4")}</option>
+            <option value="LETTER">{t("pageSizeLetter")}</option>
           </select>
         </label>
         
         <label style={{ marginTop: '12px', display: 'block' }}>
-          Márgenes superior e inferior ({theme.pagePaddingVertical ?? 19}mm)
+          {t("pagePadding")} ({theme.pagePaddingVertical ?? 19}mm)
           <input type="range" min="5" max="40" step="1" value={theme.pagePaddingVertical ?? 19} onChange={(event) => onChange({ pagePaddingVertical: parseInt(event.target.value) })} style={{ width: '100%', marginTop: '6px' }} />
         </label>
 
         <label className="checkbox-field" style={{ marginTop: 16 }}>
           <input type="checkbox" checked={theme.showSummarySeparator ?? true} onChange={(e) => onChange({ showSummarySeparator: e.target.checked })} />
-          Mostrar línea separadora en el perfil
+          {t("showSummarySeparator")}
         </label>
 
         <label className="checkbox-field" style={{ marginTop: 16 }}>
           <input type="checkbox" checked={theme.compactProfessionalProfile || false} onChange={(e) => onChange({ compactProfessionalProfile: e.target.checked })} />
-          Perfil profesional compacto (al lado del nombre)
+          {t("compactProfile")}
         </label>
 
         {theme.compactProfessionalProfile && (
           <div style={{ display: "grid", gap: "10px", marginTop: "12px", paddingLeft: "10px", borderLeft: "2px solid #e0dfdb" }}>
-            <label>
-              Estilo del separador
+            <label>{t("separatorStyle")}
               <select value={theme.headerSeparatorStyle || 'solid'} onChange={(e) => onChange({ headerSeparatorStyle: e.target.value as any })}>
-                <option value="none">Sin separador</option>
-                <option value="solid">Línea continua</option>
-                <option value="dashed">Línea discontinua</option>
-                <option value="dotted">Línea punteada</option>
+                <option value="none">{t("separatorStyleNone")}</option>
+                <option value="solid">{t("separatorStyleSolid")}</option>
+                <option value="dashed">{t("separatorStyleDashed")}</option>
+                <option value="dotted">{t("separatorStyleDotted")}</option>
               </select>
             </label>
             {theme.headerSeparatorStyle !== 'none' && (
-              <label>
-                Grosor del separador <output>{theme.headerSeparatorThickness ?? 1} px</output>
+              <label>{t("separatorThickness")} <output>{theme.headerSeparatorThickness ?? 1} px</output>
                 <input type="range" min="1" max="5" step="1" value={theme.headerSeparatorThickness ?? 1} onChange={(e) => onChange({ headerSeparatorThickness: Number(e.target.value) })} />
               </label>
             )}
@@ -94,9 +93,9 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
             <label>
               Alineación de la imagen
               <select value={theme.pictureAlignment || "left"} onChange={(e) => onChange({ pictureAlignment: e.target.value as "left" | "center" | "right" })}>
-                <option value="left">Izquierda</option>
+                <option value="left">{t("sidebarLeft")}</option>
                 <option value="center">Centrada</option>
-                <option value="right">Derecha</option>
+                <option value="right">{t("sidebarRight")}</option>
               </select>
             </label>
           </div>
@@ -105,8 +104,8 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
         <label style={{ marginTop: 16 }}>
           Posición de la barra lateral (si aplica)
           <select value={theme.sidebarPosition} onChange={(event) => onChange({ sidebarPosition: event.target.value as "left" | "right" })}>
-            <option value="left">Izquierda</option>
-            <option value="right">Derecha</option>
+            <option value="left">{t("sidebarLeft")}</option>
+            <option value="right">{t("sidebarRight")}</option>
           </select>
         </label>
       </div>
@@ -145,8 +144,7 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
           Espaciado entre secciones <output>{theme.sectionSpacing ?? 8} mm</output>
           <input type="range" min="2" max="20" step="1" value={theme.sectionSpacing ?? 8} onChange={(event) => onChange({ sectionSpacing: Number(event.target.value) })} />
         </label>
-        <label>
-          Espaciado entre elementos <output>{theme.itemSpacing ?? 3} mm</output>
+        <label>{t("itemSpacing")} <output>{theme.itemSpacing ?? 3} mm</output>
           <input type="range" min="0" max="8" step="0.5" value={theme.itemSpacing ?? 3} onChange={(event) => onChange({ itemSpacing: Number(event.target.value) })} />
         </label>
         <label>
@@ -190,12 +188,14 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
       <div className="design-subsection">
         <h3>Colores</h3>
         <div className="color-grid">
-          <label>Color de acento<input type="color" value={theme.accentColor} onChange={(event) => onChange({ accentColor: event.target.value })} /></label>
-          <label>Color de texto<input type="color" value={theme.textColor} onChange={(event) => onChange({ textColor: event.target.value })} /></label>
+          <label>{t("accentColor")}<input type="color" value={theme.accentColor} onChange={(event) => onChange({ accentColor: event.target.value })} /></label>
+          <label>{t("textColor")}<input type="color" value={theme.textColor} onChange={(event) => onChange({ textColor: event.target.value })} /></label>
           <label>Color de página<input type="color" value={theme.pageColor} onChange={(event) => onChange({ pageColor: event.target.value })} /></label>
-          <label>Color de separadores<input type="color" value={theme.separatorColor || theme.accentColor} onChange={(event) => onChange({ separatorColor: event.target.value })} /></label>
+          <label>{t("separatorColor")}<input type="color" value={theme.separatorColor || theme.accentColor} onChange={(event) => onChange({ separatorColor: event.target.value })} /></label>
         </div>
       </div>
     </section>
   );
 }
+
+

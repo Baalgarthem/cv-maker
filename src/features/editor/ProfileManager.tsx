@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "../../i18n/LanguageContext";
 import type { ResumeDocument, ProfileFolder } from "../../types/resume";
 
 interface ProfileManagerProps {
@@ -22,13 +23,14 @@ export function ProfileManager({
   duplicateDocument,
   deleteDocument
 }: ProfileManagerProps) {
+  const { t } = useTranslation();
   const [newFolderName, setNewFolderName] = useState("");
   
   return (
     <section className="control-group" aria-labelledby="profile-title">
       <div className="control-heading">
         <span>00</span>
-        <h2 id="profile-title">Perfiles</h2>
+        <h2 id="profile-title">{t("profilesTab")}</h2>
       </div>
       
       <div className="folders-list">
@@ -132,3 +134,5 @@ export function ProfileManager({
     </section>
   );
 }
+
+

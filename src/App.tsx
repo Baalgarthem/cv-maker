@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "./i18n/LanguageContext";
 import { ResumePreview } from "./features/cv-preview";
 import { DataEntryForm } from "./features/data-entry";
 import { DesignControls, SectionOrder, useResumeEditor } from "./features/editor";
@@ -16,6 +17,7 @@ export function App() {
     profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata
   } = useResumeEditor(sampleResume);
   const templates = listTemplates();
+  const { t, language, setLanguage } = useTranslation();
 
   const handleImport = async () => {
     const data = await importMetadataManual();
@@ -29,7 +31,7 @@ export function App() {
       <header className="app-header">
         <div>
           <p className="eyebrow" style={{ display: "flex", alignItems: "baseline", gap: "12px", flexWrap: "wrap" }}>
-            <span>CV Maker · Diseñador</span>
+            <span>{t("appTitle")}</span>
             <span style={{ textTransform: "none", letterSpacing: "normal", fontWeight: 400, opacity: 0.55, fontSize: "0.8rem", color: "#647083" }}>
               Desarrollado por Ing. Arturo Ramirez (reyr@outlook.jp)
             </span>
@@ -37,9 +39,13 @@ export function App() {
           <h1>Hazlo tuyo.</h1>
           <p>Edita la identidad visual, reorganiza el contenido y prepara el PDF.</p>
         </div>
-        <div className="header-actions">
-          <button className="edit-data-button" type="button" onClick={() => setIsFormOpen(true)}>Editar información</button>
-          <button className="export-button" type="button" onClick={exportResumeToPdf}>Exportar PDF</button>
+                  <div className="header-actions">
+          <select value={language} onChange={(e) => setLanguage(e.target.value as 'en' | 'es')} style={{ padding: '0 12px', borderRadius: '4px', border: '1px solid #dcdfe4', fontWeight: 600 }}>
+            <option value="es">ES</option>
+            <option value="en">EN</option>
+          </select>
+          <button className="edit-data-button" type="button" onClick={() => setIsFormOpen(true)}>{t("tabData")}</button>
+          <button className="export-button" type="button" onClick={exportResumeToPdf}>{t("exportPdf")}</button>
         </div>
       </header>
 
@@ -129,3 +135,4 @@ export function App() {
     </main>
   );
 }
+

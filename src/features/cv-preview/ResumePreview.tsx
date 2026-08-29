@@ -1,16 +1,18 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { ResumeDocument, ResumeSectionId } from "../../types/resume";
 import { getTemplate } from "../templates";
+import { useTranslation } from "../../i18n/LanguageContext";
 import { ContactDetails } from "./ContactDetails";
 import { PortfolioIcon } from "./PortfolioIcon";
 
 interface ResumePreviewProps { document: ResumeDocument; }
 
-function formatPeriod(startDate: string, endDate?: string, isCurrent?: boolean) {
-  return `${startDate} — ${isCurrent ? "Actual" : endDate ?? ""}`;
+function formatPeriod(startDate: string, endDate: string | undefined, isCurrent: boolean | undefined, t: any) {
+  return `${startDate} — ${isCurrent ? t("cvPresent") : endDate ?? ""}`;
 }
 
 export function ResumePreview({ document }: ResumePreviewProps) {
+  const { t } = useTranslation();
   const template = getTemplate(document.templateId);
   const fullName = [document.profile.firstName, document.profile.paternalSurname, document.profile.maternalSurname].join(" ");
   const isA4 = document.theme.pageSize === "A4";
@@ -42,10 +44,10 @@ export function ResumePreview({ document }: ResumePreviewProps) {
 
   const sections: Record<Exclude<ResumeSectionId, "summary">, ReactNode> = {
     experience: (
-      <ResumeSection title="Experiencia profesional">
+      <ResumeSection title={t("experience")}>
         {(document.experiences || []).map((experience) => (
           <article className="resume-entry" key={experience.id}>
-            <div className="entry-heading"><h3>{experience.companyName}</h3><time>{formatPeriod(experience.startDate, experience.endDate, experience.isCurrent)}</time></div>
+            <div className="entry-heading"><h3>{experience.companyName}</h3><time>{formatPeriod(experience.startDate, experience.endDate, experience.isCurrent, t)}</time></div>
             <p className="entry-context">{experience.context}</p>
             {experience.tags && experience.tags.length > 0 && (
               <div className="entry-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '4px 0 8px', opacity: 0.6, fontSize: '0.85em' }}>
@@ -60,17 +62,17 @@ export function ResumePreview({ document }: ResumePreviewProps) {
       </ResumeSection>
     ),
     education: (
-      <ResumeSection title="Formación académica">
+      <ResumeSection title={t("education")}>
         {(document.education || []).map((edu) => (
           <article className="resume-entry compact" key={edu.id}>
-            <div className="entry-heading"><h3>{edu.institution}</h3><time>{formatPeriod(edu.startDate, edu.endDate, edu.isCurrent)}</time></div>
+            <div className="entry-heading"><h3>{edu.institution}</h3><time>{formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t)}</time></div>
             <p style={{ margin: 0, fontWeight: 500 }}>{edu.degree}</p>
           </article>
         ))}
       </ResumeSection>
     ),
     skills: (
-      <ResumeSection title="Habilidades y competencias">
+      <ResumeSection title={t("skills")}>
         <div style={{ display: "grid", gap: "2mm" }}>
           {document.hardSkills && (
             <div>
@@ -88,7 +90,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
       </ResumeSection>
     ),
     languages: (
-      <ResumeSection title="Idiomas">
+      <ResumeSection title={t("languages")}>
         <ul className="link-list">
           {(document.languages || []).map((lang) => (
             <li key={lang.id}>
@@ -99,12 +101,12 @@ export function ResumePreview({ document }: ResumePreviewProps) {
       </ResumeSection>
     ),
     courses: (
-      <ResumeSection title="Cursos y formación">
+      <ResumeSection title={t("courses")}>
         {document.courses.map((course) => <article className="resume-entry compact" key={course.id}><div className="entry-heading"><h3>{course.name}</h3><time>{course.obtainedOn}</time></div></article>)}
       </ResumeSection>
     ),
     portfolio: (
-      <ResumeSection title="Portafolio">
+      <ResumeSection title={t("portfolio")}>
         <ul className="link-list portfolio-list">
           {document.portfolioLinks.map((link) => (
             <li key={link.id} style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'flex-start' }}>
@@ -219,7 +221,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               <div className="resume-body">
                 {isFirstPage && summarySection && document.professionalSummary?.trim() && !(document.theme.compactProfessionalProfile && template.id !== 'chronological') && (
                   <div className="summary-highlight" style={{ marginBottom: "var(--resume-section-spacing)", gridColumn: "1 / -1" }}>
-                    <ResumeSection title="Perfil profesional">
+                    <ResumeSection title={t("profSummary")}>
                       <p style={{ fontSize: "1.08em", lineHeight: 1.6, color: "color-mix(in srgb, var(--resume-text) 80%, var(--resume-accent))" }}>
                         {document.professionalSummary}
                       </p>
@@ -252,3 +254,6 @@ export function ResumePreview({ document }: ResumePreviewProps) {
 function ResumeSection({ title, children }: { title: string; children: ReactNode }) {
   return <section className="resume-section"><h2>{title}</h2><div className="resume-section-body">{children}</div></section>;
 }
+
+
+

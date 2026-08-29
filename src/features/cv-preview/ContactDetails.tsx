@@ -1,4 +1,5 @@
 import type { ContactDisplayMode, Profile } from "../../types/resume";
+import { useTranslation } from "../../i18n/LanguageContext";
 
 interface ContactDetailsProps {
   mode: ContactDisplayMode;
@@ -6,12 +7,13 @@ interface ContactDetailsProps {
 }
 
 export function ContactDetails({ mode, profile }: ContactDetailsProps) {
+  const { t } = useTranslation();
   const contacts: Array<{ kind: "email" | "phone" | "address" | "curp" | "rfc" | "license" | "driving"; label: string; value: string }> = [
-    profile.email ? { kind: "email", label: "Correo", value: profile.email } : null,
-    profile.phone ? { kind: "phone", label: "Teléfono", value: profile.phone } : null,
-    profile.address ? { kind: "address", label: "Dirección", value: profile.address } : null,
-    profile.curp ? { kind: "curp", label: "CURP", value: profile.curp } : null,
-    profile.rfc ? { kind: "rfc", label: "RFC", value: profile.rfc } : null,
+    profile.email ? { kind: "email", label: t("cvEmail"), value: profile.email } : null,
+    profile.phone ? { kind: "phone", label: t("cvPhone"), value: profile.phone } : null,
+    profile.address ? { kind: "address", label: t("address"), value: profile.address } : null,
+    profile.curp ? { kind: "curp", label: t("nationalId"), value: profile.curp } : null,
+    profile.rfc ? { kind: "rfc", label: t("taxId"), value: profile.rfc } : null,
   ].filter(Boolean) as any;
 
   if (profile.professionalLicenses) {
@@ -19,7 +21,7 @@ export function ContactDetails({ mode, profile }: ContactDetailsProps) {
       const num = license.number?.trim();
       if (num) {
         const prefix = license.prefix?.trim() ? `${license.prefix.trim()} ` : "";
-        contacts.push({ kind: "license", label: `Cédula${profile.professionalLicenses!.length > 1 ? ` ${i + 1}` : ""}`, value: `${prefix}${num}` });
+        contacts.push({ kind: "license", label: `${t("cvProfLicense")}${ profile.professionalLicenses!.length > 1 ? ` ${i + 1}` : ""}`, value: `${prefix}${num}` });
       }
     });
   }
@@ -29,7 +31,7 @@ export function ContactDetails({ mode, profile }: ContactDetailsProps) {
     const numStr = profile.drivingLicenseNumber?.trim() ? ` - ${profile.drivingLicenseNumber.trim()}` : "";
     contacts.push({
       kind: "driving",
-      label: "Licencia",
+      label: t("cvDrivingLicense"),
       value: `${typeStr}${numStr}`.trim() || "Vigente",
     });
   }
@@ -61,3 +63,4 @@ function ContactIcon({ kind }: { kind: "email" | "phone" | "address" | "curp" | 
 
   return <svg className="contact-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{paths[kind]}</svg>;
 }
+

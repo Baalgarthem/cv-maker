@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "../../i18n/LanguageContext";
 import type { Course, PortfolioLink, ResumeDocument, WorkExperience, Education, Language } from "../../types/resume";
 
 interface DataEntryFormProps {
@@ -25,6 +26,7 @@ const createEducation = (): Education => ({ id: createId(), institution: "", deg
 const createLanguage = (): Language => ({ id: createId(), name: "", level: "" });
 
 export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps) {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState<ResumeDocument>(() => structuredClone(document));
 
   const updateExperience = (index: number, changes: Partial<WorkExperience>) => {
@@ -86,14 +88,14 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
 
         <form onSubmit={(event) => { event.preventDefault(); submit(); }}>
           <fieldset>
-            <legend>Datos personales</legend>
+            <legend>{t("personalData")}</legend>
             <div className="form-grid three-columns">
               <label>Nombre<input required value={draft.profile.firstName} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, firstName: event.target.value } }))} /></label>
-              <label>Apellido paterno<input required value={draft.profile.paternalSurname} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, paternalSurname: event.target.value } }))} /></label>
+              <label>{t("paternalSurname")}<input required value={draft.profile.paternalSurname} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, paternalSurname: event.target.value } }))} /></label>
               <label>Apellido materno<input required value={draft.profile.maternalSurname} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, maternalSurname: event.target.value } }))} /></label>
-              <label>Correo electrónico <input type="email" placeholder="Opcional" value={draft.profile.email ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, email: event.target.value } }))} /></label>
+              <label>{t("email")} <input type="email" placeholder="Opcional" value={draft.profile.email ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, email: event.target.value } }))} /></label>
               <label>Número telefónico <input type="tel" placeholder="Opcional" value={draft.profile.phone ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, phone: event.target.value } }))} /></label>
-              <label>Dirección <input placeholder="Opcional" value={draft.profile.address ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, address: event.target.value } }))} /></label>
+              <label>{t("address")} <input placeholder="Opcional" value={draft.profile.address ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, address: event.target.value } }))} /></label>
               
               <div className="contact-display-choice">
                 <span>Presentación de contacto</span>
@@ -109,8 +111,8 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                 </div>
               </div>
 
-              <label>CURP <input maxLength={18} placeholder="Opcional" value={draft.profile.curp ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, curp: event.target.value } }))} /></label>
-              <label>RFC <input maxLength={13} placeholder="Opcional" value={draft.profile.rfc ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, rfc: event.target.value } }))} /></label>
+              <label>{t("nationalId")} <input maxLength={18} placeholder="Opcional" value={draft.profile.curp ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, curp: event.target.value } }))} /></label>
+              <label>{t("taxId")} <input maxLength={13} placeholder="Opcional" value={draft.profile.rfc ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, rfc: event.target.value } }))} /></label>
               
               <label>
                 Fotografía (Opcional)
@@ -155,7 +157,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                 </label>
                 {draft.profile.hasDrivingLicense && (
                   <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                    <label>Tipo de licencia
+                    <label>{t("drivingLicense")}
                       <select 
                         required 
                         value={draft.profile.drivingLicenseType ?? ""} 
@@ -165,7 +167,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                         {draft.profile.drivingLicenseType && !["A", "B", "C", "D", "E", "F", "Motociclista", "Chofer", "Federal", "Internacional"].includes(draft.profile.drivingLicenseType) && (
                           <option value={draft.profile.drivingLicenseType}>{draft.profile.drivingLicenseType}</option>
                         )}
-                        <option value="A">Tipo A (automovilista)</option>
+                        <option value="A">{t("drivingLicenseA")}</option>
                         <option value="B">Tipo B (chofer particular/estatal)</option>
                         <option value="C">Tipo C (chofer de carga)</option>
                         <option value="D">Tipo D (turismo / guía)</option>
@@ -221,13 +223,13 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Experiencia laboral</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, experiences: [...current.experiences, createExperience()] }))}>+ Añadir experiencia</button></div>
+            <div className="fieldset-heading"><legend>Experiencia laboral</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, experiences: [...current.experiences, createExperience()] }))}>{t("addExperience")}</button></div>
             <div className="repeatable-list">
               {draft.experiences.map((experience, experienceIndex) => (
                 <article className="repeatable-card" key={experience.id}>
-                  <div className="card-heading"><strong>Experiencia {experienceIndex + 1}</strong><button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, experiences: current.experiences.filter(({ id }) => id !== experience.id) }))}>Eliminar</button></div>
+                  <div className="card-heading"><strong>Experiencia {experienceIndex + 1}</strong><button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, experiences: current.experiences.filter(({ id }) => id !== experience.id) }))}>{t("removeEducation")}</button></div>
                   <div className="form-grid three-columns">
-                    <label>Empresa<input required value={experience.companyName} onChange={(event) => updateExperience(experienceIndex, { companyName: event.target.value })} /></label>
+                    <label>{t("company")}<input required value={experience.companyName} onChange={(event) => updateExperience(experienceIndex, { companyName: event.target.value })} /></label>
                     <label>Fecha inicial<input required type="month" value={experience.startDate} onChange={(event) => updateExperience(experienceIndex, { startDate: event.target.value })} /></label>
                     <label>Fecha final<input type="month" disabled={experience.isCurrent} required={!experience.isCurrent} value={experience.endDate ?? ""} onChange={(event) => updateExperience(experienceIndex, { endDate: event.target.value })} /></label>
                   </div>
@@ -247,15 +249,15 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Formación académica</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: [...(current.education || []), createEducation()] }))}>+ Añadir educación</button></div>
+            <div className="fieldset-heading"><legend>{t("education")}</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: [...(current.education || []), createEducation()] }))}>+ Añadir educación</button></div>
             <div className="repeatable-list">
               {(draft.education || []).map((edu, index) => (
                 <article className="repeatable-card" key={edu.id}>
-                  <div className="card-heading"><strong>Institución {index + 1}</strong><button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: current.education.filter(({ id }) => id !== edu.id) }))}>Eliminar</button></div>
+                  <div className="card-heading"><strong>{t("institution")} {index + 1}</strong><button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: current.education.filter(({ id }) => id !== edu.id) }))}>{t("removeEducation")}</button></div>
                   <div className="form-grid three-columns">
-                    <label>Institución<input required value={edu.institution} onChange={(event) => updateEducation(index, { institution: event.target.value })} /></label>
-                    <label>Fecha de inicio<input required value={edu.startDate} placeholder="Ej. 2015" onChange={(event) => updateEducation(index, { startDate: event.target.value })} /></label>
-                    <label>Fecha de fin<input value={edu.endDate ?? ""} disabled={edu.isCurrent} placeholder="Ej. 2019" onChange={(event) => updateEducation(index, { endDate: event.target.value })} /></label>
+                    <label>{t("institution")}<input required value={edu.institution} onChange={(event) => updateEducation(index, { institution: event.target.value })} /></label>
+                    <label>{t("startDate")}<input required value={edu.startDate} placeholder="Ej. 2015" onChange={(event) => updateEducation(index, { startDate: event.target.value })} /></label>
+                    <label>{t("endDate")}<input value={edu.endDate ?? ""} disabled={edu.isCurrent} placeholder="Ej. 2019" onChange={(event) => updateEducation(index, { endDate: event.target.value })} /></label>
                   </div>
                   <div className="form-grid" style={{ marginTop: 16 }}>
                     <label>Título o grado obtenido<input required value={edu.degree} onChange={(event) => updateEducation(index, { degree: event.target.value })} /></label>
@@ -267,29 +269,29 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Habilidades y competencias</legend></div>
+            <div className="fieldset-heading"><legend>{t("skills")}</legend></div>
             <div className="form-grid" style={{ gap: "24px" }}>
               <label>
-                Habilidades duras
-                <textarea rows={3} value={draft.hardSkills || ""} onChange={(event) => setDraft((current) => ({ ...current, hardSkills: event.target.value }))} placeholder="Ej. HTML, CSS, AutoCAD, Análisis de datos, Contabilidad financiera, Python. (Menciona herramientas, software o conocimientos técnicos específicos. Sepáralos por comas)" />
+                {t("hardSkills")}
+                <textarea rows={3} value={draft.hardSkills || ""} onChange={(event) => setDraft((current) => ({ ...current, hardSkills: event.target.value }))} placeholder={t("hardSkillsPlaceholder")} />
               </label>
               <label>
-                Habilidades blandas
-                <textarea rows={3} value={draft.softSkills || ""} onChange={(event) => setDraft((current) => ({ ...current, softSkills: event.target.value }))} placeholder="Ej. Liderazgo, Comunicación asertiva, Resolución de problemas, Trabajo en equipo. (Menciona tus aptitudes interpersonales y sociales. Sepáralas por comas)" />
+                {t("softSkills")}
+                <textarea rows={3} value={draft.softSkills || ""} onChange={(event) => setDraft((current) => ({ ...current, softSkills: event.target.value }))} placeholder={t("softSkillsPlaceholder")} />
               </label>
             </div>
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Idiomas</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, languages: [...(current.languages || []), createLanguage()] }))}>+ Añadir idioma</button></div>
+            <div className="fieldset-heading"><legend>{t("languages")}</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, languages: [...(current.languages || []), createLanguage()] }))}>{t("addLanguage")}</button></div>
             <div className="repeatable-list">
               {(draft.languages || []).map((lang, index) => (
                 <article className="repeatable-card compact-card" key={lang.id}>
                   <div className="form-grid three-columns">
-                    <label>Idioma<input required value={lang.name} placeholder="Ej. Inglés" onChange={(event) => updateLanguage(index, { name: event.target.value })} /></label>
-                    <label>Nivel<input required value={lang.level} placeholder="Ej. B2 Intermedio" onChange={(event) => updateLanguage(index, { level: event.target.value })} /></label>
+                    <label>{t("languageName")}<input required value={lang.name} placeholder="Ej. Inglés" onChange={(event) => updateLanguage(index, { name: event.target.value })} /></label>
+                    <label>{t("skillLevel")}<input required value={lang.level} placeholder="Ej. B2 Intermedio" onChange={(event) => updateLanguage(index, { level: event.target.value })} /></label>
                     <div style={{ alignSelf: "end" }}>
-                      <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, languages: current.languages.filter(({ id }) => id !== lang.id) }))}>Eliminar idioma</button>
+                      <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, languages: current.languages.filter(({ id }) => id !== lang.id) }))}>{t("removeLanguage")}</button>
                     </div>
                   </div>
                 </article>
@@ -298,34 +300,30 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Cursos</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: [...current.courses, createCourse()] }))}>+ Añadir curso</button></div>
+            <div className="fieldset-heading"><legend>{t("courses")}</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: [...current.courses, createCourse()] }))}>{t("addCourse")}</button></div>
             <div className="repeatable-list">
               {draft.courses.map((course, index) => (
                 <article className="repeatable-card compact-card" key={course.id}>
                   <div className="form-grid three-columns">
-                    <label>Nombre del curso<input required value={course.name} onChange={(event) => updateCourse(index, { name: event.target.value })} /></label>
-                    <label>Fecha de obtención<input required type="month" value={course.obtainedOn} onChange={(event) => updateCourse(index, { obtainedOn: event.target.value })} /></label>
-                    <label>URL <input type="text" placeholder="Opcional" value={course.credentialUrl ?? ""} onChange={(event) => updateCourse(index, { credentialUrl: event.target.value })} /></label>
+                    <label>{t("courseName")}<input required value={course.name} onChange={(event) => updateCourse(index, { name: event.target.value })} /></label>
+                    <label>{t("courseDate")}<input required type="month" value={course.obtainedOn} onChange={(event) => updateCourse(index, { obtainedOn: event.target.value })} /></label>
+                    <label>{t("portUrl")}<input type="text" placeholder="Opcional" value={course.credentialUrl ?? ""} onChange={(event) => updateCourse(index, { credentialUrl: event.target.value })} /></label>
                   </div>
-                  <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: current.courses.filter(({ id }) => id !== course.id) }))}>Eliminar curso</button>
+                  <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: current.courses.filter(({ id }) => id !== course.id) }))}>{t("removeCourse")}</button>
                 </article>
               ))}
             </div>
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Portafolio y enlaces</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, portfolioLinks: [...current.portfolioLinks, createLink()] }))}>+ Añadir enlace</button></div>
+            <div className="fieldset-heading"><legend>{t("portfolio")}</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, portfolioLinks: [...current.portfolioLinks, createLink()] }))}>{t("addPortfolio")}</button></div>
             <div className="repeatable-list">
               {draft.portfolioLinks.map((link, index) => (
                 <article className="repeatable-card compact-card" key={link.id}>
                     <div className="form-grid three-columns">
-                      <label>
-                        Título
-                        <input required placeholder="Ej: GitHub, Mi Web..." value={link.label} onChange={(event) => updateLink(index, { label: event.target.value })} />
+                      <label>{t("portTitle")}<input required placeholder={t("portTitlePlaceholder")} value={link.label} onChange={(event) => updateLink(index, { label: event.target.value })} />
                       </label>
-                      <label>
-                        Ícono
-                        <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                      <label>{t("portIcon")}<div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
                           <select 
                             style={{ flex: 1 }}
                             value={link.icon?.startsWith('data:') ? 'custom' : (link.icon || 'none')} 
@@ -337,7 +335,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                               }
                             }}
                           >
-                            <option value="none">Sin ícono</option>
+                            <option value="none">{t("portIconNone")}</option>
                             <option value="web">Web</option>
                             <option value="github">GitHub</option>
                             <option value="gitlab">GitLab</option>
@@ -345,7 +343,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                             <option value="facebook">Facebook</option>
                             <option value="drive">Google Drive</option>
                             <option value="mega">MEGA</option>
-                            <option value="custom">Personalizado...</option>
+                            <option value="custom">{t("portIconCustom")}</option>
                           </select>
                           {link.icon?.startsWith('data:') && <img src={link.icon} alt="Icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />}
                           <input 
@@ -366,20 +364,20 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                           />
                         </div>
                       </label>
-                      <label>
-                        URL
-                        <input required type="text" value={link.url} onChange={(event) => updateLink(index, { url: event.target.value })} />
+                      <label>{t("portUrl")}<input required type="text" value={link.url} onChange={(event) => updateLink(index, { url: event.target.value })} />
                       </label>
                     </div>
-                  <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, portfolioLinks: current.portfolioLinks.filter(({ id }) => id !== link.id) }))}>Eliminar enlace</button>
+                  <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, portfolioLinks: current.portfolioLinks.filter(({ id }) => id !== link.id) }))}>{t("removePortfolio")}</button>
                 </article>
               ))}
             </div>
           </fieldset>
 
-          <footer className="form-actions"><button className="secondary-button" type="button" onClick={onCancel}>Cancelar</button><button className="primary-button" type="submit">Guardar y actualizar CV</button></footer>
+          <footer className="form-actions"><button className="secondary-button" type="button" onClick={onCancel}>{t("cancel")}</button><button className="primary-button" type="submit">{t("saveAndPreview")}</button></footer>
         </form>
       </section>
     </div>
   );
 }
+
+
