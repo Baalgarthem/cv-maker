@@ -7,7 +7,7 @@ export const translations = {
     exportPdf: "Exportar PDF",
     
     // Editor panel
-    tabData: "Datos",
+    tabData: "Editar datos",
     profilesTab: "Perfiles",
     newCv: "Nuevo CV",
     duplicate: "Duplicar",
@@ -162,7 +162,7 @@ export const translations = {
     exportPdf: "Export PDF",
     
     // Editor panel
-    tabData: "Data",
+    tabData: "Edit Data",
     profilesTab: "Profiles",
     newCv: "New CV",
     duplicate: "Duplicate",
