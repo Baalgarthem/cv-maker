@@ -8,7 +8,7 @@ export interface Profile {
   address?: string;
   curp?: string;
   rfc?: string;
-  professionalLicenses?: string[];
+  professionalLicenses?: { prefix?: string, number: string }[];
   picture?: string;
   hasDrivingLicense?: boolean;
   drivingLicenseType?: string;

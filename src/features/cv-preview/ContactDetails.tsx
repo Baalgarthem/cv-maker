@@ -16,8 +16,10 @@ export function ContactDetails({ mode, profile }: ContactDetailsProps) {
 
   if (profile.professionalLicenses) {
     profile.professionalLicenses.forEach((license, i) => {
-      if (license.trim()) {
-        contacts.push({ kind: "license", label: `Cédula${profile.professionalLicenses!.length > 1 ? ` ${i + 1}` : ""}`, value: license });
+      const num = license.number?.trim();
+      if (num) {
+        const prefix = license.prefix?.trim() ? `${license.prefix.trim()} ` : "";
+        contacts.push({ kind: "license", label: `Cédula${profile.professionalLicenses!.length > 1 ? ` ${i + 1}` : ""}`, value: `${prefix}${num}` });
       }
     });
   }

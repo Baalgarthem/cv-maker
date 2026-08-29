@@ -71,7 +71,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
         ...draft.profile,
         curp: draft.profile.curp?.trim().toUpperCase(),
         rfc: draft.profile.rfc?.trim().toUpperCase(),
-        professionalLicenses: draft.profile.professionalLicenses?.map((license) => license.trim()).filter(Boolean),
+        professionalLicenses: draft.profile.professionalLicenses?.map((license) => ({ prefix: license.prefix?.trim(), number: license.number?.trim() })).filter(l => l.number),
       },
     });
   };
@@ -179,27 +179,42 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                     <label>Número de licencia <input placeholder="Opcional" value={draft.profile.drivingLicenseNumber ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseNumber: event.target.value } }))} /></label>
                   </div>
                 )}
-              </div>
-
-              <div className="license-fields three-columns">
-                {(draft.profile.professionalLicenses?.length ? draft.profile.professionalLicenses : [""]).map((license, licenseIndex) => (
-                  <label key={licenseIndex}>
-                    <div className="license-label-wrap">
-                      Cédula profesional {licenseIndex > 0 && licenseIndex + 1}
-                      {licenseIndex === 0 && (draft.profile.professionalLicenses?.length || 1) < 3 && (
-                        <button className="add-small-btn" type="button" aria-label="Añadir otra cédula profesional" title="Añadir otra cédula profesional" onClick={(e) => { e.preventDefault(); setDraft((current) => ({ ...current, profile: { ...current.profile, professionalLicenses: [...(current.profile.professionalLicenses?.length ? current.profile.professionalLicenses : [""]), ""] } })); }}>+</button>
-                      )}
-                      {licenseIndex > 0 && (
-                        <button className="remove-small-btn" type="button" aria-label={`Eliminar cédula profesional ${licenseIndex + 1}`} title="Eliminar cédula" onClick={(e) => { e.preventDefault(); setDraft((current) => ({ ...current, profile: { ...current.profile, professionalLicenses: current.profile.professionalLicenses?.filter((_, itemIndex) => itemIndex !== licenseIndex) } })); }}>×</button>
-                      )}
+                <div className="license-fields">
+                  {(draft.profile.professionalLicenses?.length ? draft.profile.professionalLicenses : [{ prefix: "", number: "" }]).map((license, licenseIndex) => (
+                    <div key={licenseIndex} style={{ marginBottom: "12px" }}>
+                      <div className="license-label-wrap">
+                        Cédula profesional {licenseIndex > 0 && licenseIndex + 1}
+                        {licenseIndex === 0 && (draft.profile.professionalLicenses?.length || 1) < 3 && (
+                          <button className="add-small-btn" type="button" aria-label="Añadir otra cédula profesional" title="Añadir otra cédula profesional" onClick={(e) => { e.preventDefault(); setDraft((current) => ({ ...current, profile: { ...current.profile, professionalLicenses: [...(current.profile.professionalLicenses?.length ? current.profile.professionalLicenses : [{ prefix: "", number: "" }]), { prefix: "", number: "" }] } })); }}>+</button>
+                        )}
+                        {licenseIndex > 0 && (
+                          <button className="remove-small-btn" type="button" aria-label={`Eliminar cédula profesional ${licenseIndex + 1}`} title="Eliminar cédula" onClick={(e) => { e.preventDefault(); setDraft((current) => ({ ...current, profile: { ...current.profile, professionalLicenses: current.profile.professionalLicenses?.filter((_, itemIndex) => itemIndex !== licenseIndex) } })); }}>×</button>
+                        )}
+                      </div>
+                      <div className="form-grid" style={{ gridTemplateColumns: "1fr 2fr", gap: "8px" }}>
+                        <input 
+                          placeholder="Prefijo (opcional)" 
+                          value={license.prefix ?? ""} 
+                          onChange={(event) => setDraft((current) => {
+                            const licenses = current.profile.professionalLicenses?.length ? [...current.profile.professionalLicenses] : [{ prefix: "", number: "" }];
+                            licenses[licenseIndex] = { ...licenses[licenseIndex], prefix: event.target.value };
+                            return { ...current, profile: { ...current.profile, professionalLicenses: licenses } };
+                          })} 
+                        />
+                        <input 
+                          type="number" 
+                          placeholder="Solo números" 
+                          value={license.number} 
+                          onChange={(event) => setDraft((current) => {
+                            const licenses = current.profile.professionalLicenses?.length ? [...current.profile.professionalLicenses] : [{ prefix: "", number: "" }];
+                            licenses[licenseIndex] = { ...licenses[licenseIndex], number: event.target.value };
+                            return { ...current, profile: { ...current.profile, professionalLicenses: licenses } };
+                          })} 
+                        />
+                      </div>
                     </div>
-                    <input placeholder="Opcional" value={license} onChange={(event) => setDraft((current) => {
-                      const licenses = current.profile.professionalLicenses?.length ? [...current.profile.professionalLicenses] : [""];
-                      licenses[licenseIndex] = event.target.value;
-                      return { ...current, profile: { ...current.profile, professionalLicenses: licenses } };
-                    })} />
-                  </label>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
             <label className="full-field">Perfil profesional<textarea rows={4} value={draft.professionalSummary} onChange={(event) => setDraft((current) => ({ ...current, professionalSummary: event.target.value }))} /></label>

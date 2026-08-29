@@ -42,6 +42,14 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
           delete sec.isVisible;
         });
       }
+      if (doc.profile && Array.isArray(doc.profile.professionalLicenses)) {
+        doc.profile.professionalLicenses = doc.profile.professionalLicenses.map((l: any) => {
+          if (typeof l === 'string') {
+            return { prefix: "", number: l };
+          }
+          return l;
+        });
+      }
       return doc;
     };
 
