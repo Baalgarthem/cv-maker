@@ -42,7 +42,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 .preview-stage { height: 100%; overflow: auto; padding: 18px 28px 44px; border-radius: 8px; background: #d4d1ca; }
 .preview-toolbar { display: flex; justify-content: space-between; margin: 0 auto 14px; color: #5f6670; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
 .resume-page { width: var(--resume-page-width); min-height: var(--resume-page-height); margin: 0 auto; padding: 19mm 20mm 18mm; color: var(--resume-text); background: var(--resume-page); box-shadow: 0 16px 45px rgb(30 35 43 / 20%); font-family: var(--resume-font); font-size: var(--resume-font-size); line-height: var(--resume-line-height); }
-.resume-header { padding-bottom: var(--resume-section-spacing); border-bottom: 1px solid var(--resume-accent); }
+.resume-header { padding-bottom: var(--resume-section-spacing); border-bottom: 1px solid var(--resume-separator-color); }
 .resume-page[data-summary-separator="false"] .resume-header { border-bottom: none; }
 .resume-header h1 { margin: 2mm 0; font-family: var(--resume-heading-font); font-size: var(--resume-main-heading-size); font-weight: 500; line-height: 1.05; letter-spacing: .035em; text-transform: uppercase; }
 .resume-kicker { margin: 0; color: var(--resume-accent); font-size: 0.75em; font-weight: 750; letter-spacing: .2em; text-transform: uppercase; }
@@ -99,8 +99,8 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 .template-chronological { display: flex; flex-direction: row; padding: 0; }
 .template-chronological .profile-picture-wrapper { margin-bottom: 4mm; }
 .template-chronological[data-sidebar="right"] { flex-direction: row-reverse; }
-.template-chronological .resume-header { width: 75mm; padding: 19mm 10mm; background: color-mix(in srgb, var(--resume-accent) 12%, var(--resume-page)); border-bottom: none; border-right: 1px solid var(--resume-accent); flex: none; }
-.template-chronological[data-sidebar="right"] .resume-header { border-right: none; border-left: 1px solid var(--resume-accent); }
+.template-chronological .resume-header { width: 75mm; padding: 19mm 10mm; background: color-mix(in srgb, var(--resume-accent) 12%, var(--resume-page)); border-bottom: none; border-right: 1px solid var(--resume-separator-color); flex: none; }
+.template-chronological[data-sidebar="right"] .resume-header { border-right: none; border-left: 1px solid var(--resume-separator-color); }
 .template-chronological .resume-body { flex: 1; padding: 19mm 15mm; }
 .template-chronological .resume-contact-list { flex-direction: column; align-items: flex-start; gap: 2mm; margin-top: 4mm; }
 
@@ -113,7 +113,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 .template-mixed[data-sidebar="right"] .resume-body { grid-template-columns: 1fr 65mm; }
 .template-mixed[data-sidebar="right"] .sidebar-sections { order: 2; }
 .template-mixed .main-sections .resume-section { display: block; padding-top: 0; margin-bottom: var(--resume-section-spacing); }
-.template-mixed .main-sections .resume-section h2 { margin-bottom: 4mm; border-bottom: 2px solid var(--resume-accent); padding-bottom: 1mm; }
+.template-mixed .main-sections .resume-section h2 { margin-bottom: 4mm; border-bottom: 2px solid var(--resume-separator-color); padding-bottom: 1mm; }
 
 /* Header Alignments */
 .template-oxford .resume-header[data-picture-align="center"], 
@@ -220,11 +220,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   padding-bottom: var(--resume-section-spacing);
   margin-bottom: 0 !important;
 }
-.template-mindmap .summary-highlight::after {
-  content: ''; position: absolute;
-  bottom: 0; left: 50%;
-  width: var(--line-thickness); height: var(--resume-section-spacing);
-  background: var(--resume-accent);
+.template-mindmap .summary-highlight::after { content: ''; position: absolute; bottom: 0; left: 50%; width: var(--line-thickness); height: var(--resume-section-spacing); background: var(--resume-separator-color);
   transform: translateX(-50%);
 }
 /* For main sections */
@@ -236,11 +232,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   position: relative;
 }
 /* The central stem */
-.template-mindmap .main-sections::before {
-  content: ''; position: absolute;
-  top: 0; bottom: 0; left: 50%;
-  width: var(--line-thickness);
-  background: var(--resume-accent);
+.template-mindmap .main-sections::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: var(--line-thickness); background: var(--resume-separator-color);
   transform: translateX(-50%);
   z-index: 0;
 }
@@ -251,11 +243,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   position: relative;
   padding-right: 20px;
 }
-.template-mindmap .main-sections > div:nth-child(odd)::before {
-  content: ''; position: absolute;
-  top: 14px; right: -16px; 
-  width: 36px; height: var(--line-thickness);
-  background: var(--resume-accent);
+.template-mindmap .main-sections > div:nth-child(odd)::before { content: ''; position: absolute; top: 14px; right: -16px; width: 36px; height: var(--line-thickness); background: var(--resume-separator-color);
   z-index: -1;
 }
 /* Right side (even) */
@@ -265,11 +253,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   position: relative;
   padding-left: 20px;
 }
-.template-mindmap .main-sections > div:nth-child(even)::before {
-  content: ''; position: absolute;
-  top: 14px; left: -16px; 
-  width: 36px; height: var(--line-thickness);
-  background: var(--resume-accent);
+.template-mindmap .main-sections > div:nth-child(even)::before { content: ''; position: absolute; top: 14px; left: -16px; width: 36px; height: var(--line-thickness); background: var(--resume-separator-color);
   z-index: -1;
 }
 /* Heading styling */
@@ -288,10 +272,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   position: relative;
   display: inline-block;
 }
-.template-mindmap .resume-section h2::after {
-  content: ''; position: absolute;
-  bottom: -4px; height: 2px; width: 60%;
-  background: var(--resume-accent);
+.template-mindmap .resume-section h2::after { content: ''; position: absolute; bottom: -4px; height: 2px; width: 60%; background: var(--resume-separator-color);
   opacity: 0.3;
 }
 .template-mindmap .main-sections > div:nth-child(odd) .resume-section h2::after {
@@ -369,14 +350,14 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   padding-top: var(--resume-section-spacing);
 }
 .template-oxford[data-version="v2"] .resume-section h2 {
-  border-top: 1px solid var(--resume-accent);
-  border-bottom: 1px solid var(--resume-accent);
+  border-top: 1px solid var(--resume-separator-color);
+  border-bottom: 1px solid var(--resume-separator-color);
   padding: 1.5mm 0;
   margin-bottom: var(--resume-item-spacing);
   width: 100%;
 }
 .template-oxford[data-version="v2"] .resume-header {
-  border-bottom: 1px solid var(--resume-accent);
+  border-bottom: 1px solid var(--resume-separator-color);
 }
 .template-oxford[data-version="v2"] .resume-entry h3 {
   display: inline;
@@ -470,15 +451,45 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: 0 !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
 }
 .template-mindmap .resume-header.compact-profile .header-personal-data {
+  display: contents !important;
+}
+.template-mindmap .resume-header.compact-profile .profile-picture-wrapper {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+.template-mindmap .resume-header.compact-profile .resume-header-text {
+  grid-column: 1;
   text-align: right;
-  padding-right: 16px;
+  margin-right: 16px;
+  border-bottom: 1px solid var(--resume-separator-color);
+  padding-bottom: var(--resume-section-spacing);
+  display: flex;
+  flex-direction: column;
   align-items: flex-end;
 }
-.template-mindmap .resume-header.compact-profile .header-personal-data .resume-contact-list {
+.template-mindmap .resume-header.compact-profile .resume-header-text .resume-contact-list {
   justify-content: flex-end;
 }
 .template-mindmap .resume-header.compact-profile .header-profile-data {
+  grid-column: 2;
   padding-left: 16px !important;
+  padding-bottom: var(--resume-section-spacing) !important;
+  justify-content: flex-start !important;
 }
+/* Typography matching for Profile title vs Name */
+.template-mindmap .resume-header.compact-profile .header-profile-data h3 {
+  font-family: var(--resume-heading-font) !important;
+  font-size: var(--resume-main-heading-size) !important;
+  font-weight: 500 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .035em !important;
+  text-transform: uppercase !important;
+  color: var(--resume-text) !important;
+  /* Match the kicker (1.125em) + top margin (2mm) of the h1 */
+  margin: calc(1.125em + 2mm) 0 2mm 0 !important;
+}
+

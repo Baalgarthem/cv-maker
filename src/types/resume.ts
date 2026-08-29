@@ -86,6 +86,7 @@ export interface ResumeTheme {
   compactProfessionalProfile?: boolean;
   headerSeparatorStyle?: 'none' | 'solid' | 'dashed' | 'dotted';
   headerSeparatorThickness?: number;
+  separatorColor?: string;
   accentColor: string;
   textColor: string;
   pageColor: string;

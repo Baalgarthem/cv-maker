@@ -29,6 +29,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     "--resume-item-spacing": `${document.theme.itemSpacing ?? 3}mm`,
     "--resume-line-height": document.theme.lineHeight ?? 1.55,
     "--resume-accent": document.theme.accentColor,
+    "--resume-separator-color": document.theme.separatorColor || document.theme.accentColor,
     "--resume-text": document.theme.textColor,
     "--resume-page": document.theme.pageColor,
     "--resume-picture-size": `${document.theme.pictureSize ?? 32}mm`,
@@ -164,7 +165,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                   <div className="header-profile-data" style={{
                       borderLeftStyle: document.theme.headerSeparatorStyle === 'none' ? 'none' : (document.theme.headerSeparatorStyle || 'solid'),
                       borderLeftWidth: `${document.theme.headerSeparatorThickness ?? 1}px`,
-                      borderLeftColor: 'var(--resume-accent)',
+                      borderLeftColor: 'var(--resume-separator-color)',
                       paddingLeft: 'var(--resume-section-spacing)'
                   }}>
                     <h3 style={{ margin: '0 0 calc(var(--resume-item-spacing) / 2)', fontSize: 'var(--resume-section-subheading-size)', color: 'var(--resume-accent)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>

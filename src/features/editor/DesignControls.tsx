@@ -188,6 +188,7 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
           <label>Color de acento<input type="color" value={theme.accentColor} onChange={(event) => onChange({ accentColor: event.target.value })} /></label>
           <label>Color de texto<input type="color" value={theme.textColor} onChange={(event) => onChange({ textColor: event.target.value })} /></label>
           <label>Color de página<input type="color" value={theme.pageColor} onChange={(event) => onChange({ pageColor: event.target.value })} /></label>
+          <label>Color de separadores<input type="color" value={theme.separatorColor || theme.accentColor} onChange={(event) => onChange({ separatorColor: event.target.value })} /></label>
         </div>
       </div>
     </section>
