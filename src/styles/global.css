@@ -281,6 +281,10 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   z-index: -1;
 }
 /* Heading styling */
+.template-mindmap .resume-section {
+  display: block;
+  padding-top: 0;
+}
 .template-mindmap .resume-section h2 {
   font-size: var(--resume-section-heading-size);
   color: var(--resume-accent);
