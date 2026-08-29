@@ -64,6 +64,7 @@ export interface ResumeSection {
   label: string;
   isVisible: boolean;
   inSidebar?: boolean;
+  page?: number;
 }
 
 export interface ResumeTheme {

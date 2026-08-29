@@ -136,6 +136,15 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     }));
   };
 
+  const updateSectionPage = (sectionId: ResumeSectionId, page: number) => {
+    updateActiveDocument(current => ({
+      ...current,
+      sections: current.sections.map((section) =>
+        section.id === sectionId ? { ...section, page } : section
+      ),
+    }));
+  };
+
   const updateTemplateId = (templateId: string) => {
     updateActiveDocument(current => ({ ...current, templateId }));
   };
@@ -195,6 +204,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     replaceDocument,
     toggleSection,
     toggleSectionSidebar,
+    updateSectionPage,
     updateTheme,
     updateTemplateId,
 

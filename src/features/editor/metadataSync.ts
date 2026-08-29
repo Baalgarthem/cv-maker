@@ -80,15 +80,21 @@ export async function importMetadataManual(): Promise<MetadataExport | null> {
       const content = await readTextFile(filePath);
       const parsed = JSON.parse(content) as MetadataExport;
       
-      if (parsed.version && parsed.documents && parsed.profileFolders) {
+      if (
+        parsed && 
+        typeof parsed === 'object' && 
+        parsed.version === "1.0" && 
+        Array.isArray(parsed.documents) && 
+        Array.isArray(parsed.profileFolders)
+      ) {
         return parsed;
       } else {
-        alert("El archivo seleccionado no tiene el formato correcto de CV Maker.");
+        alert("El archivo seleccionado no tiene el formato correcto o está dañado.");
       }
     }
   } catch (error: any) {
     console.error("Failed to import metadata:", error);
-    alert(`Hubo un error al importar los metadatos: ${error.message || error}`);
+    alert(`Hubo un error al leer el archivo. Asegúrate de que sea un JSON válido. (${error.message || error})`);
   }
   return null;
 }

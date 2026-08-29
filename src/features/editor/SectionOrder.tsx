@@ -7,10 +7,11 @@ interface SectionOrderProps {
   onMove: (sourceId: ResumeSectionId, targetId: ResumeSectionId) => void;
   onToggle: (sectionId: ResumeSectionId) => void;
   onToggleSidebar: (sectionId: ResumeSectionId) => void;
+  onUpdatePage: (sectionId: ResumeSectionId, page: number) => void;
   templateId: string;
 }
 
-export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, templateId }: SectionOrderProps) {
+export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, onUpdatePage, templateId }: SectionOrderProps) {
   const [draggedId, setDraggedId] = useState<ResumeSectionId | null>(null);
 
   const handleDrop = (event: DragEvent, targetId: ResumeSectionId) => {
@@ -20,6 +21,9 @@ export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, temp
   };
 
   const hasSidebar = templateId === "chronological" || templateId === "mixed";
+  
+  // Highest page currently used by any visible section
+  const currentMaxPage = Math.max(1, ...sections.filter(s => s.isVisible).map(s => s.page || 1));
 
   return (
     <section className="control-group" aria-labelledby="sections-title">
@@ -27,35 +31,52 @@ export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, temp
         <span>03</span>
         <h2 id="sections-title">Orden de secciones</h2>
       </div>
-      <p className="control-help">Arrastra cada bloque para cambiar el orden del currículum.</p>
+      <p className="control-help">Arrastra cada bloque para cambiar el orden o envíalos a una nueva página.</p>
       <ol className="section-list">
-        {sections.filter((s) => s.id !== "summary").map((section) => (
-          <li
-            key={section.id}
-            draggable
-            className={draggedId === section.id ? "is-dragging" : ""}
-            onDragStart={() => setDraggedId(section.id)}
-            onDragEnd={() => setDraggedId(null)}
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={(event) => handleDrop(event, section.id)}
-            style={{ gridTemplateColumns: hasSidebar ? "20px 1fr auto auto" : "20px 1fr auto" }}
-          >
-            <span className="drag-handle" aria-hidden="true">⠿</span>
-            <span>{section.label}</span>
-            {hasSidebar && section.id !== "summary" && section.id !== "experience" ? (
-              <label className="visibility-toggle" title="Mostrar en barra lateral">
-                <input type="checkbox" checked={!!section.inSidebar} onChange={() => onToggleSidebar(section.id)} />
-                Barra lateral
+        {sections.filter((s) => s.id !== "summary").map((section) => {
+          const sectionPage = section.page || 1;
+          const availablePages = Array.from({ length: currentMaxPage + 1 }, (_, i) => i + 1);
+          
+          return (
+            <li
+              key={section.id}
+              draggable
+              className={draggedId === section.id ? "is-dragging" : ""}
+              onDragStart={() => setDraggedId(section.id)}
+              onDragEnd={() => setDraggedId(null)}
+              onDragOver={(event) => event.preventDefault()}
+              onDrop={(event) => handleDrop(event, section.id)}
+              style={{ gridTemplateColumns: hasSidebar ? "20px 1fr auto auto auto" : "20px 1fr auto auto" }}
+            >
+              <span className="drag-handle" aria-hidden="true">⠿</span>
+              <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{section.label}</span>
+              
+              <select 
+                value={sectionPage} 
+                onChange={(e) => onUpdatePage(section.id, Number(e.target.value))}
+                style={{ fontSize: "0.75em", padding: "2px", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "4px" }}
+                title="Página"
+              >
+                {availablePages.map(p => (
+                  <option key={p} value={p}>Pág {p}</option>
+                ))}
+              </select>
+
+              {hasSidebar && section.id !== "summary" && section.id !== "experience" ? (
+                <label className="visibility-toggle" title="Mostrar en barra lateral">
+                  <input type="checkbox" checked={!!section.inSidebar} onChange={() => onToggleSidebar(section.id)} />
+                  Lateral
+                </label>
+              ) : (
+                hasSidebar ? <span /> : null
+              )}
+              <label className="visibility-toggle">
+                <input type="checkbox" checked={section.isVisible} onChange={() => onToggle(section.id)} />
+                Mostrar
               </label>
-            ) : (
-              hasSidebar ? <span /> : null
-            )}
-            <label className="visibility-toggle">
-              <input type="checkbox" checked={section.isVisible} onChange={() => onToggle(section.id)} />
-              Mostrar
-            </label>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ol>
     </section>
   );

@@ -10,8 +10,9 @@ import { listTemplates } from "./features/templates";
 
 export function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [zoom, setZoom] = useState(100);
   const { 
-    document, moveSection, replaceDocument, toggleSection, toggleSectionSidebar, updateTheme, updateTemplateId,
+    document, moveSection, replaceDocument, toggleSection, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId,
     profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata
   } = useResumeEditor(sampleResume);
   const templates = listTemplates();
@@ -74,6 +75,7 @@ export function App() {
             onMove={moveSection} 
             onToggle={toggleSection} 
             onToggleSidebar={toggleSectionSidebar}
+            onUpdatePage={updateSectionPage}
             templateId={document.templateId}
           />
         </aside>
@@ -84,10 +86,17 @@ export function App() {
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
               <button className="text-button" type="button" onClick={handleImport} style={{ fontSize: '0.9em', padding: 0, opacity: 0.8 }}>Importar JSON</button>
               <button className="text-button" type="button" onClick={() => exportMetadataManual(profileFolders, documents)} style={{ fontSize: '0.9em', padding: 0, opacity: 0.8 }}>Exportar JSON</button>
-              <span>100%</span>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0,0,0,0.05)', borderRadius: '12px', padding: '2px 6px' }}>
+                <button className="text-button" type="button" onClick={() => setZoom(z => Math.max(z - 10, 30))} style={{ padding: '0 4px', fontSize: '1.2em' }}>-</button>
+                <span style={{ minWidth: '40px', textAlign: 'center' }}>{zoom}%</span>
+                <button className="text-button" type="button" onClick={() => setZoom(z => Math.min(z + 10, 200))} style={{ padding: '0 4px', fontSize: '1.2em' }}>+</button>
+              </div>
             </div>
           </div>
-          <ResumePreview document={document} />
+          <div style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top center', transition: 'transform 0.15s ease' }}>
+            <ResumePreview document={document} />
+          </div>
           <p className="pdf-hint">En el diálogo del sistema selecciona “Guardar como PDF”.</p>
         </section>
       </div>

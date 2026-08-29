@@ -146,7 +146,18 @@ export function ResumePreview({ document }: ResumePreviewProps) {
             </div>
           )}
           <div className="main-sections">
-            {mainSections.map(({ id }) => <div key={id}>{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+            {mainSections.map((section, index) => {
+              const isNewPage = index > 0 && (section.page || 1) > (mainSections[index - 1].page || 1);
+              return (
+                <div 
+                  key={section.id} 
+                  style={{ breakBefore: isNewPage ? 'page' : 'auto', pageBreakBefore: isNewPage ? 'always' : 'auto' }}
+                  className={isNewPage ? 'visual-page-break' : ''}
+                >
+                  {sections[section.id as Exclude<ResumeSectionId, "summary">]}
+                </div>
+              );
+            })}
           </div>
         </div>
       </article>
