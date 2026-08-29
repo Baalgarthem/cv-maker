@@ -8,8 +8,11 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "pretauri:dev": "node scripts/sync-version.js",
     "tauri:dev": "tauri dev",
+    "pretauri:build": "node scripts/sync-version.js",
     "tauri:build": "tauri build",
+    "version": "node scripts/sync-version.js && git add src-tauri/tauri.conf.json src-tauri/Cargo.toml",
     "package": "node scripts/package.mjs"
   },
   "dependencies": {
