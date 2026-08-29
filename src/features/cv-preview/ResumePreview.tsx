@@ -109,7 +109,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
   const mainSections = visibleSections.filter((s) => !sidebarSections.includes(s) && s.id !== "summary");
   const summarySection = visibleSections.find((s) => s.id === "summary");
 
-  const maxPage = Math.max(1, ...mainSections.map(s => s.page || 1));
+  const maxPage = Math.max(1, ...visibleSections.map(s => s.page || 1));
   const pages = Array.from({ length: maxPage }, (_, i) => i + 1);
   const isChronological = template.id === "chronological";
 
@@ -124,6 +124,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
           const isFirstPage = pageNumber === 1;
           const isLastPage = pageNumber === maxPage;
           const pageMainSections = mainSections.filter(s => (s.page || 1) === pageNumber);
+          const pageSidebarSections = sidebarSections.filter(s => (s.page || 1) === pageNumber);
           
           return (
             <article 
@@ -140,23 +141,25 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                 data-picture-align={document.theme.pictureAlignment || "left"} 
                 style={!isFirstPage && !isChronological ? { display: 'none' } : {}}
               >
-                <div style={!isFirstPage && isChronological ? { visibility: 'hidden' } : {}}>
-                  {document.theme.showProfilePicture && document.profile.picture && (
-                    <div className="profile-picture-wrapper" data-frame={document.theme.pictureFrameStyle}>
-                      <img src={document.profile.picture} alt="Perfil" className="profile-picture" />
+                {isFirstPage && (
+                  <div>
+                    {document.theme.showProfilePicture && document.profile.picture && (
+                      <div className="profile-picture-wrapper" data-frame={document.theme.pictureFrameStyle}>
+                        <img src={document.profile.picture} alt="Perfil" className="profile-picture" />
+                      </div>
+                    )}
+                    <div className="resume-header-text">
+                      <p className="resume-kicker">Currículum vitae</p>
+                      <h1>{fullName}</h1>
+                      <ContactDetails mode={document.contactDisplayMode} profile={document.profile} />
                     </div>
-                  )}
-                  <div className="resume-header-text">
-                    <p className="resume-kicker">Currículum vitae</p>
-                    <h1>{fullName}</h1>
-                    <ContactDetails mode={document.contactDisplayMode} profile={document.profile} />
                   </div>
-                  {sidebarSections.length > 0 && isChronological && (
-                    <div className="sidebar-sections" style={{ marginTop: "8mm" }}>
-                      {sidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
-                    </div>
-                  )}
-                </div>
+                )}
+                {pageSidebarSections.length > 0 && isChronological && (
+                  <div className="sidebar-sections" style={{ marginTop: isFirstPage ? "8mm" : "0" }}>
+                    {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+                  </div>
+                )}
               </header>
 
               <div className="resume-body">
@@ -171,8 +174,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                 )}
                 
                 {hasSidebar && !isChronological && (
-                  <div className="sidebar-sections" style={!isFirstPage ? { visibility: 'hidden' } : {}}>
-                    {isFirstPage && sidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+                  <div className="sidebar-sections">
+                    {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
                   </div>
                 )}
 
