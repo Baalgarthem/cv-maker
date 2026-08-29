@@ -1,1 +1,1 @@
-{"default":{"identifier":"default","description":"Permisos básicos de la ventana principal","local":true,"windows":["main"],"permissions":["core:default"]}}
+{"default":{"identifier":"default","description":"Permisos básicos de la ventana principal","local":true,"windows":["main"],"permissions":["core:default","fs:default","fs:allow-appdata-read","fs:allow-appdata-write","fs:allow-read-text-file","fs:allow-write-text-file","fs:allow-exists","fs:allow-mkdir","dialog:default"]}}
