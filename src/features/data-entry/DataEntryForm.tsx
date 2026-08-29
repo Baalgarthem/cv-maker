@@ -155,7 +155,24 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                 </label>
                 {draft.profile.hasDrivingLicense && (
                   <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                    <label>Tipo de licencia<input required placeholder="Ej. A, B, C, Chofer..." value={draft.profile.drivingLicenseType ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseType: event.target.value } }))} /></label>
+                    <label>Tipo de licencia
+                      <select 
+                        required 
+                        value={draft.profile.drivingLicenseType ?? ""} 
+                        onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseType: event.target.value } }))}
+                      >
+                        <option value="" disabled>Seleccionar tipo...</option>
+                        {draft.profile.drivingLicenseType && !["Automovilista (Tipo A)", "Chofer (Tipo B)", "Transporte / Carga (Tipo C)", "Motociclista", "Federal", "Internacional"].includes(draft.profile.drivingLicenseType) && (
+                          <option value={draft.profile.drivingLicenseType}>{draft.profile.drivingLicenseType}</option>
+                        )}
+                        <option value="Automovilista (Tipo A)">Automovilista (Tipo A)</option>
+                        <option value="Chofer (Tipo B)">Chofer (Tipo B)</option>
+                        <option value="Transporte / Carga (Tipo C)">Transporte / Carga (Tipo C)</option>
+                        <option value="Motociclista">Motociclista</option>
+                        <option value="Federal">Federal</option>
+                        <option value="Internacional">Internacional</option>
+                      </select>
+                    </label>
                     <label>Número de licencia <input placeholder="Opcional" value={draft.profile.drivingLicenseNumber ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseNumber: event.target.value } }))} /></label>
                   </div>
                 )}
