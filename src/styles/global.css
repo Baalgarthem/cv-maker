@@ -416,3 +416,65 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   display: table;
   clear: both;
 }
+
+/* =========================================================
+   COMPACT PROFILE LAYOUT
+   ========================================================= */
+.header-personal-data {
+  display: contents;
+}
+.resume-header.compact-profile {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: var(--resume-section-spacing);
+  text-align: left !important;
+}
+.resume-header.compact-profile .header-personal-data {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.resume-header.compact-profile .header-profile-data {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Restore template-specific internal layouts inside the new wrapper when compact is active */
+.template-oxford .resume-header.compact-profile .header-personal-data {
+  flex-direction: row;
+  align-items: center;
+  gap: 8mm;
+}
+.template-oxford[data-version="v2"] .resume-header.compact-profile .header-personal-data {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2mm;
+}
+.template-mixed .resume-header.compact-profile .header-personal-data {
+  flex-direction: row;
+  align-items: center;
+  gap: 10mm;
+}
+
+/* Picture alignments for compact profiles */
+.resume-header.compact-profile[data-picture-align="center"] .header-personal-data {
+  flex-direction: column !important;
+  text-align: center;
+  align-items: center;
+}
+.resume-header.compact-profile[data-picture-align="center"] .resume-contact-list {
+  justify-content: center;
+}
+.resume-header.compact-profile[data-picture-align="right"] .header-personal-data {
+  text-align: right;
+  align-items: flex-end;
+}
+.resume-header.compact-profile[data-picture-align="right"] .profile-picture-wrapper {
+  order: 2;
+}
+.resume-header.compact-profile[data-picture-align="right"] .resume-contact-list {
+  justify-content: flex-end;
+}

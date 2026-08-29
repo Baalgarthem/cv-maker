@@ -142,12 +142,12 @@ export function ResumePreview({ document }: ResumePreviewProps) {
             >
               
               <header 
-                className="resume-header" 
+                className={`resume-header ${document.theme.compactProfessionalProfile && template.id !== 'chronological' ? 'compact-profile' : ''}`}
                 data-picture-align={document.theme.pictureAlignment || "left"} 
                 style={!isFirstPage && !isChronological ? { display: 'none' } : {}}
               >
                 {isFirstPage && (
-                  <div>
+                  <div className="header-personal-data">
                     {document.theme.showProfilePicture && document.profile.picture && (
                       <div className="profile-picture-wrapper" data-frame={document.theme.pictureFrameStyle}>
                         <img src={document.profile.picture} alt="Perfil" className="profile-picture" />
@@ -160,6 +160,21 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                     </div>
                   </div>
                 )}
+                {isFirstPage && document.theme.compactProfessionalProfile && template.id !== 'chronological' && summarySection && document.professionalSummary?.trim() && (
+                  <div className="header-profile-data" style={{
+                      borderLeftStyle: document.theme.headerSeparatorStyle === 'none' ? 'none' : (document.theme.headerSeparatorStyle || 'solid'),
+                      borderLeftWidth: `${document.theme.headerSeparatorThickness ?? 1}px`,
+                      borderLeftColor: 'var(--resume-accent)',
+                      paddingLeft: 'var(--resume-section-spacing)'
+                  }}>
+                    <h3 style={{ margin: '0 0 calc(var(--resume-item-spacing) / 2)', fontSize: 'var(--resume-section-subheading-size)', color: 'var(--resume-accent)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      Perfil profesional
+                    </h3>
+                    <p style={{ margin: 0, fontSize: '0.9em', lineHeight: 'var(--resume-line-height)' }}>
+                      {document.professionalSummary}
+                    </p>
+                  </div>
+                )}
                 {pageSidebarSections.length > 0 && isChronological && (
                   <div className="sidebar-sections" style={{ marginTop: isFirstPage ? "8mm" : "0" }}>
                     {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
@@ -168,7 +183,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               </header>
 
               <div className="resume-body">
-                {isFirstPage && summarySection && document.professionalSummary?.trim() && (
+                {isFirstPage && summarySection && document.professionalSummary?.trim() && !(document.theme.compactProfessionalProfile && template.id !== 'chronological') && (
                   <div className="summary-highlight" style={{ marginBottom: "var(--resume-section-spacing)", gridColumn: "1 / -1" }}>
                     <ResumeSection title="Perfil profesional">
                       <p style={{ fontSize: "1.08em", lineHeight: 1.6, color: "color-mix(in srgb, var(--resume-text) 80%, var(--resume-accent))" }}>

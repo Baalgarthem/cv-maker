@@ -36,6 +36,32 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
         </label>
 
         <label className="checkbox-field" style={{ marginTop: 16 }}>
+          <input type="checkbox" checked={theme.compactProfessionalProfile || false} onChange={(e) => onChange({ compactProfessionalProfile: e.target.checked })} />
+          Perfil profesional compacto (al lado del nombre)
+        </label>
+
+        {theme.compactProfessionalProfile && (
+          <div style={{ display: "grid", gap: "10px", marginTop: "12px", paddingLeft: "10px", borderLeft: "2px solid #e0dfdb" }}>
+            <label>
+              Estilo del separador
+              <select value={theme.headerSeparatorStyle || 'solid'} onChange={(e) => onChange({ headerSeparatorStyle: e.target.value as any })}>
+                <option value="none">Sin separador</option>
+                <option value="solid">Línea continua</option>
+                <option value="dashed">Línea discontinua</option>
+                <option value="dotted">Línea punteada</option>
+              </select>
+            </label>
+            {theme.headerSeparatorStyle !== 'none' && (
+              <label>
+                Grosor del separador <output>{theme.headerSeparatorThickness ?? 1} px</output>
+                <input type="range" min="1" max="5" step="1" value={theme.headerSeparatorThickness ?? 1} onChange={(e) => onChange({ headerSeparatorThickness: Number(e.target.value) })} />
+              </label>
+            )}
+            <p className="control-help" style={{ marginTop: 0 }}>* No aplica en el formato Cronológico Inverso.</p>
+          </div>
+        )}
+
+        <label className="checkbox-field" style={{ marginTop: 16 }}>
           <input type="checkbox" checked={theme.showProfilePicture} onChange={(e) => onChange({ showProfilePicture: e.target.checked })} />
           Mostrar fotografía de perfil
         </label>
