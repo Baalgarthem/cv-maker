@@ -60,9 +60,9 @@ export async function exportMetadataManual(profileFolders: ProfileFolder[], docu
       await writeTextFile(filePath, content);
       alert("Metadatos exportados correctamente.");
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to export metadata manually:", error);
-    alert("Hubo un error al exportar los metadatos.");
+    alert(`Hubo un error al exportar los metadatos: ${error.message || error}`);
   }
 }
 
@@ -86,9 +86,9 @@ export async function importMetadataManual(): Promise<MetadataExport | null> {
         alert("El archivo seleccionado no tiene el formato correcto de CV Maker.");
       }
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to import metadata:", error);
-    alert("Hubo un error al importar los metadatos.");
+    alert(`Hubo un error al importar los metadatos: ${error.message || error}`);
   }
   return null;
 }
