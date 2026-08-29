@@ -40,7 +40,7 @@ export function App() {
           <p>Edita la identidad visual, reorganiza el contenido y prepara el PDF.</p>
         </div>
                   <div className="header-actions">
-          <select value={language} onChange={(e) => setLanguage(e.target.value as 'en' | 'es')} style={{ padding: '12px 20px', borderRadius: '4px', border: '1px solid #17243b', fontWeight: 700, minHeight: '44px', fontSize: 'inherit', color: '#17243b', background: 'transparent', cursor: 'pointer' }}>
+          <select value={language} onChange={(e) => setLanguage(e.target.value as 'en' | 'es')} style={{ border: '1px solid #17243b', color: '#17243b', background: 'transparent' }}>
             <option value="es">ES</option>
             <option value="en">EN</option>
           </select>
