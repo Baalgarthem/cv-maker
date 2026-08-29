@@ -338,9 +338,11 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                             }}
                           >
                             <option value="none">Sin ícono</option>
+                            <option value="web">Web</option>
+                            <option value="github">GitHub</option>
+                            <option value="gitlab">GitLab</option>
                             <option value="instagram">Instagram</option>
                             <option value="facebook">Facebook</option>
-                            <option value="github">GitHub</option>
                             <option value="drive">Google Drive</option>
                             <option value="mega">MEGA</option>
                             <option value="custom">Personalizado...</option>

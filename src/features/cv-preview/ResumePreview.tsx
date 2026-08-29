@@ -107,9 +107,31 @@ export function ResumePreview({ document }: ResumePreviewProps) {
       <ResumeSection title="Portafolio">
         <ul className="link-list">
           {document.portfolioLinks.map((link) => (
-            <li key={link.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
-              <PortfolioIcon icon={link.icon} />
-              <strong>{link.label}:</strong> {link.url}
+            <li key={link.id} style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'flex-start' }}>
+              {link.icon && link.icon !== 'none' && (
+                <div style={{ marginTop: '2px' }}>
+                  <PortfolioIcon icon={link.icon} />
+                </div>
+              )}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <strong style={{ lineHeight: 1.2 }}>{link.label}</strong>
+                <a 
+                  href={link.url.startsWith('http') ? link.url : `https://${link.url}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{ 
+                    fontSize: '0.85em', 
+                    opacity: 0.65, 
+                    color: 'inherit', 
+                    textDecoration: 'none', 
+                    wordBreak: 'break-all',
+                    lineHeight: 1.3,
+                    marginTop: '2px'
+                  }}
+                >
+                  {link.url}
+                </a>
+              </div>
             </li>
           ))}
         </ul>

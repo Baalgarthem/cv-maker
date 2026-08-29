@@ -41,6 +41,23 @@ export function PortfolioIcon({ icon }: { icon?: string }) {
     );
   }
 
+  if (icon === "gitlab") {
+    return (
+      <svg style={style} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.83.83 0 0 1 6.29 2h.06a.83.83 0 0 1 .78.58l2.45 7.51h4.84l2.45-7.51A.83.83 0 0 1 17.65 2h.06a.83.83 0 0 1 .78.58l2.44 7.51 1.22 3.78a.84.84 0 0 1-.3.94z"/>
+      </svg>
+    );
+  }
+  if (icon === "web") {
+    return (
+      <svg style={style} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+    );
+  }
+
   // Si es un icono personalizado (Data URL)
   if (icon.startsWith("data:")) {
     return <img src={icon} alt="Icono personalizado" style={style} />;
