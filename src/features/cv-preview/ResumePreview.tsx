@@ -109,58 +109,85 @@ export function ResumePreview({ document }: ResumePreviewProps) {
   const mainSections = visibleSections.filter((s) => !sidebarSections.includes(s) && s.id !== "summary");
   const summarySection = visibleSections.find((s) => s.id === "summary");
 
+  const maxPage = Math.max(1, ...mainSections.map(s => s.page || 1));
+  const pages = Array.from({ length: maxPage }, (_, i) => i + 1);
+  const isChronological = template.id === "chronological";
+
   return (
     <>
-      <style>{`@page { size: ${isA4 ? "A4" : "letter"}; margin: 0; }`}</style>
-      <article className={`resume-page ${template.className}`} style={customProperties} aria-label={`Vista previa de la plantilla ${template.name}`} data-sidebar={document.theme.sidebarPosition} data-summary-separator={document.theme.showSummarySeparator ?? true}>
-        <header className="resume-header" data-picture-align={document.theme.pictureAlignment || "left"}>
-          {document.theme.showProfilePicture && document.profile.picture && (
-            <div className="profile-picture-wrapper" data-frame={document.theme.pictureFrameStyle}>
-              <img src={document.profile.picture} alt="Perfil" className="profile-picture" />
-            </div>
-          )}
-          <div className="resume-header-text">
-            <p className="resume-kicker">Currículum vitae</p>
-            <h1>{fullName}</h1>
-            <ContactDetails mode={document.contactDisplayMode} profile={document.profile} />
-          </div>
-          {sidebarSections.length > 0 && template.id === "chronological" && (
-            <div className="sidebar-sections" style={{ marginTop: "8mm" }}>
-              {sidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
-            </div>
-          )}
-        </header>
-        <div className="resume-body">
-          {summarySection && document.professionalSummary?.trim() && (
-            <div className="summary-highlight" style={{ marginBottom: "var(--resume-section-spacing)", gridColumn: "1 / -1" }}>
-              <ResumeSection title="Perfil profesional">
-                <p style={{ fontSize: "1.08em", lineHeight: 1.6, color: "color-mix(in srgb, var(--resume-text) 80%, var(--resume-accent))" }}>
-                  {document.professionalSummary}
-                </p>
-              </ResumeSection>
-            </div>
-          )}
-          {sidebarSections.length > 0 && template.id !== "chronological" && (
-            <div className="sidebar-sections">
-              {sidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
-            </div>
-          )}
-          <div className="main-sections">
-            {mainSections.map((section, index) => {
-              const isNewPage = index > 0 && (section.page || 1) > (mainSections[index - 1].page || 1);
-              return (
-                <div 
-                  key={section.id} 
-                  style={{ breakBefore: isNewPage ? 'page' : 'auto', pageBreakBefore: isNewPage ? 'always' : 'auto' }}
-                  className={isNewPage ? 'visual-page-break' : ''}
-                >
-                  {sections[section.id as Exclude<ResumeSectionId, "summary">]}
+      <style>{`
+        @page { size: ${isA4 ? "A4" : "letter"}; margin: 0; }
+        @media print { .resume-pages-container { gap: 0 !important; } }
+      `}</style>
+      <div className="resume-pages-container" style={{ display: 'flex', flexDirection: 'column', gap: '32px', alignItems: 'center' }}>
+        {pages.map(pageNumber => {
+          const isFirstPage = pageNumber === 1;
+          const isLastPage = pageNumber === maxPage;
+          const pageMainSections = mainSections.filter(s => (s.page || 1) === pageNumber);
+          
+          return (
+            <article 
+              key={pageNumber} 
+              className={`resume-page ${template.className}`} 
+              style={{ ...customProperties, breakAfter: isLastPage ? 'auto' : 'page', pageBreakAfter: isLastPage ? 'auto' : 'always' }} 
+              aria-label={`Vista previa de la plantilla ${template.name} - Página ${pageNumber}`} 
+              data-sidebar={document.theme.sidebarPosition} 
+              data-summary-separator={document.theme.showSummarySeparator ?? true}
+            >
+              
+              <header 
+                className="resume-header" 
+                data-picture-align={document.theme.pictureAlignment || "left"} 
+                style={!isFirstPage && !isChronological ? { display: 'none' } : {}}
+              >
+                <div style={!isFirstPage && isChronological ? { visibility: 'hidden' } : {}}>
+                  {document.theme.showProfilePicture && document.profile.picture && (
+                    <div className="profile-picture-wrapper" data-frame={document.theme.pictureFrameStyle}>
+                      <img src={document.profile.picture} alt="Perfil" className="profile-picture" />
+                    </div>
+                  )}
+                  <div className="resume-header-text">
+                    <p className="resume-kicker">Currículum vitae</p>
+                    <h1>{fullName}</h1>
+                    <ContactDetails mode={document.contactDisplayMode} profile={document.profile} />
+                  </div>
+                  {sidebarSections.length > 0 && isChronological && (
+                    <div className="sidebar-sections" style={{ marginTop: "8mm" }}>
+                      {sidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+                    </div>
+                  )}
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </article>
+              </header>
+
+              <div className="resume-body">
+                {isFirstPage && summarySection && document.professionalSummary?.trim() && (
+                  <div className="summary-highlight" style={{ marginBottom: "var(--resume-section-spacing)", gridColumn: "1 / -1" }}>
+                    <ResumeSection title="Perfil profesional">
+                      <p style={{ fontSize: "1.08em", lineHeight: 1.6, color: "color-mix(in srgb, var(--resume-text) 80%, var(--resume-accent))" }}>
+                        {document.professionalSummary}
+                      </p>
+                    </ResumeSection>
+                  </div>
+                )}
+                
+                {hasSidebar && !isChronological && (
+                  <div className="sidebar-sections" style={!isFirstPage ? { visibility: 'hidden' } : {}}>
+                    {isFirstPage && sidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+                  </div>
+                )}
+
+                <div className="main-sections">
+                  {pageMainSections.map(({ id }) => (
+                    <div key={id}>
+                      {sections[id as Exclude<ResumeSectionId, "summary">]}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </>
   );
 }
