@@ -22,8 +22,8 @@ En resumen: **CV Maker es tu asistente personal de carrera.** Introduce tu infor
 
 ¿Listo para empezar a crear currículums perfectos? Descarga la versión más reciente, lista para instalar y usar (no requiere conocimientos técnicos):
 
-- [⬇️ Descargar CV Maker para Windows (.exe)](https://github.com/Baalgarthem/cv-maker/releases/latest/download/cv-maker-setup.exe)
-- *Para ver versiones anteriores o el archivo MSI alternativo, visita la [página de Lanzamientos (Releases)](https://github.com/Baalgarthem/cv-maker/releases).*
+[⬇️ Descargar CV Maker para Windows (.exe)](https://github.com/Baalgarthem/cv-maker/releases)
+
 
 Solo ejecuta el instalador, y en cuestión de segundos tendrás el programa listo en tu escritorio.
 
