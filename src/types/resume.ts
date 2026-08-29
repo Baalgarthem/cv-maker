@@ -62,7 +62,7 @@ export type ProfileFrameStyle = "none" | "hexagon" | "top-bottom" | "circle" | "
 export interface ResumeSection {
   id: ResumeSectionId;
   label: string;
-  isVisible: boolean;
+  inBody: boolean;
   inSidebar?: boolean;
   page?: number;
 }

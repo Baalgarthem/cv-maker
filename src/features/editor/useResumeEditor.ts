@@ -15,11 +15,23 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
   });
 
   const [documents, setDocuments] = useState<ResumeDocument[]>(() => {
+    const migrateDoc = (doc: any) => {
+      if (doc.sections) {
+        doc.sections.forEach((sec: any) => {
+          if (sec.inBody === undefined && sec.isVisible !== undefined) {
+            sec.inBody = sec.isVisible;
+          }
+          delete sec.isVisible;
+        });
+      }
+      return doc;
+    };
+
     try {
       const savedDocs = localStorage.getItem("cv-maker-documents");
       if (savedDocs) {
         const parsed = JSON.parse(savedDocs);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed.map(migrateDoc);
       }
       
       // Migration from old single document
@@ -28,7 +40,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
         const parsed = JSON.parse(oldDocRaw);
         if (parsed && typeof parsed === "object") {
           const doc = { ...initialDocument, ...parsed, id: crypto.randomUUID(), profileFolderId: "default-folder", title: "CV Principal" };
-          return [doc];
+          return [migrateDoc(doc)];
         }
       }
     } catch (e) {
@@ -64,7 +76,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
   
   requiredSections.forEach((reqSec) => {
     if (!activeDocument.sections.find((s) => s.id === reqSec.id)) {
-      activeDocument.sections = [...activeDocument.sections, { id: reqSec.id, label: reqSec.label, isVisible: true, inSidebar: reqSec.inSidebar }];
+      activeDocument.sections = [...activeDocument.sections, { id: reqSec.id, label: reqSec.label, inBody: true, inSidebar: reqSec.inSidebar }];
     }
   });
 
@@ -114,12 +126,12 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     });
   };
 
-  const toggleSection = (sectionId: ResumeSectionId) => {
+  const toggleSectionBody = (sectionId: ResumeSectionId) => {
     updateActiveDocument(current => ({
       ...current,
       sections: current.sections.map((section) =>
         section.id === sectionId
-          ? { ...section, isVisible: !section.isVisible }
+          ? { ...section, inBody: !section.inBody, inSidebar: !section.inBody ? false : section.inSidebar }
           : section,
       ),
     }));
@@ -130,7 +142,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
       ...current,
       sections: current.sections.map((section) =>
         section.id === sectionId
-          ? { ...section, inSidebar: !section.inSidebar }
+          ? { ...section, inSidebar: !section.inSidebar, inBody: !section.inSidebar ? false : section.inBody }
           : section,
       ),
     }));
@@ -202,7 +214,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     document: activeDocument,
     moveSection,
     replaceDocument,
-    toggleSection,
+    toggleSectionBody,
     toggleSectionSidebar,
     updateSectionPage,
     updateTheme,

@@ -5,13 +5,13 @@ import type { ResumeSection, ResumeSectionId } from "../../types/resume";
 interface SectionOrderProps {
   sections: ResumeSection[];
   onMove: (sourceId: ResumeSectionId, targetId: ResumeSectionId) => void;
-  onToggle: (sectionId: ResumeSectionId) => void;
+  onToggleBody: (sectionId: ResumeSectionId) => void;
   onToggleSidebar: (sectionId: ResumeSectionId) => void;
   onUpdatePage: (sectionId: ResumeSectionId, page: number) => void;
   templateId: string;
 }
 
-export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, onUpdatePage, templateId }: SectionOrderProps) {
+export function SectionOrder({ sections, onMove, onToggleBody, onToggleSidebar, onUpdatePage, templateId }: SectionOrderProps) {
   const [draggedId, setDraggedId] = useState<ResumeSectionId | null>(null);
 
   const handleDrop = (event: DragEvent, targetId: ResumeSectionId) => {
@@ -23,7 +23,7 @@ export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, onUp
   const hasSidebar = templateId === "chronological" || templateId === "mixed";
   
   // Highest page currently used by any visible section
-  const currentMaxPage = Math.max(1, ...sections.filter(s => s.isVisible).map(s => s.page || 1));
+  const currentMaxPage = Math.max(1, ...sections.filter(s => s.inBody || s.inSidebar).map(s => s.page || 1));
 
   return (
     <section className="control-group" aria-labelledby="sections-title">
@@ -65,14 +65,14 @@ export function SectionOrder({ sections, onMove, onToggle, onToggleSidebar, onUp
               {hasSidebar && section.id !== "summary" && section.id !== "experience" ? (
                 <label className="visibility-toggle" title="Mostrar en barra lateral">
                   <input type="checkbox" checked={!!section.inSidebar} onChange={() => onToggleSidebar(section.id)} />
-                  Lateral
+                  Barra
                 </label>
               ) : (
                 hasSidebar ? <span /> : null
               )}
               <label className="visibility-toggle">
-                <input type="checkbox" checked={section.isVisible} onChange={() => onToggle(section.id)} />
-                Mostrar
+                <input type="checkbox" checked={section.inBody} onChange={() => onToggleBody(section.id)} />
+                Cuerpo
               </label>
             </li>
           );

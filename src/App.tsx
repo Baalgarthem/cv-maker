@@ -12,7 +12,7 @@ export function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [zoom, setZoom] = useState(100);
   const { 
-    document, moveSection, replaceDocument, toggleSection, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId,
+    document, moveSection, replaceDocument, toggleSectionBody, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId,
     profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata
   } = useResumeEditor(sampleResume);
   const templates = listTemplates();
@@ -73,7 +73,7 @@ export function App() {
           <SectionOrder 
             sections={document.sections} 
             onMove={moveSection} 
-            onToggle={toggleSection} 
+            onToggleBody={toggleSectionBody} 
             onToggleSidebar={toggleSectionSidebar}
             onUpdatePage={updateSectionPage}
             templateId={document.templateId}

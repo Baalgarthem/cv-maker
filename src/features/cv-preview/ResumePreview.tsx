@@ -103,7 +103,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     ),
   };
 
-  const visibleSections = document.sections.filter((s) => s.isVisible);
+  const visibleSections = document.sections.filter((s) => s.inBody || s.inSidebar);
   const hasSidebar = template.id === "chronological" || template.id === "mixed";
   const sidebarSections = hasSidebar ? visibleSections.filter((s) => s.inSidebar && s.id !== "summary" && s.id !== "experience") : [];
   const mainSections = visibleSections.filter((s) => !sidebarSections.includes(s) && s.id !== "summary");
