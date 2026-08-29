@@ -112,7 +112,15 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
         <h3>Cuerpo del currículum</h3>
         <label>
           Espaciado entre secciones <output>{theme.sectionSpacing ?? 8} mm</output>
-          <input type="range" min="4" max="20" step="1" value={theme.sectionSpacing ?? 8} onChange={(event) => onChange({ sectionSpacing: Number(event.target.value) })} />
+          <input type="range" min="2" max="20" step="1" value={theme.sectionSpacing ?? 8} onChange={(event) => onChange({ sectionSpacing: Number(event.target.value) })} />
+        </label>
+        <label>
+          Espaciado entre elementos <output>{theme.itemSpacing ?? 3} mm</output>
+          <input type="range" min="0" max="8" step="0.5" value={theme.itemSpacing ?? 3} onChange={(event) => onChange({ itemSpacing: Number(event.target.value) })} />
+        </label>
+        <label>
+          Interlineado del texto <output>{theme.lineHeight ?? 1.55}</output>
+          <input type="range" min="1.0" max="2.0" step="0.05" value={theme.lineHeight ?? 1.55} onChange={(event) => onChange({ lineHeight: Number(event.target.value) })} />
         </label>
         <label>
           Títulos de secciones <output>{theme.sectionHeadingSize ?? 13} pt</output>

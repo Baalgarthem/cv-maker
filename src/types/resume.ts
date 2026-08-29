@@ -80,6 +80,8 @@ export interface ResumeTheme {
   sidebarSubheadingSize?: number;
   sectionSpacing?: number;
   sidebarSectionSpacing?: number;
+  itemSpacing?: number;
+  lineHeight?: number;
   showSummarySeparator?: boolean;
   accentColor: string;
   textColor: string;

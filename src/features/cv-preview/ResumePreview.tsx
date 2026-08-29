@@ -26,6 +26,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     "--resume-sidebar-subheading-size": `${document.theme.sidebarSubheadingSize ?? 10}pt`,
     "--resume-section-spacing": `${document.theme.sectionSpacing ?? 8}mm`,
     "--resume-sidebar-section-spacing": `${document.theme.sidebarSectionSpacing ?? 6}mm`,
+    "--resume-item-spacing": `${document.theme.itemSpacing ?? 3}mm`,
+    "--resume-line-height": document.theme.lineHeight ?? 1.55,
     "--resume-accent": document.theme.accentColor,
     "--resume-text": document.theme.textColor,
     "--resume-page": document.theme.pageColor,
