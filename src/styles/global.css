@@ -406,13 +406,25 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   flex: 1.2;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+}
+/* Typography matching for Profile title vs Name */
+.resume-header.compact-profile .header-profile-data h3 {
+  font-family: var(--resume-heading-font) !important;
+  font-size: var(--resume-main-heading-size) !important;
+  font-weight: 500 !important;
+  line-height: 1.05 !important;
+  letter-spacing: .035em !important;
+  text-transform: uppercase !important;
+  color: inherit !important;
+  /* Match the kicker (0.75em * line-height) + top margin (2mm) of the h1 */
+  margin: calc(var(--resume-font-size) * 0.75 * var(--resume-line-height) + 2mm) 0 2mm 0 !important;
 }
 
 /* Restore template-specific internal layouts inside the new wrapper when compact is active */
 .template-oxford .resume-header.compact-profile .header-personal-data {
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 8mm;
 }
 .template-oxford[data-version="v2"] .resume-header.compact-profile .header-personal-data {
@@ -422,7 +434,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 }
 .template-mixed .resume-header.compact-profile .header-personal-data {
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 10mm;
 }
 
@@ -479,17 +491,5 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   padding-left: 16px !important;
   padding-bottom: var(--resume-section-spacing) !important;
   justify-content: flex-start !important;
-}
-/* Typography matching for Profile title vs Name */
-.template-mindmap .resume-header.compact-profile .header-profile-data h3 {
-  font-family: var(--resume-heading-font) !important;
-  font-size: var(--resume-main-heading-size) !important;
-  font-weight: 500 !important;
-  line-height: 1.05 !important;
-  letter-spacing: .035em !important;
-  text-transform: uppercase !important;
-  color: var(--resume-text) !important;
-  /* Match the kicker (1.125em) + top margin (2mm) of the h1 */
-  margin: calc(1.125em + 2mm) 0 2mm 0 !important;
 }
 
