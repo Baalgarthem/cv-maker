@@ -194,3 +194,174 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 
 
 
+
+/* =========================================================
+   TEMPLATE: MINDMAP (MAPA CONCEPTUAL)
+   ========================================================= */
+.template-mindmap {
+  --node-size: 14px;
+  --line-thickness: 2px;
+}
+.template-mindmap .resume-header {
+  text-align: center;
+  position: relative;
+  padding-bottom: 28px;
+}
+.template-mindmap .profile-picture-wrapper {
+  margin: 0 auto 12px;
+}
+/* Stem connecting header to body */
+.template-mindmap .resume-header::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 50%;
+  width: var(--line-thickness); height: 28px;
+  background: var(--resume-accent);
+  transform: translateX(-50%);
+}
+.template-mindmap .resume-body {
+  position: relative;
+}
+/* The summary takes full width but connects to the stem */
+.template-mindmap .summary-highlight {
+  text-align: center;
+  position: relative;
+  padding-bottom: 24px;
+  margin-bottom: 24px !important;
+}
+.template-mindmap .summary-highlight::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 50%;
+  width: var(--line-thickness); height: 24px;
+  background: var(--resume-accent);
+  transform: translateX(-50%);
+}
+/* For main sections */
+.template-mindmap .main-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 32px;
+  column-gap: 48px;
+  position: relative;
+}
+/* The central stem */
+.template-mindmap .main-sections::before {
+  content: ''; position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: var(--line-thickness);
+  background: var(--resume-accent);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+/* Left side (odd) */
+.template-mindmap .main-sections > div:nth-child(odd) {
+  grid-column: 1;
+  text-align: right;
+  position: relative;
+}
+.template-mindmap .main-sections > div:nth-child(odd)::before {
+  content: ''; position: absolute;
+  top: 14px; right: -24px; 
+  width: 24px; height: var(--line-thickness);
+  background: var(--resume-accent);
+  z-index: 1;
+}
+.template-mindmap .main-sections > div:nth-child(odd)::after {
+  content: ''; position: absolute;
+  top: calc(14px - (var(--node-size) - var(--line-thickness)) / 2);
+  right: calc(-24px - (var(--node-size) / 2));
+  width: var(--node-size); height: var(--node-size);
+  border-radius: 50%;
+  background: var(--resume-page);
+  border: 3px solid var(--resume-accent);
+  z-index: 2;
+}
+/* Right side (even) */
+.template-mindmap .main-sections > div:nth-child(even) {
+  grid-column: 2;
+  text-align: left;
+  position: relative;
+}
+.template-mindmap .main-sections > div:nth-child(even)::before {
+  content: ''; position: absolute;
+  top: 14px; left: -24px; 
+  width: 24px; height: var(--line-thickness);
+  background: var(--resume-accent);
+  z-index: 1;
+}
+.template-mindmap .main-sections > div:nth-child(even)::after {
+  content: ''; position: absolute;
+  top: calc(14px - (var(--node-size) - var(--line-thickness)) / 2);
+  left: calc(-24px - (var(--node-size) / 2));
+  width: var(--node-size); height: var(--node-size);
+  border-radius: 50%;
+  background: var(--resume-page);
+  border: 3px solid var(--resume-accent);
+  z-index: 2;
+}
+/* Heading styling */
+.template-mindmap .resume-section h2 {
+  font-size: var(--resume-section-heading-size);
+  color: var(--resume-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  padding: 0;
+  margin-bottom: 12px;
+  position: relative;
+  display: inline-block;
+}
+.template-mindmap .resume-section h2::after {
+  content: ''; position: absolute;
+  bottom: -4px; height: 2px; width: 60%;
+  background: var(--resume-accent);
+  opacity: 0.3;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-section h2::after {
+  right: 0;
+}
+.template-mindmap .main-sections > div:nth-child(even) .resume-section h2::after {
+  left: 0;
+}
+/* Content alignment */
+.template-mindmap .resume-entry .entry-heading {
+  flex-direction: column;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-entry .entry-heading {
+  align-items: flex-end;
+}
+.template-mindmap .main-sections > div:nth-child(even) .resume-entry .entry-heading {
+  align-items: flex-start;
+}
+.template-mindmap .resume-entry ul {
+  padding-left: 0;
+  list-style: none;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-entry ul li {
+  padding-right: 14px;
+  position: relative;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-entry ul li::after {
+  content: '•'; color: var(--resume-accent);
+  position: absolute; right: 0; top: 0;
+}
+.template-mindmap .main-sections > div:nth-child(even) .resume-entry ul li {
+  padding-left: 14px;
+  position: relative;
+}
+.template-mindmap .main-sections > div:nth-child(even) .resume-entry ul li::before {
+  content: '•'; color: var(--resume-accent);
+  position: absolute; left: 0; top: 0;
+}
+/* Mindmap pagination extensions */
+.template-mindmap:not([data-page="1"]) .main-sections::before {
+  top: -19mm;
+}
+.template-mindmap:not([data-last-page="true"]) .main-sections::before {
+  bottom: -18mm;
+}
+/* If summary doesn't exist on page 1, ensure the line reaches the header padding gap */
+.template-mindmap[data-page="1"] .main-sections::before {
+  top: -24px;
+}
+/* Wait, if summary DOES exist, the summary has its own line dropping down.
+   If we stretch .main-sections::before up by -24px, they will overlap perfectly, which is fine! */

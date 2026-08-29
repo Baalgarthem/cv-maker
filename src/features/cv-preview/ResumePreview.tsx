@@ -134,6 +134,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               aria-label={`Vista previa de la plantilla ${template.name} - Página ${pageNumber}`} 
               data-sidebar={document.theme.sidebarPosition} 
               data-summary-separator={document.theme.showSummarySeparator ?? true}
+              data-page={pageNumber}
+              data-last-page={isLastPage}
             >
               
               <header 
