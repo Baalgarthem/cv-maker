@@ -8,10 +8,10 @@ button, select, input[type="color"], input[type="range"] { cursor: pointer; }
 .app-header h1 { margin: 4px 0; font-family: Georgia, serif; font-size: clamp(2.5rem, 5vw, 4.8rem); font-weight: 500; line-height: 1; }
 .app-header p { margin: 8px 0 0; color: #647083; }
 .eyebrow { color: #9a6b35 !important; letter-spacing: .18em; text-transform: uppercase; font-size: .72rem; font-weight: 800; }
-.export-button { border: 0; border-radius: 4px; padding: 13px 20px; color: white; background: #17243b; font-weight: 700; box-shadow: 0 8px 20px rgb(23 36 59 / 18%); }
+.export-button { border: 0; border-radius: 4px; padding: 12px 20px; color: white; background: #17243b; font-weight: 700; box-shadow: 0 8px 20px rgb(23 36 59 / 18%); min-height: 44px; }
 .export-button:hover { background: #273956; }
 .header-actions { display: flex; gap: 10px; align-items: center; }
-.edit-data-button { border: 1px solid #17243b; border-radius: 4px; padding: 12px 18px; color: #17243b; background: transparent; font-weight: 700; }
+.edit-data-button { border: 1px solid #17243b; border-radius: 4px; padding: 12px 20px; color: #17243b; background: transparent; font-weight: 700; min-height: 44px; }
 .edit-data-button:hover { background: rgb(255 255 255 / 55%); }
 .editor-layout { display: grid; grid-template-columns: minmax(290px, 360px) minmax(680px, 1fr); gap: 28px; height: calc(100vh - 150px); }
 .editor-panel { display: grid; gap: 16px; height: 100%; overflow: auto; padding-right: 6px; }
