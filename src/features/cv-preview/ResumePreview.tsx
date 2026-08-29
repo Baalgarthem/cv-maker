@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { ResumeDocument, ResumeSectionId } from "../../types/resume";
 import { getTemplate } from "../templates";
 import { ContactDetails } from "./ContactDetails";
+import { PortfolioIcon } from "./PortfolioIcon";
 
 interface ResumePreviewProps { document: ResumeDocument; }
 
@@ -102,7 +103,16 @@ export function ResumePreview({ document }: ResumePreviewProps) {
       </ResumeSection>
     ),
     portfolio: (
-      <ResumeSection title="Portafolio"><ul className="link-list">{document.portfolioLinks.map((link) => <li key={link.id}><strong>{link.label}:</strong> {link.url}</li>)}</ul></ResumeSection>
+      <ResumeSection title="Portafolio">
+        <ul className="link-list">
+          {document.portfolioLinks.map((link) => (
+            <li key={link.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+              <PortfolioIcon icon={link.icon} />
+              <strong>{link.label}:</strong> {link.url}
+            </li>
+          ))}
+        </ul>
+      </ResumeSection>
     ),
   };
 

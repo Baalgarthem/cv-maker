@@ -61,6 +61,14 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
           else if (dt.includes('tipo f')) doc.profile.drivingLicenseType = 'F';
         }
       }
+      if (Array.isArray(doc.portfolioLinks)) {
+        doc.portfolioLinks.forEach((link: any) => {
+          if (link.kind && !link.icon) {
+            link.icon = link.kind === 'github' ? 'github' : 'none';
+            delete link.kind;
+          }
+        });
+      }
       return doc;
     };
 

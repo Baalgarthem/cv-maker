@@ -35,7 +35,7 @@ export interface Course {
 
 export interface PortfolioLink {
   id: string;
-  kind: "portfolio" | "github" | "other";
+  icon?: string;
   label: string;
   url: string;
 }

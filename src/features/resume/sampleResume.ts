@@ -51,8 +51,8 @@ export const sampleResume: ResumeDocument = {
     { id: "c2", name: "Diseño de Interfaces Accesibles", obtainedOn: "Mayo 2020" },
   ],
   portfolioLinks: [
-    { id: "l1", kind: "portfolio", label: "Portafolio", url: "https://janedoe.design" },
-    { id: "l2", kind: "github", label: "GitHub", url: "github.com/janedoe" },
+    { id: "l1", icon: "none", label: "Portafolio", url: "https://janedoe.design" },
+    { id: "l2", icon: "github", label: "GitHub", url: "github.com/janedoe" },
   ],
   sections: [
     { id: "summary", label: "Perfil profesional", inBody: true },

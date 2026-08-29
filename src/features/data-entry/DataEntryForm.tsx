@@ -20,7 +20,7 @@ const createExperience = (): WorkExperience => ({
 });
 
 const createCourse = (): Course => ({ id: createId(), name: "", obtainedOn: "", credentialUrl: "" });
-const createLink = (): PortfolioLink => ({ id: createId(), kind: "other", label: "", url: "" });
+const createLink = (): PortfolioLink => ({ id: createId(), icon: "none", label: "", url: "" });
 const createEducation = (): Education => ({ id: createId(), institution: "", degree: "", startDate: "" });
 const createLanguage = (): Language => ({ id: createId(), name: "", level: "" });
 
@@ -318,11 +318,57 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
             <div className="repeatable-list">
               {draft.portfolioLinks.map((link, index) => (
                 <article className="repeatable-card compact-card" key={link.id}>
-                  <div className="form-grid three-columns">
-                    <label>Tipo<select value={link.kind} onChange={(event) => updateLink(index, { kind: event.target.value as PortfolioLink["kind"] })}><option value="portfolio">Portafolio</option><option value="github">GitHub</option><option value="other">Otro</option></select></label>
-                    <label>Etiqueta<input required value={link.label} onChange={(event) => updateLink(index, { label: event.target.value })} /></label>
-                    <label>URL<input required type="text" value={link.url} onChange={(event) => updateLink(index, { url: event.target.value })} /></label>
-                  </div>
+                    <div className="form-grid three-columns">
+                      <label>
+                        Título
+                        <input required placeholder="Ej: GitHub, Mi Web..." value={link.label} onChange={(event) => updateLink(index, { label: event.target.value })} />
+                      </label>
+                      <label>
+                        Ícono
+                        <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+                          <select 
+                            style={{ flex: 1 }}
+                            value={link.icon?.startsWith('data:') ? 'custom' : (link.icon || 'none')} 
+                            onChange={(event) => {
+                              if (event.target.value === 'custom') {
+                                window.document.getElementById(`icon-upload-${link.id}`)?.click();
+                              } else {
+                                updateLink(index, { icon: event.target.value });
+                              }
+                            }}
+                          >
+                            <option value="none">Sin ícono</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="github">GitHub</option>
+                            <option value="drive">Google Drive</option>
+                            <option value="mega">MEGA</option>
+                            <option value="custom">Personalizado...</option>
+                          </select>
+                          {link.icon?.startsWith('data:') && <img src={link.icon} alt="Icon" style={{ width: '20px', height: '20px', objectFit: 'contain' }} />}
+                          <input 
+                            id={`icon-upload-${link.id}`} 
+                            type="file" 
+                            accept=".ico" 
+                            style={{ display: 'none' }} 
+                            onChange={(event) => {
+                              const file = event.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                  updateLink(index, { icon: e.target?.result as string });
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }} 
+                          />
+                        </div>
+                      </label>
+                      <label>
+                        URL
+                        <input required type="text" value={link.url} onChange={(event) => updateLink(index, { url: event.target.value })} />
+                      </label>
+                    </div>
                   <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, portfolioLinks: current.portfolioLinks.filter(({ id }) => id !== link.id) }))}>Eliminar enlace</button>
                 </article>
               ))}
