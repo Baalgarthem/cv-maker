@@ -9,7 +9,7 @@ button, select, input[type="color"], input[type="range"] { cursor: pointer; }
 .app-header p { margin: 8px 0 0; color: #647083; }
 .eyebrow { color: #9a6b35 !important; letter-spacing: .18em; text-transform: uppercase; font-size: .72rem; font-weight: 800; }
 .header-actions { display: flex; gap: 10px; align-items: center; }
-.header-actions > * { border-radius: 4px; padding: 13px 20px; font-weight: 700; font-size: inherit; min-height: 44px; box-sizing: border-box; cursor: pointer; }
+.header-actions > * { border-radius: 4px; padding: 13px 20px; font-weight: 700; font-size: inherit; height: 44px; min-width: 150px; box-sizing: border-box; cursor: pointer; text-align: center; display: inline-flex; align-items: center; justify-content: center; }
 .export-button { border: 0; color: white; background: #17243b; box-shadow: 0 8px 20px rgb(23 36 59 / 18%); }
 .export-button:hover { background: #273956; }
 .edit-data-button { border: 1px solid #17243b; color: #17243b; background: transparent; }
