@@ -40,6 +40,15 @@ export const translations = {
     drivingLicenseD: "Tipo D (Turismo / Chofer-guía)",
     drivingLicenseE: "Tipo E (Materiales peligrosos)",
     drivingLicenseF: "Tipo F (Transporte a puertos / aeropuertos)",
+    drivingLicenseIntl: "Internacional",
+    drivingLicensePrefix: "Prefijo (opcional)",
+    drivingLicensePrefixPlaceholder: "Ej: Lic. Fed.",
+    drivingLicenseValidity: "Vigencia",
+    drivingLicenseValidityOmit: "Omitir vigencia",
+    drivingLicenseValidityValid: "Vigente",
+    drivingLicenseValidityExpired: "No vigente",
+    drivingLicenseNumberLabel: "Número de licencia",
+    drivingLicenseCheckbox: "Licencia de conducir",
     nationalId: "Documento de identidad",
     taxId: "Identificación fiscal",
     profLicenses: "Cédulas profesionales",
@@ -195,6 +204,15 @@ export const translations = {
     drivingLicenseD: "Type D (Tourism / Guide)",
     drivingLicenseE: "Type E (Hazardous Materials)",
     drivingLicenseF: "Type F (Airport / Port Transport)",
+    drivingLicenseIntl: "International",
+    drivingLicensePrefix: "Prefix (optional)",
+    drivingLicensePrefixPlaceholder: "E.g: Fed. Lic.",
+    drivingLicenseValidity: "Validity",
+    drivingLicenseValidityOmit: "Omit validity",
+    drivingLicenseValidityValid: "Valid",
+    drivingLicenseValidityExpired: "Expired",
+    drivingLicenseNumberLabel: "License Number",
+    drivingLicenseCheckbox: "Driving License",
     nationalId: "National ID",
     taxId: "Tax ID",
     profLicenses: "Professional Licenses",
@@ -311,5 +329,6 @@ export const translations = {
     cvProfLicense: "Prof. License",
   }
 };
+
 
 

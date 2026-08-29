@@ -11,7 +11,9 @@ export interface Profile {
   professionalLicenses?: { prefix?: string, number: string }[];
   picture?: string;
   hasDrivingLicense?: boolean;
+  drivingLicensePrefix?: string;
   drivingLicenseType?: string;
+  drivingLicenseValidity?: 'omit' | 'valid' | 'expired';
   drivingLicenseNumber?: string;
 }
 

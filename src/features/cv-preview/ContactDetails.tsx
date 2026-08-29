@@ -27,12 +27,17 @@ export function ContactDetails({ mode, profile }: ContactDetailsProps) {
   }
 
   if (profile.hasDrivingLicense) {
-    const typeStr = profile.drivingLicenseType?.trim() ? `Tipo ${profile.drivingLicenseType.trim()}` : "";
-    const numStr = profile.drivingLicenseNumber?.trim() ? ` - ${profile.drivingLicenseNumber.trim()}` : "";
+    const parts: string[] = [];
+    if (profile.drivingLicensePrefix?.trim()) parts.push(profile.drivingLicensePrefix.trim());
+    if (profile.drivingLicenseType?.trim()) parts.push(`Tipo ${profile.drivingLicenseType.trim()}`);
+    if (profile.drivingLicenseValidity && profile.drivingLicenseValidity !== 'omit') {
+      parts.push(profile.drivingLicenseValidity === 'valid' ? t("drivingLicenseValidityValid") : t("drivingLicenseValidityExpired"));
+    }
+    if (profile.drivingLicenseNumber?.trim()) parts.push(profile.drivingLicenseNumber.trim());
     contacts.push({
       kind: "driving",
       label: t("cvDrivingLicense"),
-      value: `${typeStr}${numStr}`.trim() || "Vigente",
+      value: parts.join(' · ') || t("cvDrivingLicense"),
     });
   }
 

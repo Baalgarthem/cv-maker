@@ -153,32 +153,42 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
               <div style={{ gridColumn: "1 / -1" }}>
                 <label className="checkbox-field" style={{ marginBottom: draft.profile.hasDrivingLicense ? "12px" : "0" }}>
                   <input type="checkbox" checked={!!draft.profile.hasDrivingLicense} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, hasDrivingLicense: event.target.checked } }))} />
-                  Licencia de conducir vigente
+                  {t("drivingLicenseCheckbox")}
                 </label>
                 {draft.profile.hasDrivingLicense && (
-                  <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                  <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "16px" }}>
+                    <label>{t("drivingLicensePrefix")}
+                      <input placeholder={t("drivingLicensePrefixPlaceholder")} value={draft.profile.drivingLicensePrefix ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicensePrefix: event.target.value } }))} />
+                    </label>
                     <label>{t("drivingLicense")}
                       <select 
                         required 
                         value={draft.profile.drivingLicenseType ?? ""} 
                         onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseType: event.target.value } }))}
                       >
-                        <option value="" disabled>Seleccionar tipo...</option>
-                        {draft.profile.drivingLicenseType && !["A", "B", "C", "D", "E", "F", "Motociclista", "Chofer", "Federal", "Internacional"].includes(draft.profile.drivingLicenseType) && (
+                        <option value="" disabled>—</option>
+                        {draft.profile.drivingLicenseType && !["A", "B", "C", "D", "E", "F", "Internacional"].includes(draft.profile.drivingLicenseType) && (
                           <option value={draft.profile.drivingLicenseType}>{draft.profile.drivingLicenseType}</option>
                         )}
                         <option value="A">{t("drivingLicenseA")}</option>
-                        <option value="B">Tipo B (chofer particular/estatal)</option>
-                        <option value="C">Tipo C (chofer de carga)</option>
-                        <option value="D">Tipo D (turismo / guía)</option>
-                        <option value="E">Tipo E (carga especializada)</option>
-                        <option value="F">Tipo F (marítima/aérea)</option>
-                        <option value="Motociclista">Motociclista</option>
-                        <option value="Federal">Federal</option>
-                        <option value="Internacional">Internacional</option>
+                        <option value="B">{t("drivingLicenseB")}</option>
+                        <option value="C">{t("drivingLicenseC")}</option>
+                        <option value="D">{t("drivingLicenseD")}</option>
+                        <option value="E">{t("drivingLicenseE")}</option>
+                        <option value="F">{t("drivingLicenseF")}</option>
+                        <option value="Internacional">{t("drivingLicenseIntl")}</option>
                       </select>
                     </label>
-                    <label>Número de licencia <input placeholder="Opcional" value={draft.profile.drivingLicenseNumber ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseNumber: event.target.value } }))} /></label>
+                    <label>{t("drivingLicenseValidity")}
+                      <select value={draft.profile.drivingLicenseValidity ?? "omit"} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseValidity: event.target.value as any } }))}>
+                        <option value="omit">{t("drivingLicenseValidityOmit")}</option>
+                        <option value="valid">{t("drivingLicenseValidityValid")}</option>
+                        <option value="expired">{t("drivingLicenseValidityExpired")}</option>
+                      </select>
+                    </label>
+                    <label>{t("drivingLicenseNumberLabel")}
+                      <input placeholder="Opcional" value={draft.profile.drivingLicenseNumber ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, drivingLicenseNumber: event.target.value } }))} />
+                    </label>
                   </div>
                 )}
                 <div className="license-fields">
