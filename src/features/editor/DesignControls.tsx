@@ -29,6 +29,11 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
             <option value="LETTER">Carta (8.5 × 11 in)</option>
           </select>
         </label>
+        
+        <label style={{ marginTop: '12px', display: 'block' }}>
+          Márgenes superior e inferior ({theme.pagePaddingVertical ?? 19}mm)
+          <input type="range" min="5" max="40" step="1" value={theme.pagePaddingVertical ?? 19} onChange={(event) => onChange({ pagePaddingVertical: parseInt(event.target.value) })} style={{ width: '100%', marginTop: '6px' }} />
+        </label>
 
         <label className="checkbox-field" style={{ marginTop: 16 }}>
           <input type="checkbox" checked={theme.showSummarySeparator ?? true} onChange={(e) => onChange({ showSummarySeparator: e.target.checked })} />

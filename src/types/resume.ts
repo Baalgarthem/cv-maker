@@ -82,6 +82,7 @@ export interface ResumeTheme {
   sidebarSectionSpacing?: number;
   itemSpacing?: number;
   lineHeight?: number;
+  pagePaddingVertical?: number; // In mm
   showSummarySeparator?: boolean;
   compactProfessionalProfile?: boolean;
   headerSeparatorStyle?: 'none' | 'solid' | 'dashed' | 'dotted';

@@ -41,7 +41,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 .visibility-toggle input { accent-color: #9a6b35; }
 .preview-stage { height: 100%; overflow: auto; padding: 18px 28px 44px; border-radius: 8px; background: #d4d1ca; }
 .preview-toolbar { display: flex; justify-content: space-between; margin: 0 auto 14px; color: #5f6670; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
-.resume-page { width: var(--resume-page-width); min-height: var(--resume-page-height); margin: 0 auto; padding: 19mm 20mm 18mm; color: var(--resume-text); background: var(--resume-page); box-shadow: 0 16px 45px rgb(30 35 43 / 20%); font-family: var(--resume-font); font-size: var(--resume-font-size); line-height: var(--resume-line-height); }
+.resume-page { width: var(--resume-page-width); min-height: var(--resume-page-height); margin: 0 auto; padding: var(--resume-page-padding-v) 20mm; color: var(--resume-text); background: var(--resume-page); box-shadow: 0 16px 45px rgb(30 35 43 / 20%); font-family: var(--resume-font); font-size: var(--resume-font-size); line-height: var(--resume-line-height); }
 .resume-header { padding-bottom: var(--resume-section-spacing); border-bottom: 1px solid var(--resume-separator-color); }
 .resume-page[data-summary-separator="false"] .resume-header { border-bottom: none; }
 .resume-header h1 { margin: 2mm 0; font-family: var(--resume-heading-font); font-size: var(--resume-main-heading-size); font-weight: 500; line-height: 1.05; letter-spacing: .035em; text-transform: uppercase; }
@@ -99,13 +99,13 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 .template-chronological { display: flex; flex-direction: row; padding: 0; }
 .template-chronological .profile-picture-wrapper { margin-bottom: 4mm; }
 .template-chronological[data-sidebar="right"] { flex-direction: row-reverse; }
-.template-chronological .resume-header { width: 75mm; padding: 19mm 10mm; background: color-mix(in srgb, var(--resume-accent) 12%, var(--resume-page)); border-bottom: none; border-right: 1px solid var(--resume-separator-color); flex: none; }
+.template-chronological .resume-header { width: 75mm; padding: var(--resume-page-padding-v) 10mm; background: color-mix(in srgb, var(--resume-accent) 12%, var(--resume-page)); border-bottom: none; border-right: 1px solid var(--resume-separator-color); flex: none; }
 .template-chronological[data-sidebar="right"] .resume-header { border-right: none; border-left: 1px solid var(--resume-separator-color); }
-.template-chronological .resume-body { flex: 1; padding: 19mm 15mm; }
+.template-chronological .resume-body { flex: 1; padding: var(--resume-page-padding-v) 15mm; }
 .template-chronological .resume-contact-list { flex-direction: column; align-items: flex-start; gap: 2mm; margin-top: 4mm; }
 
 .template-mixed { padding: 0; display: flex; flex-direction: column; }
-.template-mixed .resume-header { padding: 15mm 20mm; background: var(--resume-accent); color: var(--resume-page); border: none; display: flex; align-items: center; gap: 10mm; }
+.template-mixed .resume-header { padding: var(--resume-page-padding-v) 20mm; background: var(--resume-accent); color: var(--resume-page); border: none; display: flex; align-items: center; gap: 10mm; }
 .template-mixed .resume-header-text { flex: 1; }
 .template-mixed .resume-header h1, .template-mixed .resume-kicker { color: var(--resume-page); }
 .template-mixed .resume-contact-list { color: color-mix(in srgb, var(--resume-page) 90%, transparent); }
@@ -310,7 +310,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 }
 /* Mindmap pagination extensions */
 .template-mindmap:not([data-page="1"]) .main-sections::before {
-  top: -19mm;
+  top: calc(var(--resume-page-padding-v) * -1);
 }
 .template-mindmap:not([data-last-page="true"]) .main-sections::before {
   bottom: -18mm;
@@ -492,4 +492,6 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   padding-bottom: var(--resume-section-spacing) !important;
   justify-content: flex-start !important;
 }
+
+
 
