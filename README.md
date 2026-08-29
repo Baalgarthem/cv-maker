@@ -1,5 +1,7 @@
 # 📄 CV Maker
 
+![CV Maker Banner](assets/cv-maker-presentacion.webp)
+
 ¡Bienvenido a **CV Maker**! La herramienta definitiva de escritorio diseñada para profesionales que buscan destacar. Construir tu currículum nunca había sido tan elegante, rápido y seguro.
 
 ## 🚀 ¿Por qué elegir CV Maker?

@@ -198,6 +198,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                   </div>
                   <label className="checkbox-field"><input type="checkbox" checked={experience.isCurrent} onChange={(event) => updateExperience(experienceIndex, { isCurrent: event.target.checked, endDate: event.target.checked ? "" : experience.endDate })} />Trabajo actualmente aquí</label>
                   <label className="full-field">Contexto<textarea rows={3} value={experience.context} onChange={(event) => updateExperience(experienceIndex, { context: event.target.value })} /></label>
+                  <label className="full-field">Etiquetas (separadas por comas)<input type="text" placeholder="Ej: Liderazgo, Ventas, Excel" value={experience.tags?.join(', ') || ''} onChange={(event) => updateExperience(experienceIndex, { tags: event.target.value.split(',').map(t => t.trim()).filter(Boolean) })} /></label>
                   <div className="activities-heading"><span>Actividades realizadas</span><button className="text-button" type="button" onClick={() => updateExperience(experienceIndex, { activities: [...experience.activities, ""] })}>+ Actividad</button></div>
                   {experience.activities.map((activity, activityIndex) => (
                     <div className="inline-field" key={`${experience.id}-${activityIndex}`}>

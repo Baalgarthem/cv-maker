@@ -42,6 +42,13 @@ export function ResumePreview({ document }: ResumePreviewProps) {
           <article className="resume-entry" key={experience.id}>
             <div className="entry-heading"><h3>{experience.companyName}</h3><time>{formatPeriod(experience.startDate, experience.endDate, experience.isCurrent)}</time></div>
             <p className="entry-context">{experience.context}</p>
+            {experience.tags && experience.tags.length > 0 && (
+              <div className="entry-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '4px 0 8px', opacity: 0.6, fontSize: '0.85em' }}>
+                {experience.tags.map(tag => (
+                  <span key={tag} style={{ padding: '0 6px', fontStyle: 'italic' }}>• {tag}</span>
+                ))}
+              </div>
+            )}
             <ul>{experience.activities.map((activity) => <li key={activity}>{activity}</li>)}</ul>
           </article>
         ))}

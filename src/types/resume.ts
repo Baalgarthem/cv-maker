@@ -22,6 +22,7 @@ export interface WorkExperience {
   endDate?: string;
   isCurrent: boolean;
   context: string;
+  tags?: string[];
   activities: string[];
 }
 
@@ -92,6 +93,9 @@ export interface ResumeTheme {
 }
 
 export interface ResumeDocument {
+  id: string;
+  profileFolderId?: string;
+  title: string;
   profile: Profile;
   professionalSummary: string;
   experiences: WorkExperience[];
@@ -105,4 +109,9 @@ export interface ResumeDocument {
   templateId: string;
   contactDisplayMode: ContactDisplayMode;
   theme: ResumeTheme;
+}
+
+export interface ProfileFolder {
+  id: string;
+  name: string;
 }

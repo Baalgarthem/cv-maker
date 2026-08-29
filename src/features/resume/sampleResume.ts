@@ -1,6 +1,9 @@
 import type { ResumeDocument } from "../../types/resume";
 
 export const sampleResume: ResumeDocument = {
+  id: "sample-resume-id",
+  title: "CV Principal",
+  profileFolderId: "default-folder",
   profile: {
     id: "sample-profile",
     firstName: "María",

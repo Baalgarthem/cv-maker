@@ -2,14 +2,26 @@ import { useState } from "react";
 import { ResumePreview } from "./features/cv-preview";
 import { DataEntryForm } from "./features/data-entry";
 import { DesignControls, SectionOrder, useResumeEditor } from "./features/editor";
+import { ProfileManager } from "./features/editor/ProfileManager";
+import { exportMetadataManual, importMetadataManual } from "./features/editor/metadataSync";
 import { exportResumeToPdf } from "./features/export";
 import { sampleResume } from "./features/resume";
 import { listTemplates } from "./features/templates";
 
 export function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const { document, moveSection, replaceDocument, toggleSection, toggleSectionSidebar, updateTheme, updateTemplateId } = useResumeEditor(sampleResume);
+  const { 
+    document, moveSection, replaceDocument, toggleSection, toggleSectionSidebar, updateTheme, updateTemplateId,
+    profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata
+  } = useResumeEditor(sampleResume);
   const templates = listTemplates();
+
+  const handleImport = async () => {
+    const data = await importMetadataManual();
+    if (data) {
+      loadMetadata(data);
+    }
+  };
 
   return (
     <main className="app-shell">
@@ -32,6 +44,18 @@ export function App() {
 
       <div className="editor-layout">
         <aside className="editor-panel" aria-label="Controles de diseño">
+          
+          <ProfileManager 
+            profileFolders={profileFolders}
+            documents={documents}
+            activeDocId={activeDocId}
+            setActiveDocId={setActiveDocId}
+            createFolder={createFolder}
+            createDocument={createDocument}
+            duplicateDocument={duplicateDocument}
+            deleteDocument={deleteDocument}
+          />
+
           <section className="control-group" aria-labelledby="template-title">
             <div className="control-heading"><span>01</span><h2 id="template-title">Formato</h2></div>
             <div className="template-list">
@@ -57,7 +81,11 @@ export function App() {
         <section className="preview-stage" aria-label="Área de vista previa">
           <div className="preview-toolbar" style={{ width: `min(${document.theme.pageSize === "A4" ? "210mm" : "215.9mm"}, 100%)` }}>
             <span>Vista previa {document.theme.pageSize === "A4" ? "A4" : "Carta"}</span>
-            <span>100%</span>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <button className="text-button" type="button" onClick={handleImport} style={{ fontSize: '0.9em', padding: 0, opacity: 0.8 }}>Importar JSON</button>
+              <button className="text-button" type="button" onClick={() => exportMetadataManual(profileFolders, documents)} style={{ fontSize: '0.9em', padding: 0, opacity: 0.8 }}>Exportar JSON</button>
+              <span>100%</span>
+            </div>
           </div>
           <ResumePreview document={document} />
           <p className="pdf-hint">En el diálogo del sistema selecciona “Guardar como PDF”.</p>
