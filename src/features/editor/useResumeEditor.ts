@@ -191,7 +191,11 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
   };
 
   const updateTemplateId = (templateId: string) => {
-    updateActiveDocument(current => ({ ...current, templateId }));
+    updateActiveDocument(current => ({ ...current, templateId, templateVersion: "v1" }));
+  };
+
+  const updateTemplateVersion = (templateVersion: string) => {
+    updateActiveDocument(current => ({ ...current, templateVersion }));
   };
 
   // Folder & Global Document Management
@@ -252,6 +256,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     updateSectionPage,
     updateTheme,
     updateTemplateId,
+    updateTemplateVersion,
 
     // Global Profiles & Documents API
     profileFolders,

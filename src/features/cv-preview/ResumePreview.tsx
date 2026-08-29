@@ -138,6 +138,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               data-summary-separator={document.theme.showSummarySeparator ?? true}
               data-page={pageNumber}
               data-last-page={isLastPage}
+              data-version={document.templateVersion || 'v1'}
             >
               
               <header 

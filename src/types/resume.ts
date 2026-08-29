@@ -110,6 +110,7 @@ export interface ResumeDocument {
   portfolioLinks: PortfolioLink[];
   sections: ResumeSection[];
   templateId: string;
+  templateVersion?: string;
   contactDisplayMode: ContactDisplayMode;
   theme: ResumeTheme;
 }

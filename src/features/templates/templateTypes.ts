@@ -7,4 +7,5 @@ export interface ResumeTemplate {
   className: string;
   defaultSectionOrder: ResumeSectionId[];
   defaultTheme: Partial<ResumeTheme>;
+  versions?: { id: string; name: string; description?: string }[];
 }

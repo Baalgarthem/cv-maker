@@ -12,7 +12,7 @@ export function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [zoom, setZoom] = useState(100);
   const { 
-    document, moveSection, replaceDocument, toggleSectionBody, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId,
+    document, moveSection, replaceDocument, toggleSectionBody, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId, updateTemplateVersion,
     profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata
   } = useResumeEditor(sampleResume);
   const templates = listTemplates();
@@ -61,9 +61,34 @@ export function App() {
             <div className="control-heading"><span>01</span><h2 id="template-title">Formato</h2></div>
             <div className="template-list">
               {templates.map(template => (
-                <div key={template.id} className={`template-card ${document.templateId === template.id ? 'is-selected' : ''}`} onClick={() => updateTemplateId(template.id)} style={{ cursor: 'pointer', marginBottom: '8px' }}>
-                  <span className="template-monogram">{template.name.substring(0, 2)}</span>
-                  <div><strong>{template.name}</strong><p>{template.description}</p></div>
+                <div key={template.id}>
+                  <div className={`template-card ${document.templateId === template.id ? 'is-selected' : ''}`} onClick={() => updateTemplateId(template.id)} style={{ cursor: 'pointer', marginBottom: '8px' }}>
+                    <span className="template-monogram">{template.name.substring(0, 2)}</span>
+                    <div><strong>{template.name}</strong><p>{template.description}</p></div>
+                  </div>
+                  {document.templateId === template.id && template.versions && template.versions.length > 1 && (
+                    <div className="template-versions" style={{ display: 'flex', gap: '8px', marginBottom: '16px', marginLeft: '12px', flexWrap: 'wrap' }}>
+                      {template.versions.map(v => (
+                        <button 
+                          key={v.id} 
+                          type="button"
+                          onClick={() => updateTemplateVersion(v.id)}
+                          style={{ 
+                            padding: '6px 12px', 
+                            borderRadius: '16px', 
+                            border: `1px solid ${(document.templateVersion || 'v1') === v.id ? '#9a6b35' : '#ccc'}`,
+                            background: (document.templateVersion || 'v1') === v.id ? '#fffaf3' : '#fff',
+                            color: (document.templateVersion || 'v1') === v.id ? '#9a6b35' : '#555',
+                            fontSize: '0.8rem',
+                            cursor: 'pointer'
+                          }}
+                          title={v.description}
+                        >
+                          {v.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

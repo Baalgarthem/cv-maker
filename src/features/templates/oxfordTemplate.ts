@@ -16,4 +16,8 @@ export const oxfordTemplate: ResumeTemplate = {
     textColor: "#202733",
     pageColor: "#ffffff",
   },
+  versions: [
+    { id: "v1", name: "Estándar", description: "El diseño original por defecto" },
+    { id: "v2", name: "Versión 2 (Lineal)", description: "Con líneas divisorias para cada sección y un estilo de contactos lineal" }
+  ]
 };

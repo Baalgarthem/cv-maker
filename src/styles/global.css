@@ -344,3 +344,71 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 }
 /* Wait, if summary DOES exist, the summary has its own line dropping down.
    If we stretch .main-sections::before up by -24px, they will overlap perfectly, which is fine! */
+
+/* =========================================================
+   TEMPLATE: OXFORD VERSION 2
+   ========================================================= */
+.template-oxford[data-version="v2"] .resume-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2mm;
+  padding-bottom: 4mm;
+  text-align: left;
+}
+.template-oxford[data-version="v2"] .resume-header[data-picture-align="center"] {
+  align-items: center;
+  text-align: center;
+}
+.template-oxford[data-version="v2"] .resume-header[data-picture-align="right"] {
+  align-items: flex-end;
+  text-align: right;
+}
+.template-oxford[data-version="v2"] .resume-contact-list {
+  gap: 2mm;
+}
+.template-oxford[data-version="v2"] .contact-icon {
+  display: none;
+}
+.template-oxford[data-version="v2"] .resume-contact-list li:not(:last-child)::after {
+  content: '.';
+  margin-left: 2mm;
+  font-weight: bold;
+}
+.template-oxford[data-version="v2"] .resume-section {
+  display: block;
+  padding-top: var(--resume-section-spacing);
+}
+.template-oxford[data-version="v2"] .resume-section h2 {
+  border-top: 1px solid var(--resume-accent);
+  border-bottom: 1px solid var(--resume-accent);
+  padding: 1.5mm 0;
+  margin-bottom: var(--resume-item-spacing);
+  width: 100%;
+}
+.template-oxford[data-version="v2"] .resume-header {
+  border-bottom: 1px solid var(--resume-accent);
+}
+.template-oxford[data-version="v2"] .resume-entry h3 {
+  display: inline;
+}
+.template-oxford[data-version="v2"] .resume-entry h3::after {
+  content: ' – ';
+  font-weight: normal;
+}
+.template-oxford[data-version="v2"] .entry-context,
+.template-oxford[data-version="v2"] .resume-entry > p {
+  display: inline;
+  font-style: normal;
+  margin: 0 !important;
+}
+.template-oxford[data-version="v2"] .entry-heading {
+  display: inline;
+}
+.template-oxford[data-version="v2"] .entry-heading time {
+  float: right;
+}
+.template-oxford[data-version="v2"] .resume-entry::after {
+  content: "";
+  display: table;
+  clear: both;
+}
