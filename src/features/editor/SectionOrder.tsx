@@ -35,7 +35,16 @@ export function SectionOrder({ sections, onMove, onToggleBody, onToggleSidebar, 
       <ol className="section-list">
         {sections.filter((s) => s.id !== "summary").map((section) => {
           const sectionPage = section.page || 1;
-          const availablePages = Array.from({ length: currentMaxPage + 1 }, (_, i) => i + 1);
+          
+          // To prevent empty pages, the maximum page this section can move to is 
+          // determined by the maximum page used by ALL OTHER visible sections, plus 1.
+          const otherVisibleSections = sections.filter(s => s.id !== section.id && (s.inBody || s.inSidebar));
+          const maxPageByOthers = Math.max(1, ...otherVisibleSections.map(s => s.page || 1));
+          
+          // However, if the section is currently on a page higher than maxPageByOthers + 1, 
+          // we should at least show its current page (though normalizePages will fix it anyway).
+          const allowedMax = Math.max(maxPageByOthers + 1, sectionPage);
+          const availablePages = Array.from({ length: allowedMax }, (_, i) => i + 1);
           
           return (
             <li

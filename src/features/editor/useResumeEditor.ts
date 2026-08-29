@@ -1,6 +1,24 @@
 import { useState, useEffect } from "react";
-import type { ResumeDocument, ResumeSectionId, ResumeTheme, ProfileFolder } from "../../types/resume";
+import type { ResumeDocument, ResumeSection, ResumeSectionId, ResumeTheme, ProfileFolder } from "../../types/resume";
 import { autoBackupMetadata } from "./metadataSync";
+
+function normalizePages(sections: ResumeSection[]): ResumeSection[] {
+  const visibleSections = sections.filter(s => s.inBody || s.inSidebar);
+  const usedPages = Array.from(new Set(visibleSections.map(s => s.page || 1))).sort((a, b) => a - b);
+  
+  const pageMap = new Map<number, number>();
+  usedPages.forEach((oldPage, index) => {
+    pageMap.set(oldPage, index + 1);
+  });
+
+  return sections.map(section => {
+    const current = section.page || 1;
+    if (pageMap.has(current)) {
+      return { ...section, page: pageMap.get(current) };
+    }
+    return { ...section, page: 1 };
+  });
+}
 
 export function useResumeEditor(initialDocument: ResumeDocument) {
   // Global state
@@ -97,7 +115,14 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
   // Document Mutators
   const updateActiveDocument = (updater: (doc: ResumeDocument) => ResumeDocument) => {
     setDocuments(currentDocs => 
-      currentDocs.map(doc => doc.id === activeDocId ? updater(doc) : doc)
+      currentDocs.map(doc => {
+        if (doc.id === activeDocId) {
+          const updated = updater(doc);
+          updated.sections = normalizePages(updated.sections);
+          return updated;
+        }
+        return doc;
+      })
     );
   };
 
