@@ -165,12 +165,12 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
                         {draft.profile.drivingLicenseType && !["A", "B", "C", "D", "E", "F", "Motociclista", "Chofer", "Federal", "Internacional"].includes(draft.profile.drivingLicenseType) && (
                           <option value={draft.profile.drivingLicenseType}>{draft.profile.drivingLicenseType}</option>
                         )}
-                        <option value="A">A (Automovilista)</option>
-                        <option value="B">B (Chofer Particular/Estatal)</option>
-                        <option value="C">C (Chofer de Carga)</option>
-                        <option value="D">D (Turismo / Guía)</option>
-                        <option value="E">E (Carga Especializada)</option>
-                        <option value="F">F (Marítima/Aérea)</option>
+                        <option value="A">Tipo A (automovilista)</option>
+                        <option value="B">Tipo B (chofer particular/estatal)</option>
+                        <option value="C">Tipo C (chofer de carga)</option>
+                        <option value="D">Tipo D (turismo / guía)</option>
+                        <option value="E">Tipo E (carga especializada)</option>
+                        <option value="F">Tipo F (marítima/aérea)</option>
                         <option value="Motociclista">Motociclista</option>
                         <option value="Federal">Federal</option>
                         <option value="Internacional">Internacional</option>

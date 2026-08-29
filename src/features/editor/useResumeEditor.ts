@@ -42,13 +42,24 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
           delete sec.isVisible;
         });
       }
-      if (doc.profile && Array.isArray(doc.profile.professionalLicenses)) {
-        doc.profile.professionalLicenses = doc.profile.professionalLicenses.map((l: any) => {
-          if (typeof l === 'string') {
-            return { prefix: "", number: l };
-          }
-          return l;
-        });
+      if (doc.profile) {
+        if (Array.isArray(doc.profile.professionalLicenses)) {
+          doc.profile.professionalLicenses = doc.profile.professionalLicenses.map((l: any) => {
+            if (typeof l === 'string') {
+              return { prefix: "", number: l };
+            }
+            return l;
+          });
+        }
+        if (typeof doc.profile.drivingLicenseType === 'string') {
+          const dt = doc.profile.drivingLicenseType.toLowerCase();
+          if (dt.includes('tipo a') || dt === 'automovilista' || dt === 'tipo a (automovilista)') doc.profile.drivingLicenseType = 'A';
+          else if (dt.includes('tipo b') || dt === 'chofer') doc.profile.drivingLicenseType = 'B';
+          else if (dt.includes('tipo c')) doc.profile.drivingLicenseType = 'C';
+          else if (dt.includes('tipo d')) doc.profile.drivingLicenseType = 'D';
+          else if (dt.includes('tipo e')) doc.profile.drivingLicenseType = 'E';
+          else if (dt.includes('tipo f')) doc.profile.drivingLicenseType = 'F';
+        }
       }
       return doc;
     };
