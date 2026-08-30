@@ -113,6 +113,7 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
 
               <label>{t("nationalId")} <input maxLength={18} placeholder="Opcional" value={draft.profile.curp ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, curp: event.target.value } }))} /></label>
               <label>{t("taxId")} <input maxLength={13} placeholder="Opcional" value={draft.profile.rfc ?? ""} onChange={(event) => setDraft((current) => ({ ...current, profile: { ...current.profile, rfc: event.target.value } }))} /></label>
+              <label>{t("socialSecurity")} <input maxLength={11} inputMode="numeric" pattern="[0-9]*" placeholder="Opcional" value={draft.profile.socialSecurity ?? ""} onChange={(event) => { const v = event.target.value.replace(/\D/g, '').slice(0, 11); setDraft((current) => ({ ...current, profile: { ...current.profile, socialSecurity: v } })); }} /></label>
               
               <label>
                 Fotografía (Opcional)

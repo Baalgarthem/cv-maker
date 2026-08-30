@@ -51,6 +51,7 @@ export const translations = {
     drivingLicenseCheckbox: "Licencia de conducir",
     nationalId: "Documento de identidad",
     taxId: "Identificación fiscal",
+    socialSecurity: "Seguridad social",
     profLicenses: "Cédulas profesionales",
     profLicensesPlaceholder: "Ej. 1234567, 7654321...",
     profLicensesHelp: "Separa múltiples cédulas con comas (,)",
@@ -215,6 +216,7 @@ export const translations = {
     drivingLicenseCheckbox: "Driving License",
     nationalId: "National ID",
     taxId: "Tax ID",
+    socialSecurity: "Social Security",
     profLicenses: "Professional Licenses",
     profLicensesPlaceholder: "E.g. 1234567, 7654321...",
     profLicensesHelp: "Separate multiple licenses with commas (,)",
@@ -329,6 +331,7 @@ export const translations = {
     cvProfLicense: "Prof. License",
   }
 };
+
 
 
 

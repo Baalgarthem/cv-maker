@@ -8,12 +8,13 @@ interface ContactDetailsProps {
 
 export function ContactDetails({ mode, profile }: ContactDetailsProps) {
   const { t } = useTranslation();
-  const contacts: Array<{ kind: "email" | "phone" | "address" | "curp" | "rfc" | "license" | "driving"; label: string; value: string }> = [
+  const contacts: Array<{ kind: "email" | "phone" | "address" | "curp" | "rfc" | "nss" | "license" | "driving"; label: string; value: string }> = [
     profile.email ? { kind: "email", label: t("cvEmail"), value: profile.email } : null,
     profile.phone ? { kind: "phone", label: t("cvPhone"), value: profile.phone } : null,
     profile.address ? { kind: "address", label: t("address"), value: profile.address } : null,
     profile.curp ? { kind: "curp", label: t("nationalId"), value: profile.curp } : null,
     profile.rfc ? { kind: "rfc", label: t("taxId"), value: profile.rfc } : null,
+    profile.socialSecurity ? { kind: "nss", label: t("socialSecurity"), value: profile.socialSecurity } : null,
   ].filter(Boolean) as any;
 
   if (profile.professionalLicenses) {
