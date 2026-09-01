@@ -260,7 +260,24 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>{t("education")}</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: [...(current.education || []), createEducation()] }))}>+ Añadir educación</button></div>
+            <div className="fieldset-heading">
+              <legend>{t("education")}</legend>
+              <button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: [...(current.education || []), createEducation()] }))}>{t("addEducation")}</button>
+            </div>
+
+            <div className="form-grid" style={{ marginBottom: "16px", maxWidth: "340px" }}>
+              <label>
+                {t("educationDisplayMode")}
+                <select 
+                  value={draft.educationDisplayMode || "classic"} 
+                  onChange={(event) => setDraft((current) => ({ ...current, educationDisplayMode: event.target.value as any }))}
+                >
+                  <option value="classic">{t("educationModeClassic")}</option>
+                  <option value="treemap">{t("educationModeTreemap")}</option>
+                </select>
+              </label>
+            </div>
+
             <div className="repeatable-list">
               {(draft.education || []).map((edu, index) => (
                 <article className="repeatable-card" key={edu.id}>

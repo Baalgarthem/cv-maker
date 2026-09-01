@@ -56,13 +56,14 @@ export function ContactDetails({ mode, profile }: ContactDetailsProps) {
   );
 }
 
-function ContactIcon({ kind }: { kind: "email" | "phone" | "address" | "curp" | "rfc" | "license" | "driving" }) {
+function ContactIcon({ kind }: { kind: "email" | "phone" | "address" | "curp" | "rfc" | "nss" | "license" | "driving" }) {
   const paths = {
     email: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></>,
     phone: <path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-4-2-2 3c-4-1.5-7.5-5-9-9l3-2-2-4Z" />,
     address: <><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></>,
     curp: <><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="3" /><path d="M4 18v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2" /><path d="M15 8h4" /><path d="M15 12h4" /><path d="M15 16h4" /></>,
     rfc: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M8 9h8" /><path d="M8 15h8" /></>,
+    nss: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></>,
     license: <><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></>,
     driving: <><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a2 2 0 0 0-1.6-.8H9.3a2 2 0 0 0-1.6.8L5 11l-5.16.86a1 1 0 0 0-.84.99V16h3m10 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM5 16a2 2 0 1 0 4 0 2 2 0 0 0-4 0z" /></>,
   };

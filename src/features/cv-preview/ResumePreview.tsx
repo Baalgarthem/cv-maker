@@ -63,12 +63,52 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     ),
     education: (
       <ResumeSection title={t("education")}>
-        {(document.education || []).map((edu) => (
-          <article className="resume-entry compact" key={edu.id}>
-            <div className="entry-heading"><h3>{edu.institution}</h3><time>{formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t)}</time></div>
-            <p style={{ margin: 0, fontWeight: 500 }}>{edu.degree}</p>
-          </article>
-        ))}
+        {(document.education || []).map((edu) => {
+          const mode = document.educationDisplayMode || document.theme.educationDisplayMode || "classic";
+          const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
+
+          if (mode === "treemap") {
+            return (
+              <div className="education-treemap-entry" key={edu.id} style={{ marginBottom: "calc(var(--resume-item-spacing) * 1.2)", position: "relative" }}>
+                {/* Level 0: Institution Node */}
+                <div className="treemap-level-root" style={{ display: "flex", alignItems: "baseline", gap: "6px", fontWeight: 600, fontSize: "1em", color: "var(--resume-text)" }}>
+                  <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.9em", flexShrink: 0 }}>📁</span>
+                  <span style={{ letterSpacing: "0.01em" }}>{edu.institution}</span>
+                </div>
+
+                {/* Tree Branches Container */}
+                <div className="treemap-branches" style={{ marginLeft: "7px", paddingLeft: "14px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "3px" }}>
+                  {/* Level 1: Degree Node */}
+                  <div className="treemap-level-degree" style={{ position: "relative", display: "flex", alignItems: "baseline", gap: "6px", fontSize: "0.9em", fontWeight: 500, color: "var(--resume-text)", paddingTop: "2px" }}>
+                    <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                    <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>├──</span>
+                    <span>{edu.degree}</span>
+                  </div>
+
+                  {/* Level 2: Date Leaf Node */}
+                  <div className="treemap-level-date" style={{ position: "relative", display: "flex", alignItems: "baseline", gap: "6px", fontSize: "0.8em", opacity: 0.65, fontStyle: "italic", paddingTop: "3px" }}>
+                    <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                    <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>└──</span>
+                    <time>{formattedDate}</time>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          // Classic Mode
+          return (
+            <article className="resume-entry compact education-classic-entry" key={edu.id} style={{ marginBottom: "var(--resume-item-spacing)" }}>
+              <div className="entry-heading" style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "6px" }}>
+                <h3 style={{ margin: 0, display: "inline" }}>{edu.institution}</h3>
+                <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontWeight: 400 }}>
+                  ({formattedDate})
+                </span>
+              </div>
+              <p style={{ margin: "2px 0 0", fontWeight: 500, fontSize: "0.95em" }}>{edu.degree}</p>
+            </article>
+          );
+        })}
       </ResumeSection>
     ),
     skills: (

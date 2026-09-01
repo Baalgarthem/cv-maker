@@ -14,7 +14,8 @@ export function App() {
   const [zoom, setZoom] = useState(100);
   const { 
     document, moveSection, replaceDocument, toggleSectionBody, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId, updateTemplateVersion,
-    profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata
+    profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata,
+    changeDocumentFolder, renameDocument
   } = useResumeEditor(sampleResume);
   const templates = listTemplates();
   const { t, language, setLanguage } = useTranslation();
@@ -61,6 +62,8 @@ export function App() {
             createDocument={createDocument}
             duplicateDocument={duplicateDocument}
             deleteDocument={deleteDocument}
+            changeDocumentFolder={changeDocumentFolder}
+            renameDocument={renameDocument}
           />
 
           <section className="control-group" aria-labelledby="template-title">

@@ -30,6 +30,18 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
             <option value="LETTER">{t("pageSizeLetter")}</option>
           </select>
         </label>
+
+        <label style={{ marginTop: '12px', display: 'block' }}>
+          {t("educationDisplayMode")}
+          <select 
+            value={theme.educationDisplayMode || "classic"} 
+            onChange={(event) => onChange({ educationDisplayMode: event.target.value as any })}
+            style={{ width: '100%', marginTop: '4px' }}
+          >
+            <option value="classic">{t("educationModeClassic")}</option>
+            <option value="treemap">{t("educationModeTreemap")}</option>
+          </select>
+        </label>
         
         <label style={{ marginTop: '12px', display: 'block' }}>
           {t("pagePadding")} ({theme.pagePaddingVertical ?? 19}mm)
