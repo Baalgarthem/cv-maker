@@ -172,7 +172,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                 {(document.experiences || []).map((exp) => {
                   const formattedDate = formatPeriod(exp.startDate, exp.endDate, exp.isCurrent, t);
                   return (
-                    <div key={exp.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.05fr 1fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
+                    <div key={exp.id} className="sidebar-shrink-card">
                       <div className="shrink-left" style={{ fontWeight: 600, color: "var(--resume-text)", wordBreak: "break-word" }}>
                         {exp.companyName}
                       </div>
@@ -257,7 +257,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                 {(document.education || []).map((edu) => {
                   const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
                   return (
-                    <div key={edu.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.05fr 1fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
+                    <div key={edu.id} className="sidebar-shrink-card">
                       <div className="shrink-left" style={{ fontWeight: 600, color: "var(--resume-text)", wordBreak: "break-word" }}>
                         {edu.institution}
                       </div>
@@ -328,15 +328,15 @@ export function ResumePreview({ document }: ResumePreviewProps) {
             <ResumeSection title={t("skills")}>
               <div className="sidebar-shrink-list" style={{ display: "grid", gap: "var(--resume-sidebar-section-spacing, 6mm)" }}>
                 {document.hardSkills && (
-                  <div className="sidebar-shrink-card skills-shrink-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.8fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
-                    <strong className="shrink-left" style={{ color: "var(--resume-accent)", fontSize: "0.9em" }}>Duras</strong>
-                    <span className="shrink-right" style={{ fontSize: "0.88em", lineHeight: 1.35, color: "var(--resume-text)" }}>{document.hardSkills}</span>
+                  <div className="sidebar-shrink-card skills-shrink-card">
+                    <strong className="shrink-left" style={{ color: "var(--resume-accent)" }}>Duras</strong>
+                    <span className="shrink-right">{document.hardSkills}</span>
                   </div>
                 )}
                 {document.softSkills && (
-                  <div className="sidebar-shrink-card skills-shrink-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.8fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
-                    <strong className="shrink-left" style={{ color: "var(--resume-accent)", fontSize: "0.9em" }}>Blandas</strong>
-                    <span className="shrink-right" style={{ fontSize: "0.88em", lineHeight: 1.35, color: "var(--resume-text)" }}>{document.softSkills}</span>
+                  <div className="sidebar-shrink-card skills-shrink-card">
+                    <strong className="shrink-left" style={{ color: "var(--resume-accent)" }}>Blandas</strong>
+                    <span className="shrink-right">{document.softSkills}</span>
                   </div>
                 )}
               </div>
@@ -388,9 +388,9 @@ export function ResumePreview({ document }: ResumePreviewProps) {
             <ResumeSection title={t("languages")}>
               <div className="sidebar-shrink-list" style={{ display: "grid", gap: "calc(var(--resume-sidebar-section-spacing, 6mm) * 0.8)" }}>
                 {(document.languages || []).map((lang) => (
-                  <div key={lang.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "6px", alignItems: "baseline", fontSize: "0.85em" }}>
-                    <strong className="shrink-left" style={{ color: "var(--resume-text)", fontSize: "0.92em" }}>{lang.name}</strong>
-                    <span className="shrink-right" style={{ color: "var(--resume-accent)", fontWeight: 600, fontSize: "0.85em", textAlign: "right" }}>{lang.level}</span>
+                  <div key={lang.id} className="sidebar-shrink-card">
+                    <strong className="shrink-left" style={{ color: "var(--resume-text)" }}>{lang.name}</strong>
+                    <span className="shrink-right" style={{ color: "var(--resume-accent)", fontWeight: 600 }}>{lang.level}</span>
                   </div>
                 ))}
               </div>
@@ -512,7 +512,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
             <ResumeSection title={t("courses")}>
               <div className="sidebar-shrink-list" style={{ display: "grid", gap: "var(--resume-sidebar-section-spacing, 6mm)" }}>
                 {sortedCourses.map((course) => (
-                  <div key={course.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
+                  <div key={course.id} className="sidebar-shrink-card">
                     <div className="shrink-left" style={{ fontWeight: 600, color: "var(--resume-text)", wordBreak: "break-word" }}>
                       <div>{course.name}</div>
                       {course.institution && <div style={{ fontSize: "0.8em", opacity: 0.7, fontWeight: 400, marginTop: "2px" }}>{course.institution}</div>}
@@ -609,7 +609,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
             <ResumeSection title={t("portfolio")}>
               <div className="sidebar-shrink-list" style={{ display: "grid", gap: "calc(var(--resume-sidebar-section-spacing, 6mm) * 0.8)" }}>
                 {document.portfolioLinks.map((link) => (
-                  <div key={link.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "6px", alignItems: "baseline", fontSize: "0.85em" }}>
+                  <div key={link.id} className="sidebar-shrink-card">
                     <div className="shrink-left" style={{ display: "flex", gap: "4px", alignItems: "center", fontWeight: 600, color: "var(--resume-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {link.icon && link.icon !== 'none' && <PortfolioIcon icon={link.icon} />}
                       <span>{link.label}</span>
