@@ -12,6 +12,8 @@ interface SectionOrderProps {
   templateId: string;
   sidebarAcademicStyle?: SidebarAcademicStyle;
   onUpdateSidebarAcademicStyle?: (style: SidebarAcademicStyle) => void;
+  mainSectionStyle?: SidebarAcademicStyle;
+  onUpdateMainSectionStyle?: (style: SidebarAcademicStyle) => void;
 }
 
 export function SectionOrder({ 
@@ -22,7 +24,9 @@ export function SectionOrder({
   onUpdatePage, 
   templateId,
   sidebarAcademicStyle,
-  onUpdateSidebarAcademicStyle
+  onUpdateSidebarAcademicStyle,
+  mainSectionStyle,
+  onUpdateMainSectionStyle
 }: SectionOrderProps) {
   const { t } = useTranslation();
   const [draggedId, setDraggedId] = useState<ResumeSectionId | null>(null);
@@ -101,9 +105,9 @@ export function SectionOrder({
         })}
       </ol>
 
-      {hasSidebar && onUpdateSidebarAcademicStyle && (
-        <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed #d6d2ca' }}>
-          <label style={{ display: 'grid', gap: '6px', fontSize: '0.82rem', fontWeight: 650, color: '#445064' }}>
+      <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed #d6d2ca', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {hasSidebar && onUpdateSidebarAcademicStyle && (
+          <label style={{ display: 'grid', gap: '4px', fontSize: '0.82rem', fontWeight: 650, color: '#445064' }}>
             {t("sidebarAcademicStyle")}
             <select
               value={sidebarAcademicStyle || "shrink"}
@@ -115,8 +119,23 @@ export function SectionOrder({
               <option value="classic">{t("sidebarAcademicStyleClassic")}</option>
             </select>
           </label>
-        </div>
-      )}
+        )}
+
+        {onUpdateMainSectionStyle && (
+          <label style={{ display: 'grid', gap: '4px', fontSize: '0.82rem', fontWeight: 650, color: '#445064' }}>
+            {t("mainSectionStyle")}
+            <select
+              value={mainSectionStyle || "classic"}
+              onChange={(e) => onUpdateMainSectionStyle(e.target.value as any)}
+              style={{ padding: '6px 8px', borderRadius: '4px', border: '1px solid #cac6be', fontSize: '0.84rem' }}
+            >
+              <option value="classic">{t("mainSectionStyleClassic")}</option>
+              <option value="treemap">{t("mainSectionStyleTreemap")}</option>
+              <option value="shrink">{t("mainSectionStyleShrink")}</option>
+            </select>
+          </label>
+        )}
+      </div>
     </section>
   );
 }

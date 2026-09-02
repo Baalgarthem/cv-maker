@@ -234,7 +234,16 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>Experiencia laboral</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, experiences: [...current.experiences, createExperience()] }))}>{t("addExperience")}</button></div>
+            <div className="fieldset-heading">
+              <legend>Experiencia laboral</legend>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <label className="checkbox-field" style={{ margin: 0, fontSize: "0.82rem", fontWeight: 500 }}>
+                  <input type="checkbox" checked={draft.hideExperienceDates || false} onChange={(e) => setDraft((current) => ({ ...current, hideExperienceDates: e.target.checked }))} />
+                  {t("hideExperienceDates")}
+                </label>
+                <button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, experiences: [...current.experiences, createExperience()] }))}>{t("addExperience")}</button>
+              </div>
+            </div>
             <div className="repeatable-list">
               {draft.experiences.map((experience, experienceIndex) => (
                 <article className="repeatable-card" key={experience.id}>
@@ -262,20 +271,13 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           <fieldset>
             <div className="fieldset-heading">
               <legend>{t("education")}</legend>
-              <button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: [...(current.education || []), createEducation()] }))}>{t("addEducation")}</button>
-            </div>
-
-            <div className="form-grid" style={{ marginBottom: "16px", maxWidth: "340px" }}>
-              <label>
-                {t("educationDisplayMode")}
-                <select 
-                  value={draft.educationDisplayMode || "classic"} 
-                  onChange={(event) => setDraft((current) => ({ ...current, educationDisplayMode: event.target.value as any }))}
-                >
-                  <option value="classic">{t("educationModeClassic")}</option>
-                  <option value="treemap">{t("educationModeTreemap")}</option>
-                </select>
-              </label>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <label className="checkbox-field" style={{ margin: 0, fontSize: "0.82rem", fontWeight: 500 }}>
+                  <input type="checkbox" checked={draft.hideEducationDates || false} onChange={(e) => setDraft((current) => ({ ...current, hideEducationDates: e.target.checked }))} />
+                  {t("hideEducationDates")}
+                </label>
+                <button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, education: [...(current.education || []), createEducation()] }))}>{t("addEducation")}</button>
+              </div>
             </div>
 
             <div className="repeatable-list">
@@ -328,7 +330,16 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
           </fieldset>
 
           <fieldset>
-            <div className="fieldset-heading"><legend>{t("courses")}</legend><button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: [...current.courses, createCourse()] }))}>{t("addCourse")}</button></div>
+            <div className="fieldset-heading">
+              <legend>{t("courses")}</legend>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <label className="checkbox-field" style={{ margin: 0, fontSize: "0.82rem", fontWeight: 500 }}>
+                  <input type="checkbox" checked={draft.hideCourseDates || false} onChange={(e) => setDraft((current) => ({ ...current, hideCourseDates: e.target.checked }))} />
+                  {t("hideCourseDates")}
+                </label>
+                <button className="text-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: [...current.courses, createCourse()] }))}>{t("addCourse")}</button>
+              </div>
+            </div>
             <div className="repeatable-list">
               {draft.courses.map((course, index) => (
                 <article className="repeatable-card compact-card" key={course.id}>

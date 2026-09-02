@@ -116,6 +116,11 @@ export function App() {
               updateTheme({ sidebarAcademicStyle: style });
               replaceDocument({ ...document, sidebarAcademicStyle: style, theme: { ...document.theme, sidebarAcademicStyle: style } });
             }}
+            mainSectionStyle={document.mainSectionStyle || document.theme.mainSectionStyle || "classic"}
+            onUpdateMainSectionStyle={(style) => {
+              updateTheme({ mainSectionStyle: style });
+              replaceDocument({ ...document, mainSectionStyle: style, theme: { ...document.theme, mainSectionStyle: style } });
+            }}
           />
         </aside>
 

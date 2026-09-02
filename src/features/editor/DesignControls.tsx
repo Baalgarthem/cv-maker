@@ -43,6 +43,19 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
             <option value="classic">{t("sidebarAcademicStyleClassic")}</option>
           </select>
         </label>
+
+        <label style={{ marginTop: '12px', display: 'block' }}>
+          {t("mainSectionStyle")}
+          <select 
+            value={theme.mainSectionStyle || "classic"} 
+            onChange={(event) => onChange({ mainSectionStyle: event.target.value as any })}
+            style={{ width: '100%', marginTop: '4px' }}
+          >
+            <option value="classic">{t("mainSectionStyleClassic")}</option>
+            <option value="treemap">{t("mainSectionStyleTreemap")}</option>
+            <option value="shrink">{t("mainSectionStyleShrink")}</option>
+          </select>
+        </label>
         
         <label style={{ marginTop: '12px', display: 'block' }}>
           {t("pagePadding")} ({theme.pagePaddingVertical ?? 19}mm)
