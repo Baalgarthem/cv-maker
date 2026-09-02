@@ -133,16 +133,6 @@ export function App() {
             onUpdatePage={updateSectionPage}
             onUpdateSide={updateSectionSide}
             templateId={document.templateId}
-            sidebarAcademicStyle={document.sidebarAcademicStyle || document.theme.sidebarAcademicStyle || "shrink"}
-            onUpdateSidebarAcademicStyle={(style) => {
-              updateTheme({ sidebarAcademicStyle: style });
-              replaceDocument({ ...document, sidebarAcademicStyle: style, theme: { ...document.theme, sidebarAcademicStyle: style } });
-            }}
-            mainSectionStyle={document.mainSectionStyle || document.theme.mainSectionStyle || "classic"}
-            onUpdateMainSectionStyle={(style) => {
-              updateTheme({ mainSectionStyle: style });
-              replaceDocument({ ...document, mainSectionStyle: style, theme: { ...document.theme, mainSectionStyle: style } });
-            }}
           />
         </aside>
 
