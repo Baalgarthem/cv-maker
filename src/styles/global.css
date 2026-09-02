@@ -14,9 +14,9 @@ button, select, input[type="color"], input[type="range"] { cursor: pointer; }
 .export-button:hover { background: #273956; }
 .edit-data-button { border: 1px solid #17243b; color: #17243b; background: transparent; }
 .edit-data-button:hover { background: rgb(255 255 255 / 55%); }
-.editor-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 28px; height: calc(100vh - 150px); min-width: 0; }
-.editor-panel { display: grid; gap: 16px; height: 100%; overflow-y: auto; overflow-x: hidden; padding-right: 6px; min-width: 0; width: 100%; }
-.control-group { padding: 22px; border: 1px solid #d6d2ca; border-radius: 7px; background: #f7f5f1; box-shadow: 0 8px 28px rgb(23 36 59 / 5%); min-width: 0; max-width: 100%; overflow: hidden; }
+.editor-layout { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 28px; height: calc(100vh - 150px); min-width: 0; }
+.editor-panel { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow-y: auto; overflow-x: hidden; padding-right: 8px; min-width: 0; width: 100%; }
+.control-group { padding: 22px; border: 1px solid #d6d2ca; border-radius: 7px; background: #f7f5f1; box-shadow: 0 8px 28px rgb(23 36 59 / 5%); min-width: 0; width: 100%; flex-shrink: 0; box-sizing: border-box; }
 .control-heading { display: flex; gap: 10px; align-items: baseline; margin-bottom: 18px; }
 .control-heading span { color: #a6763e; font-family: Georgia, serif; font-size: 1.25rem; }
 .control-heading h2 { margin: 0; font-family: Georgia, serif; font-size: 1.25rem; font-weight: 500; }
@@ -30,7 +30,7 @@ input[type="range"] { width: 100%; accent-color: #9a6b35; }
 .color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 18px; }
 .color-grid label { display: grid; gap: 6px; color: #596477; font-size: .68rem; }
 input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid #cac6be; border-radius: 4px; background: white; }
-.template-card { display: flex; gap: 14px; align-items: center; padding: 13px; border: 1px solid #a6763e; border-radius: 5px; background: #fffaf3; }
+.template-card { display: flex; gap: 14px; align-items: center; padding: 13px; border: 1px solid #a6763e; border-radius: 5px; background: #fffaf3; min-width: 0; box-sizing: border-box; }
 .template-monogram { display: grid; place-items: center; width: 52px; aspect-ratio: 1; color: #fff; background: #17243b; font-family: Georgia, serif; font-size: 1.25rem; flex-shrink: 0; }
 .template-card p, .future-note, .control-help { margin: 4px 0 0; color: #707988; font-size: .75rem; line-height: 1.45; }
 .future-note { margin-top: 12px; }
