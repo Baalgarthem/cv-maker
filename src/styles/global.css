@@ -21,7 +21,9 @@ button, select, input[type="color"], input[type="range"] { cursor: pointer; }
 .control-heading span { color: #a6763e; font-family: Georgia, serif; font-size: 1.25rem; }
 .control-heading h2 { margin: 0; font-family: Georgia, serif; font-size: 1.25rem; font-weight: 500; }
 .control-group label { display: grid; gap: 7px; margin-top: 15px; color: #445064; font-size: .84rem; font-weight: 650; }
-.control-group output { justify-self: end; margin-top: -24px; color: #7a644a; font-weight: 500; }
+.control-group output { justify-self: end; margin-top: -24px; color: #8a5a22; font-weight: 600; font-size: 0.78rem; background: rgba(166, 118, 62, 0.12); padding: 1px 6px; border-radius: 4px; }
+.slider-category-title { font-size: 0.86rem; font-weight: 750; color: #17243b; margin-top: 14px; margin-bottom: 2px; padding-bottom: 4px; border-bottom: 1px solid #e2ded5; display: block; }
+.design-subsection .slider-category-title:first-of-type { margin-top: 6px; }
 .design-subsection { margin-top: 22px; padding-top: 8px; border-top: 1px dashed #d6d2ca; }
 .design-subsection:first-of-type { margin-top: 16px; border-top: none; }
 .design-subsection h3 { margin: 0; font-size: 0.78rem; font-weight: 750; color: #a6763e; text-transform: uppercase; letter-spacing: 0.06em; }

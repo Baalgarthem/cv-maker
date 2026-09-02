@@ -139,9 +139,9 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
         <h3>2. Medidas y escalas (Sliders)</h3>
 
         <div style={{ display: 'grid', gap: '8px' }}>
-          <strong style={{ fontSize: '0.8rem', color: '#445064', marginTop: '2px' }}>Márgenes y espaciado:</strong>
+          <span className="slider-category-title">Márgenes y espaciado</span>
           <label>
-            {t("pagePadding")} <output>{theme.pagePaddingVertical ?? 19} mm</output>
+            Márgenes de página (sup / inf) <output>{theme.pagePaddingVertical ?? 19} mm</output>
             <input 
               type="range" 
               min="5" 
@@ -152,21 +152,21 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
             />
           </label>
           <label>
-            Entre secciones <output>{theme.sectionSpacing ?? 8} mm</output>
+            Espaciado entre secciones <output>{theme.sectionSpacing ?? 8} mm</output>
             <input type="range" min="2" max="20" step="1" value={theme.sectionSpacing ?? 8} onChange={(event) => onChange({ sectionSpacing: Number(event.target.value) })} />
           </label>
           <label>
-            {t("itemSpacing")} <output>{theme.itemSpacing ?? 3} mm</output>
+            Espaciado entre elementos y tarjetas <output>{theme.itemSpacing ?? 3} mm</output>
             <input type="range" min="0" max="8" step="0.5" value={theme.itemSpacing ?? 3} onChange={(event) => onChange({ itemSpacing: Number(event.target.value) })} />
           </label>
           {hasSidebar && (
             <label>
-              Entre secciones de barra <output>{theme.sidebarSectionSpacing ?? 6} mm</output>
+              Espaciado en barra lateral <output>{theme.sidebarSectionSpacing ?? 6} mm</output>
               <input type="range" min="2" max="16" step="1" value={theme.sidebarSectionSpacing ?? 6} onChange={(event) => onChange({ sidebarSectionSpacing: Number(event.target.value) })} />
             </label>
           )}
 
-          <strong style={{ fontSize: '0.8rem', color: '#445064', marginTop: '6px' }}>Tamaños de texto y tipografía:</strong>
+          <span className="slider-category-title">Tamaños de texto y tipografía</span>
           <label>
             Tu nombre (Título principal) <output>{theme.mainHeadingSize ?? 26} pt</output>
             <input type="range" min="16" max="48" step="1" value={theme.mainHeadingSize ?? 26} onChange={(event) => onChange({ mainHeadingSize: Number(event.target.value) })} />
@@ -184,7 +184,7 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
             <input type="range" min="8" max="18" step="0.5" value={theme.sectionSubheadingSize ?? 11} onChange={(event) => onChange({ sectionSubheadingSize: Number(event.target.value) })} />
           </label>
           <label>
-            Texto del cuerpo <output>{theme.baseFontSize} pt</output>
+            Texto del cuerpo base <output>{theme.baseFontSize} pt</output>
             <input type="range" min="8" max="14" step="0.5" value={theme.baseFontSize} onChange={(event) => onChange({ baseFontSize: Number(event.target.value) })} />
           </label>
           <label>
@@ -194,7 +194,7 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
 
           {hasSidebar && (
             <>
-              <strong style={{ fontSize: '0.8rem', color: '#445064', marginTop: '6px' }}>Tamaños en barra lateral:</strong>
+              <span className="slider-category-title">Tamaños en barra lateral</span>
               <label>
                 Títulos en barra <output>{theme.sidebarHeadingSize ?? 12} pt</output>
                 <input type="range" min="10" max="24" step="0.5" value={theme.sidebarHeadingSize ?? 12} onChange={(event) => onChange({ sidebarHeadingSize: Number(event.target.value) })} />
@@ -204,7 +204,7 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
                 <input type="range" min="8" max="18" step="0.5" value={theme.sidebarSubheadingSize ?? 10} onChange={(event) => onChange({ sidebarSubheadingSize: Number(event.target.value) })} />
               </label>
               <label>
-                Texto en barra <output>{theme.sidebarFontSize ?? theme.baseFontSize} pt</output>
+                Texto base en barra <output>{theme.sidebarFontSize ?? theme.baseFontSize} pt</output>
                 <input type="range" min="8" max="14" step="0.5" value={theme.sidebarFontSize ?? theme.baseFontSize} onChange={(event) => onChange({ sidebarFontSize: Number(event.target.value) })} />
               </label>
             </>
@@ -212,13 +212,13 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
 
           {theme.showProfilePicture && (
             <>
-              <strong style={{ fontSize: '0.8rem', color: '#445064', marginTop: '6px' }}>Dimensiones de fotografía:</strong>
+              <span className="slider-category-title">Dimensiones de fotografía</span>
               <label>
                 Grosor del marco <output>{theme.pictureFrameWidth}px</output>
                 <input type="range" min="0" max="8" step="1" value={theme.pictureFrameWidth} onChange={(e) => onChange({ pictureFrameWidth: Number(e.target.value) })} />
               </label>
               <label>
-                Tamaño de la imagen <output>{theme.pictureSize}mm</output>
+                Tamaño de la fotografía <output>{theme.pictureSize}mm</output>
                 <input type="range" min="20" max="60" step="2" value={theme.pictureSize} onChange={(e) => onChange({ pictureSize: Number(e.target.value) })} />
               </label>
             </>
@@ -226,8 +226,9 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
 
           {supportsCompactProfile && theme.compactProfessionalProfile && theme.headerSeparatorStyle !== 'none' && (
             <>
-              <strong style={{ fontSize: '0.8rem', color: '#445064', marginTop: '6px' }}>Separador de perfil:</strong>
-              <label>{t("separatorThickness")} <output>{theme.headerSeparatorThickness ?? 1} px</output>
+              <span className="slider-category-title">Separador de perfil compacto</span>
+              <label>
+                Grosor del separador <output>{theme.headerSeparatorThickness ?? 1} px</output>
                 <input type="range" min="1" max="5" step="1" value={theme.headerSeparatorThickness ?? 1} onChange={(e) => onChange({ headerSeparatorThickness: Number(e.target.value) })} />
               </label>
             </>
