@@ -46,7 +46,9 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
 .preview-toolbar { display: flex; justify-content: space-between; margin: 0 auto 14px; color: #5f6670; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
 .resume-page { width: var(--resume-page-width); min-height: var(--resume-page-height); margin: 0 auto; padding: var(--resume-page-padding-v) 20mm; color: var(--resume-text); background: var(--resume-page); box-shadow: 0 16px 45px rgb(30 35 43 / 20%); font-family: var(--resume-font); font-size: var(--resume-font-size); line-height: var(--resume-line-height); }
 .resume-header { padding-bottom: var(--resume-section-spacing); border-bottom: 1px solid var(--resume-separator-color); }
-.resume-page[data-summary-separator="false"] .resume-header { border-bottom: none; }
+.resume-page[data-header-separator="false"] .resume-header { border-bottom: none !important; }
+.resume-page[data-summary-separator="false"] .summary-highlight { border-bottom: none !important; }
+.resume-page[data-summary-separator="false"] .summary-highlight::after { display: none !important; }
 .resume-header h1 { margin: 2mm 0; font-family: var(--resume-heading-font); font-size: var(--resume-main-heading-size); font-weight: 500; line-height: 1.05; letter-spacing: .035em; text-transform: uppercase; }
 .resume-kicker { margin: 0; color: var(--resume-accent); font-size: 0.75em; font-weight: 750; letter-spacing: .2em; text-transform: uppercase; }
 .resume-contact { margin: 2mm 0 0; }

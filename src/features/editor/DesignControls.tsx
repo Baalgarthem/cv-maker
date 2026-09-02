@@ -19,6 +19,10 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
   const hasSidebar = templateId === "chronological" || templateId === "mixed";
   const supportsCompactProfile = templateId !== "chronological";
   const isMindmap = templateId === "mindmap";
+  
+  const isPhotoActive = !!theme.showProfilePicture;
+  const isCompactActive = supportsCompactProfile && !!theme.compactProfessionalProfile;
+  const isPersonalDataSepDisabled = isMindmap && isCompactActive;
 
   return (
     <section className="control-group" aria-labelledby="design-title">
@@ -93,44 +97,53 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
             </select>
           </label>
 
-          {theme.showProfilePicture && (
-            <>
-              <label>
-                Estilo del marco de foto
-                <select value={theme.pictureFrameStyle} onChange={(e) => onChange({ pictureFrameStyle: e.target.value as any })}>
-                  <option value="none">Sin marco</option>
-                  <option value="circle">Circular</option>
-                  <option value="square">Cuadrado</option>
-                  <option value="hexagon">Hexagonal</option>
-                  <option value="top-bottom">Líneas sup / inf</option>
-                </select>
-              </label>
-              <label style={{ opacity: isMindmap ? 0.45 : 1, cursor: isMindmap ? 'not-allowed' : 'default' }}>
-                Alineación de la foto {isMindmap && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Centrada en Mapa Conceptual)</span>}
-                <select 
-                  disabled={isMindmap}
-                  value={isMindmap ? "center" : (theme.pictureAlignment || "left")} 
-                  onChange={(e) => onChange({ pictureAlignment: e.target.value as "left" | "center" | "right" })}
-                  style={{ cursor: isMindmap ? 'not-allowed' : 'pointer' }}
-                >
-                  <option value="left">{t("sidebarLeft")}</option>
-                  <option value="center">Centrada</option>
-                  <option value="right">{t("sidebarRight")}</option>
-                </select>
-              </label>
-            </>
-          )}
+          <label style={{ opacity: isPhotoActive ? 1 : 0.45, cursor: isPhotoActive ? 'default' : 'not-allowed' }}>
+            Estilo del marco de foto {!isPhotoActive && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Foto inactiva)</span>}
+            <select 
+              disabled={!isPhotoActive}
+              value={theme.pictureFrameStyle} 
+              onChange={(e) => onChange({ pictureFrameStyle: e.target.value as any })}
+              style={{ cursor: isPhotoActive ? 'pointer' : 'not-allowed' }}
+              title={!isPhotoActive ? "Activa la fotografía de perfil para cambiar el estilo de marco" : undefined}
+            >
+              <option value="none">Sin marco</option>
+              <option value="circle">Circular</option>
+              <option value="square">Cuadrado</option>
+              <option value="hexagon">Hexagonal</option>
+              <option value="top-bottom">Líneas sup / inf</option>
+            </select>
+          </label>
 
-          {supportsCompactProfile && theme.compactProfessionalProfile && (
-            <label>{t("separatorStyle")}
-              <select value={theme.headerSeparatorStyle || 'solid'} onChange={(e) => onChange({ headerSeparatorStyle: e.target.value as any })}>
-                <option value="none">{t("separatorStyleNone")}</option>
-                <option value="solid">{t("separatorStyleSolid")}</option>
-                <option value="dashed">{t("separatorStyleDashed")}</option>
-                <option value="dotted">{t("separatorStyleDotted")}</option>
-              </select>
-            </label>
-          )}
+          <label style={{ opacity: (isPhotoActive && !isMindmap) ? 1 : 0.45, cursor: (isPhotoActive && !isMindmap) ? 'default' : 'not-allowed' }}>
+            Alineación de la foto {isMindmap ? <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Centrada en Mapa Conceptual)</span> : (!isPhotoActive ? <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Foto inactiva)</span> : null)}
+            <select 
+              disabled={!isPhotoActive || isMindmap}
+              value={isMindmap ? "center" : (theme.pictureAlignment || "left")} 
+              onChange={(e) => onChange({ pictureAlignment: e.target.value as "left" | "center" | "right" })}
+              style={{ cursor: (isPhotoActive && !isMindmap) ? 'pointer' : 'not-allowed' }}
+              title={isMindmap ? "Centrada automáticamente en Mapa Conceptual" : (!isPhotoActive ? "Activa la fotografía de perfil para alinear" : undefined)}
+            >
+              <option value="left">{t("sidebarLeft")}</option>
+              <option value="center">Centrada</option>
+              <option value="right">{t("sidebarRight")}</option>
+            </select>
+          </label>
+
+          <label style={{ opacity: isCompactActive ? 1 : 0.45, cursor: isCompactActive ? 'default' : 'not-allowed' }}>
+            {t("separatorStyle")} {!isCompactActive && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Perfil compacto inactivo)</span>}
+            <select 
+              disabled={!isCompactActive}
+              value={theme.headerSeparatorStyle || 'solid'} 
+              onChange={(e) => onChange({ headerSeparatorStyle: e.target.value as any })}
+              style={{ cursor: isCompactActive ? 'pointer' : 'not-allowed' }}
+              title={!isCompactActive ? "Activa el perfil profesional compacto para configurar su separador" : undefined}
+            >
+              <option value="none">{t("separatorStyleNone")}</option>
+              <option value="solid">{t("separatorStyleSolid")}</option>
+              <option value="dashed">{t("separatorStyleDashed")}</option>
+              <option value="dotted">{t("separatorStyleDotted")}</option>
+            </select>
+          </label>
         </div>
       </div>
 
@@ -159,12 +172,19 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
             Espaciado entre elementos y tarjetas <output>{theme.itemSpacing ?? 3} mm</output>
             <input type="range" min="0" max="8" step="0.5" value={theme.itemSpacing ?? 3} onChange={(event) => onChange({ itemSpacing: Number(event.target.value) })} />
           </label>
-          {hasSidebar && (
-            <label>
-              Espaciado en barra lateral <output>{theme.sidebarSectionSpacing ?? 6} mm</output>
-              <input type="range" min="2" max="16" step="1" value={theme.sidebarSectionSpacing ?? 6} onChange={(event) => onChange({ sidebarSectionSpacing: Number(event.target.value) })} />
-            </label>
-          )}
+          <label style={{ opacity: hasSidebar ? 1 : 0.45, cursor: hasSidebar ? 'default' : 'not-allowed' }}>
+            Espaciado en barra lateral {!hasSidebar && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(No aplica)</span>} <output>{theme.sidebarSectionSpacing ?? 6} mm</output>
+            <input 
+              disabled={!hasSidebar}
+              type="range" 
+              min="2" 
+              max="16" 
+              step="1" 
+              value={theme.sidebarSectionSpacing ?? 6} 
+              onChange={(event) => onChange({ sidebarSectionSpacing: Number(event.target.value) })} 
+              style={{ cursor: hasSidebar ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
 
           <span className="slider-category-title">Tamaños de texto y tipografía</span>
           <label>
@@ -192,47 +212,89 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
             <input type="range" min="1.0" max="2.0" step="0.05" value={theme.lineHeight ?? 1.55} onChange={(event) => onChange({ lineHeight: Number(event.target.value) })} />
           </label>
 
-          {hasSidebar && (
-            <>
-              <span className="slider-category-title">Tamaños en barra lateral</span>
-              <label>
-                Títulos en barra <output>{theme.sidebarHeadingSize ?? 12} pt</output>
-                <input type="range" min="10" max="24" step="0.5" value={theme.sidebarHeadingSize ?? 12} onChange={(event) => onChange({ sidebarHeadingSize: Number(event.target.value) })} />
-              </label>
-              <label>
-                Subtítulos en barra <output>{theme.sidebarSubheadingSize ?? 10} pt</output>
-                <input type="range" min="8" max="18" step="0.5" value={theme.sidebarSubheadingSize ?? 10} onChange={(event) => onChange({ sidebarSubheadingSize: Number(event.target.value) })} />
-              </label>
-              <label>
-                Texto base en barra <output>{theme.sidebarFontSize ?? theme.baseFontSize} pt</output>
-                <input type="range" min="8" max="14" step="0.5" value={theme.sidebarFontSize ?? theme.baseFontSize} onChange={(event) => onChange({ sidebarFontSize: Number(event.target.value) })} />
-              </label>
-            </>
-          )}
+          <span className="slider-category-title" style={{ opacity: hasSidebar ? 1 : 0.45 }}>Tamaños en barra lateral {!hasSidebar && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(No aplica)</span>}</span>
+          <label style={{ opacity: hasSidebar ? 1 : 0.45, cursor: hasSidebar ? 'default' : 'not-allowed' }}>
+            Títulos en barra <output>{theme.sidebarHeadingSize ?? 12} pt</output>
+            <input 
+              disabled={!hasSidebar}
+              type="range" 
+              min="10" 
+              max="24" 
+              step="0.5" 
+              value={theme.sidebarHeadingSize ?? 12} 
+              onChange={(event) => onChange({ sidebarHeadingSize: Number(event.target.value) })} 
+              style={{ cursor: hasSidebar ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
+          <label style={{ opacity: hasSidebar ? 1 : 0.45, cursor: hasSidebar ? 'default' : 'not-allowed' }}>
+            Subtítulos en barra <output>{theme.sidebarSubheadingSize ?? 10} pt</output>
+            <input 
+              disabled={!hasSidebar}
+              type="range" 
+              min="8" 
+              max="18" 
+              step="0.5" 
+              value={theme.sidebarSubheadingSize ?? 10} 
+              onChange={(event) => onChange({ sidebarSubheadingSize: Number(event.target.value) })} 
+              style={{ cursor: hasSidebar ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
+          <label style={{ opacity: hasSidebar ? 1 : 0.45, cursor: hasSidebar ? 'default' : 'not-allowed' }}>
+            Texto base en barra <output>{theme.sidebarFontSize ?? theme.baseFontSize} pt</output>
+            <input 
+              disabled={!hasSidebar}
+              type="range" 
+              min="8" 
+              max="14" 
+              step="0.5" 
+              value={theme.sidebarFontSize ?? theme.baseFontSize} 
+              onChange={(event) => onChange({ sidebarFontSize: Number(event.target.value) })} 
+              style={{ cursor: hasSidebar ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
 
-          {theme.showProfilePicture && (
-            <>
-              <span className="slider-category-title">Dimensiones de fotografía</span>
-              <label>
-                Grosor del marco <output>{theme.pictureFrameWidth}px</output>
-                <input type="range" min="0" max="8" step="1" value={theme.pictureFrameWidth} onChange={(e) => onChange({ pictureFrameWidth: Number(e.target.value) })} />
-              </label>
-              <label>
-                Tamaño de la fotografía <output>{theme.pictureSize}mm</output>
-                <input type="range" min="20" max="60" step="2" value={theme.pictureSize} onChange={(e) => onChange({ pictureSize: Number(e.target.value) })} />
-              </label>
-            </>
-          )}
+          <span className="slider-category-title" style={{ opacity: isPhotoActive ? 1 : 0.45 }}>Dimensiones de fotografía {!isPhotoActive && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Foto inactiva)</span>}</span>
+          <label style={{ opacity: isPhotoActive ? 1 : 0.45, cursor: isPhotoActive ? 'default' : 'not-allowed' }}>
+            Grosor del marco <output>{theme.pictureFrameWidth}px</output>
+            <input 
+              disabled={!isPhotoActive}
+              type="range" 
+              min="0" 
+              max="8" 
+              step="1" 
+              value={theme.pictureFrameWidth} 
+              onChange={(e) => onChange({ pictureFrameWidth: Number(e.target.value) })} 
+              style={{ cursor: isPhotoActive ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
+          <label style={{ opacity: isPhotoActive ? 1 : 0.45, cursor: isPhotoActive ? 'default' : 'not-allowed' }}>
+            Tamaño de la fotografía <output>{theme.pictureSize}mm</output>
+            <input 
+              disabled={!isPhotoActive}
+              type="range" 
+              min="20" 
+              max="60" 
+              step="2" 
+              value={theme.pictureSize} 
+              onChange={(e) => onChange({ pictureSize: Number(e.target.value) })} 
+              style={{ cursor: isPhotoActive ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
 
-          {supportsCompactProfile && theme.compactProfessionalProfile && theme.headerSeparatorStyle !== 'none' && (
-            <>
-              <span className="slider-category-title">Separador de perfil compacto</span>
-              <label>
-                Grosor del separador <output>{theme.headerSeparatorThickness ?? 1} px</output>
-                <input type="range" min="1" max="5" step="1" value={theme.headerSeparatorThickness ?? 1} onChange={(e) => onChange({ headerSeparatorThickness: Number(e.target.value) })} />
-              </label>
-            </>
-          )}
+          <span className="slider-category-title" style={{ opacity: isCompactActive ? 1 : 0.45 }}>Separador de perfil compacto {!isCompactActive && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Perfil compacto inactivo)</span>}</span>
+          <label style={{ opacity: (isCompactActive && theme.headerSeparatorStyle !== 'none') ? 1 : 0.45, cursor: (isCompactActive && theme.headerSeparatorStyle !== 'none') ? 'default' : 'not-allowed' }}>
+            Grosor del separador <output>{theme.headerSeparatorThickness ?? 1} px</output>
+            <input 
+              disabled={!isCompactActive || theme.headerSeparatorStyle === 'none'}
+              type="range" 
+              min="1" 
+              max="5" 
+              step="1" 
+              value={theme.headerSeparatorThickness ?? 1} 
+              onChange={(e) => onChange({ headerSeparatorThickness: Number(e.target.value) })} 
+              style={{ cursor: (isCompactActive && theme.headerSeparatorStyle !== 'none') ? 'pointer' : 'not-allowed' }}
+            />
+          </label>
         </div>
       </div>
 
@@ -254,6 +316,16 @@ export function DesignControls({ theme, templateId, onChange }: DesignControlsPr
               onChange={(e) => onChange({ compactProfessionalProfile: e.target.checked })} 
             />
             {t("compactProfile")} {!supportsCompactProfile && <span style={{ fontSize: '0.78em', opacity: 0.85 }}>(No aplica a Cronológico)</span>}
+          </label>
+
+          <label className="checkbox-field" style={{ opacity: isPersonalDataSepDisabled ? 0.45 : 1, cursor: isPersonalDataSepDisabled ? 'not-allowed' : 'pointer' }} title={isPersonalDataSepDisabled ? "No disponible con Perfil Compacto en Mapa Conceptual" : undefined}>
+            <input 
+              type="checkbox" 
+              disabled={isPersonalDataSepDisabled}
+              checked={isPersonalDataSepDisabled ? true : (theme.showPersonalDataSeparator ?? true)} 
+              onChange={(e) => onChange({ showPersonalDataSeparator: e.target.checked })} 
+            />
+            {t("showPersonalDataSeparator")} {isPersonalDataSepDisabled && <span style={{ fontSize: '0.78em', opacity: 0.85 }}>(Fijo en Mapa Conceptual)</span>}
           </label>
 
           <label className="checkbox-field">

@@ -111,6 +111,7 @@ export interface ResumeTheme {
   hideExperienceDates?: boolean;
   hideEducationDates?: boolean;
   hideCourseDates?: boolean;
+  showPersonalDataSeparator?: boolean;
 }
 
 export interface ResumeDocument {
@@ -136,6 +137,7 @@ export interface ResumeDocument {
   hideExperienceDates?: boolean;
   hideEducationDates?: boolean;
   hideCourseDates?: boolean;
+  showPersonalDataSeparator?: boolean;
   theme: ResumeTheme;
 }
 
