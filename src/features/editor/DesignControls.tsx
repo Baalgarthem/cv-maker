@@ -32,14 +32,15 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
         </label>
 
         <label style={{ marginTop: '12px', display: 'block' }}>
-          {t("educationDisplayMode")}
+          {t("sidebarAcademicStyle")}
           <select 
-            value={theme.educationDisplayMode || "classic"} 
-            onChange={(event) => onChange({ educationDisplayMode: event.target.value as any })}
+            value={theme.sidebarAcademicStyle || "shrink"} 
+            onChange={(event) => onChange({ sidebarAcademicStyle: event.target.value as any })}
             style={{ width: '100%', marginTop: '4px' }}
           >
-            <option value="classic">{t("educationModeClassic")}</option>
-            <option value="treemap">{t("educationModeTreemap")}</option>
+            <option value="shrink">{t("sidebarAcademicStyleShrink")}</option>
+            <option value="treemap">{t("sidebarAcademicStyleTreemap")}</option>
+            <option value="classic">{t("sidebarAcademicStyleClassic")}</option>
           </select>
         </label>
         
@@ -118,15 +119,6 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
           <select value={theme.sidebarPosition} onChange={(event) => onChange({ sidebarPosition: event.target.value as "left" | "right" })}>
             <option value="left">{t("sidebarLeft")}</option>
             <option value="right">{t("sidebarRight")}</option>
-          </select>
-        </label>
-
-        <label style={{ marginTop: 16 }}>
-          {t("sidebarAcademicStyle")}
-          <select value={theme.sidebarAcademicStyle || "shrink"} onChange={(event) => onChange({ sidebarAcademicStyle: event.target.value as any })}>
-            <option value="shrink">{t("sidebarAcademicStyleShrink")}</option>
-            <option value="treemap">{t("sidebarAcademicStyleTreemap")}</option>
-            <option value="classic">{t("sidebarAcademicStyleClassic")}</option>
           </select>
         </label>
       </div>
