@@ -101,7 +101,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     "--resume-text": document.theme.textColor,
     "--resume-page": document.theme.pageColor,
     "--resume-picture-size": `${document.theme.pictureSize ?? 32}mm`,
-    "--resume-frame-width": `${document.theme.pictureFrameWidth ?? 2}px`,
+    "--resume-separator-thickness": `${document.theme.headerSeparatorThickness ?? 2}px`,
+    "--line-thickness": `${document.theme.headerSeparatorThickness ?? 2}px`,
     "--resume-page-width": isA4 ? "210mm" : "215.9mm",
     "--resume-page-height": isA4 ? "297mm" : "279.4mm",
   } as CSSProperties;

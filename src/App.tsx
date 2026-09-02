@@ -103,7 +103,7 @@ export function App() {
             </div>
             <p className="future-note">El catálogo admite diseños con orden y composición propios.</p>
           </section>
-          <DesignControls theme={document.theme} onChange={updateTheme} />
+          <DesignControls theme={document.theme} templateId={document.templateId} onChange={updateTheme} />
           <SectionOrder 
             sections={document.sections} 
             onMove={moveSection} 

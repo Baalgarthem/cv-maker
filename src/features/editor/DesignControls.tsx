@@ -3,6 +3,7 @@ import type { ResumeTheme } from "../../types/resume";
 
 interface DesignControlsProps {
   theme: ResumeTheme;
+  templateId?: string;
   onChange: (changes: Partial<ResumeTheme>) => void;
 }
 
@@ -13,8 +14,12 @@ const fonts = [
   { label: "Times New Roman", value: '"Times New Roman", serif' },
 ];
 
-export function DesignControls({ theme, onChange }: DesignControlsProps) {
+export function DesignControls({ theme, templateId, onChange }: DesignControlsProps) {
   const { t } = useTranslation();
+  const hasSidebar = templateId === "chronological" || templateId === "mixed";
+  const supportsCompactProfile = templateId !== "chronological";
+  const isMindmap = templateId === "mindmap";
+
   return (
     <section className="control-group" aria-labelledby="design-title">
       <div className="control-heading">
@@ -31,12 +36,14 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
           </select>
         </label>
 
-        <label style={{ marginTop: '12px', display: 'block' }}>
-          {t("sidebarAcademicStyle")}
+        <label style={{ marginTop: '12px', display: 'block', opacity: hasSidebar ? 1 : 0.45, cursor: hasSidebar ? 'default' : 'not-allowed' }}>
+          {t("sidebarAcademicStyle")} {!hasSidebar && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(No aplica a este formato)</span>}
           <select 
+            disabled={!hasSidebar}
             value={theme.sidebarAcademicStyle || "shrink"} 
             onChange={(event) => onChange({ sidebarAcademicStyle: event.target.value as any })}
-            style={{ width: '100%', marginTop: '4px' }}
+            style={{ width: '100%', marginTop: '4px', cursor: hasSidebar ? 'pointer' : 'not-allowed' }}
+            title={!hasSidebar ? "Esta opción solo está disponible para plantillas con barra lateral" : undefined}
           >
             <option value="shrink">{t("sidebarAcademicStyleShrink")}</option>
             <option value="treemap">{t("sidebarAcademicStyleTreemap")}</option>
@@ -67,12 +74,17 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
           {t("showSummarySeparator")}
         </label>
 
-        <label className="checkbox-field" style={{ marginTop: 16 }}>
-          <input type="checkbox" checked={theme.compactProfessionalProfile || false} onChange={(e) => onChange({ compactProfessionalProfile: e.target.checked })} />
-          {t("compactProfile")}
+        <label className="checkbox-field" style={{ marginTop: 16, opacity: supportsCompactProfile ? 1 : 0.45, cursor: supportsCompactProfile ? 'pointer' : 'not-allowed' }}>
+          <input 
+            type="checkbox" 
+            disabled={!supportsCompactProfile}
+            checked={supportsCompactProfile ? (theme.compactProfessionalProfile || false) : false} 
+            onChange={(e) => onChange({ compactProfessionalProfile: e.target.checked })} 
+          />
+          {t("compactProfile")} {!supportsCompactProfile && <span style={{ fontSize: '0.78em', opacity: 0.85 }}>(No aplica a Cronológico)</span>}
         </label>
 
-        {theme.compactProfessionalProfile && (
+        {supportsCompactProfile && theme.compactProfessionalProfile && (
           <div style={{ display: "grid", gap: "10px", marginTop: "12px", paddingLeft: "10px", borderLeft: "2px solid #e0dfdb" }}>
             <label>{t("separatorStyle")}
               <select value={theme.headerSeparatorStyle || 'solid'} onChange={(e) => onChange({ headerSeparatorStyle: e.target.value as any })}>
@@ -116,9 +128,14 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
               Tamaño de la imagen <output>{theme.pictureSize}mm</output>
               <input type="range" min="20" max="60" step="2" value={theme.pictureSize} onChange={(e) => onChange({ pictureSize: Number(e.target.value) })} />
             </label>
-            <label>
-              Alineación de la imagen
-              <select value={theme.pictureAlignment || "left"} onChange={(e) => onChange({ pictureAlignment: e.target.value as "left" | "center" | "right" })}>
+            <label style={{ opacity: isMindmap ? 0.45 : 1, cursor: isMindmap ? 'not-allowed' : 'default' }}>
+              Alineación de la imagen {isMindmap && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(Centrada en Mapa Conceptual)</span>}
+              <select 
+                disabled={isMindmap}
+                value={isMindmap ? "center" : (theme.pictureAlignment || "left")} 
+                onChange={(e) => onChange({ pictureAlignment: e.target.value as "left" | "center" | "right" })}
+                style={{ cursor: isMindmap ? 'not-allowed' : 'pointer' }}
+              >
                 <option value="left">{t("sidebarLeft")}</option>
                 <option value="center">Centrada</option>
                 <option value="right">{t("sidebarRight")}</option>
@@ -127,9 +144,15 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
           </div>
         )}
 
-        <label style={{ marginTop: 16 }}>
-          Posición de la barra lateral (si aplica)
-          <select value={theme.sidebarPosition} onChange={(event) => onChange({ sidebarPosition: event.target.value as "left" | "right" })}>
+        <label style={{ marginTop: 16, display: 'block', opacity: hasSidebar ? 1 : 0.45, cursor: hasSidebar ? 'default' : 'not-allowed' }}>
+          Posición de la barra lateral {!hasSidebar && <span style={{ fontSize: '0.75em', opacity: 0.85 }}>(No aplica a este formato)</span>}
+          <select 
+            disabled={!hasSidebar}
+            value={theme.sidebarPosition} 
+            onChange={(event) => onChange({ sidebarPosition: event.target.value as "left" | "right" })}
+            style={{ cursor: hasSidebar ? 'pointer' : 'not-allowed' }}
+            title={!hasSidebar ? "Esta opción solo está disponible para plantillas con barra lateral" : undefined}
+          >
             <option value="left">{t("sidebarLeft")}</option>
             <option value="right">{t("sidebarRight")}</option>
           </select>

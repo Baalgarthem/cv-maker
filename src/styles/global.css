@@ -201,7 +201,7 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
    ========================================================= */
 .template-mindmap {
   --node-size: 14px;
-  --line-thickness: 2px;
+  --line-thickness: var(--resume-separator-thickness, 2px);
 }
 .template-mindmap .resume-header {
   text-align: center;
@@ -221,7 +221,14 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   padding-bottom: var(--resume-section-spacing);
   margin-bottom: 0 !important;
 }
-.template-mindmap .summary-highlight::after { content: ''; position: absolute; bottom: 0; left: 50%; width: var(--line-thickness); height: var(--resume-section-spacing); background: var(--resume-separator-color);
+.template-mindmap .summary-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: var(--line-thickness);
+  height: var(--resume-section-spacing);
+  background: var(--resume-separator-color);
   transform: translateX(-50%);
 }
 /* For main sections */
@@ -229,33 +236,56 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   display: grid;
   grid-template-columns: 1fr 1fr;
   row-gap: var(--resume-section-spacing);
-  column-gap: 32px;
+  column-gap: 20px;
   position: relative;
 }
 /* The central stem */
-.template-mindmap .main-sections::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: var(--line-thickness); background: var(--resume-separator-color);
+.template-mindmap .main-sections::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: var(--line-thickness);
+  background: var(--resume-separator-color);
   transform: translateX(-50%);
   z-index: 0;
 }
-/* Left side (odd) */
+/* Left side (odd) - attached to central spine */
 .template-mindmap .main-sections > div:nth-child(odd) {
   grid-column: 1;
-  text-align: right;
+  text-align: left;
   position: relative;
-  padding-right: 20px;
+  padding-right: 12px;
+  padding-left: 0;
 }
-.template-mindmap .main-sections > div:nth-child(odd)::before { content: ''; position: absolute; top: 14px; right: -16px; width: 36px; height: var(--line-thickness); background: var(--resume-separator-color);
-  z-index: -1;
+.template-mindmap .main-sections > div:nth-child(odd)::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  right: -10px;
+  width: 20px;
+  height: var(--line-thickness);
+  background: var(--resume-separator-color);
+  z-index: 0;
 }
-/* Right side (even) */
+/* Right side (even) - attached to central spine */
 .template-mindmap .main-sections > div:nth-child(even) {
   grid-column: 2;
   text-align: left;
   position: relative;
-  padding-left: 20px;
+  padding-left: 12px;
+  padding-right: 0;
 }
-.template-mindmap .main-sections > div:nth-child(even)::before { content: ''; position: absolute; top: 14px; left: -16px; width: 36px; height: var(--line-thickness); background: var(--resume-separator-color);
-  z-index: -1;
+.template-mindmap .main-sections > div:nth-child(even)::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: -10px;
+  width: 20px;
+  height: var(--line-thickness);
+  background: var(--resume-separator-color);
+  z-index: 0;
 }
 /* Heading styling */
 .template-mindmap .resume-section {
@@ -273,41 +303,97 @@ input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid
   position: relative;
   display: inline-block;
 }
-.template-mindmap .resume-section h2::after { content: ''; position: absolute; bottom: -4px; height: 2px; width: 60%; background: var(--resume-separator-color);
-  opacity: 0.3;
+.template-mindmap .resume-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  height: var(--line-thickness);
+  width: 60%;
+  background: var(--resume-separator-color);
+  opacity: 0.4;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-section {
+  text-align: right;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .resume-section h2 {
+  text-align: right;
 }
 .template-mindmap .main-sections > div:nth-child(odd) .resume-section h2::after {
   right: 0;
+  left: auto;
+}
+.template-mindmap .main-sections > div:nth-child(even) .resume-section {
+  text-align: left;
 }
 .template-mindmap .main-sections > div:nth-child(even) .resume-section h2::after {
   left: 0;
 }
-/* Content alignment */
+
+/* Left side content: flows left-to-right toward spine */
+.template-mindmap .main-sections > div:nth-child(odd) .resume-entry {
+  text-align: left;
+}
 .template-mindmap .main-sections > div:nth-child(odd) .resume-entry .entry-heading {
-  flex-direction: row-reverse;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
 }
+.template-mindmap .main-sections > div:nth-child(odd) .sidebar-shrink-card {
+  grid-template-columns: 1fr 1.3fr;
+  text-align: left;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .sidebar-shrink-card .shrink-right {
+  text-align: right;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .treemap-level-root {
+  justify-content: flex-start;
+}
+.template-mindmap .main-sections > div:nth-child(odd) .treemap-branches {
+  border-left: var(--line-thickness) solid var(--resume-separator-color);
+}
+
+/* Right side content: flows from spine to right */
 .template-mindmap .main-sections > div:nth-child(even) .resume-entry .entry-heading {
-  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
 }
+.template-mindmap .main-sections > div:nth-child(even) .sidebar-shrink-card {
+  grid-template-columns: 1fr 1.3fr;
+  text-align: left;
+}
+.template-mindmap .main-sections > div:nth-child(even) .treemap-branches {
+  border-left: var(--line-thickness) solid var(--resume-separator-color);
+}
+
 .template-mindmap .resume-entry ul {
   padding-left: 0;
   list-style: none;
 }
 .template-mindmap .main-sections > div:nth-child(odd) .resume-entry ul li {
-  padding-right: 14px;
+  padding-left: 14px;
   position: relative;
+  text-align: left;
 }
-.template-mindmap .main-sections > div:nth-child(odd) .resume-entry ul li::after {
-  content: '•'; color: var(--resume-accent);
-  position: absolute; right: 0; top: 0;
+.template-mindmap .main-sections > div:nth-child(odd) .resume-entry ul li::before {
+  content: '•';
+  color: var(--resume-accent);
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 .template-mindmap .main-sections > div:nth-child(even) .resume-entry ul li {
   padding-left: 14px;
   position: relative;
 }
 .template-mindmap .main-sections > div:nth-child(even) .resume-entry ul li::before {
-  content: '•'; color: var(--resume-accent);
-  position: absolute; left: 0; top: 0;
+  content: '•';
+  color: var(--resume-accent);
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 /* Mindmap pagination extensions */
 .template-mindmap:not([data-page="1"]) .main-sections::before {
