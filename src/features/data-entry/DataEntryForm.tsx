@@ -20,7 +20,7 @@ const createExperience = (): WorkExperience => ({
   activities: [""],
 });
 
-const createCourse = (): Course => ({ id: createId(), name: "", obtainedOn: "", credentialUrl: "" });
+const createCourse = (): Course => ({ id: createId(), name: "", institution: "", obtainedOn: "", credentialUrl: "" });
 const createLink = (): PortfolioLink => ({ id: createId(), icon: "none", label: "", url: "" });
 const createEducation = (): Education => ({ id: createId(), institution: "", degree: "", startDate: "" });
 const createLanguage = (): Language => ({ id: createId(), name: "", level: "" });
@@ -332,9 +332,10 @@ export function DataEntryForm({ document, onCancel, onSave }: DataEntryFormProps
             <div className="repeatable-list">
               {draft.courses.map((course, index) => (
                 <article className="repeatable-card compact-card" key={course.id}>
-                  <div className="form-grid three-columns">
-                    <label>{t("courseName")}<input required value={course.name} onChange={(event) => updateCourse(index, { name: event.target.value })} /></label>
-                    <label>{t("courseDate")}<input required type="month" value={course.obtainedOn} onChange={(event) => updateCourse(index, { obtainedOn: event.target.value })} /></label>
+                  <div className="form-grid" style={{ gridTemplateColumns: "1.2fr 1fr 1fr 1fr", gap: "10px" }}>
+                    <label>{t("courseName")} *<input required placeholder="Obligatorio" value={course.name} onChange={(event) => updateCourse(index, { name: event.target.value })} /></label>
+                    <label>{t("institution")} (Opcional)<input placeholder="Ej. Coursera, Udemy..." value={course.institution ?? ""} onChange={(event) => updateCourse(index, { institution: event.target.value })} /></label>
+                    <label>{t("courseDate")} (Opcional)<input type="month" value={course.obtainedOn ?? ""} onChange={(event) => updateCourse(index, { obtainedOn: event.target.value })} /></label>
                     <label>{t("portUrl")}<input type="text" placeholder="Opcional" value={course.credentialUrl ?? ""} onChange={(event) => updateCourse(index, { credentialUrl: event.target.value })} /></label>
                   </div>
                   <button className="remove-button" type="button" onClick={() => setDraft((current) => ({ ...current, courses: current.courses.filter(({ id }) => id !== course.id) }))}>{t("removeCourse")}</button>

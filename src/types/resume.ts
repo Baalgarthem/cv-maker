@@ -32,7 +32,8 @@ export interface WorkExperience {
 export interface Course {
   id: string;
   name: string;
-  obtainedOn: string;
+  institution?: string;
+  obtainedOn?: string;
   credentialUrl?: string;
 }
 
