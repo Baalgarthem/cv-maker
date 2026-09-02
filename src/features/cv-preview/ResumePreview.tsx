@@ -42,143 +42,296 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     "--resume-page-height": isA4 ? "297mm" : "279.4mm",
   } as CSSProperties;
 
-  const sections: Record<Exclude<ResumeSectionId, "summary">, ReactNode> = {
-    experience: (
-      <ResumeSection title={t("experience")}>
-        {(document.experiences || []).map((experience) => (
-          <article className="resume-entry" key={experience.id}>
-            <div className="entry-heading"><h3>{experience.companyName}</h3><time>{formatPeriod(experience.startDate, experience.endDate, experience.isCurrent, t)}</time></div>
-            <p className="entry-context">{experience.context}</p>
-            {experience.tags && experience.tags.length > 0 && (
-              <div className="entry-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '4px 0 8px', opacity: 0.6, fontSize: '0.85em' }}>
-                {experience.tags.map(tag => (
-                  <span key={tag} style={{ padding: '0 6px', fontStyle: 'italic' }}>• {tag}</span>
-                ))}
-              </div>
-            )}
-            <ul>{experience.activities.map((activity) => <li key={activity}>{activity}</li>)}</ul>
-          </article>
-        ))}
-      </ResumeSection>
-    ),
-    education: (
-      <ResumeSection title={t("education")}>
-        {(document.education || []).map((edu) => {
-          const mode = document.educationDisplayMode || document.theme.educationDisplayMode || "classic";
-          const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
+  const renderSection = (id: Exclude<ResumeSectionId, "summary">, isSidebar = false): ReactNode => {
+    switch (id) {
+      case "experience":
+        return (
+          <ResumeSection title={t("experience")}>
+            {(document.experiences || []).map((experience) => (
+              <article className="resume-entry" key={experience.id}>
+                <div className="entry-heading"><h3>{experience.companyName}</h3><time>{formatPeriod(experience.startDate, experience.endDate, experience.isCurrent, t)}</time></div>
+                <p className="entry-context">{experience.context}</p>
+                {experience.tags && experience.tags.length > 0 && (
+                  <div className="entry-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '4px 0 8px', opacity: 0.6, fontSize: '0.85em' }}>
+                    {experience.tags.map(tag => (
+                      <span key={tag} style={{ padding: '0 6px', fontStyle: 'italic' }}>• {tag}</span>
+                    ))}
+                  </div>
+                )}
+                <ul>{experience.activities.map((activity) => <li key={activity}>{activity}</li>)}</ul>
+              </article>
+            ))}
+          </ResumeSection>
+        );
 
-          if (mode === "treemap") {
+      case "education": {
+        const sidebarStyle = document.sidebarAcademicStyle || document.theme.sidebarAcademicStyle || "shrink";
+
+        if (isSidebar) {
+          if (sidebarStyle === "shrink") {
             return (
-              <div className="education-treemap-entry" key={edu.id} style={{ marginBottom: "calc(var(--resume-item-spacing) * 1.2)", position: "relative" }}>
-                {/* Level 0: Institution Node */}
-                <div className="treemap-level-root" style={{ display: "flex", alignItems: "baseline", gap: "6px", fontWeight: 600, fontSize: "1em", color: "var(--resume-text)" }}>
-                  <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.9em", flexShrink: 0 }}>📁</span>
-                  <span style={{ letterSpacing: "0.01em" }}>{edu.institution}</span>
+              <ResumeSection title={t("education")}>
+                <div className="sidebar-shrink-education-list" style={{ display: "grid", gap: "var(--resume-sidebar-section-spacing, 6mm)" }}>
+                  {(document.education || []).map((edu) => {
+                    const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
+                    return (
+                      <div key={edu.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.05fr 1fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
+                        <div className="shrink-left" style={{ fontWeight: 600, color: "var(--resume-text)", wordBreak: "break-word" }}>
+                          {edu.institution}
+                        </div>
+                        <div className="shrink-right" style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                          <time style={{ fontSize: "0.82em", opacity: 0.7, color: "var(--resume-accent)", fontWeight: 500 }}>{formattedDate}</time>
+                          <span style={{ fontSize: "0.9em", fontWeight: 500, color: "var(--resume-text)", wordBreak: "break-word" }}>{edu.degree}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-
-                {/* Tree Branches Container */}
-                <div className="treemap-branches" style={{ marginLeft: "7px", paddingLeft: "14px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "3px" }}>
-                  {/* Level 1: Degree Node */}
-                  <div className="treemap-level-degree" style={{ position: "relative", display: "flex", alignItems: "baseline", gap: "6px", fontSize: "0.9em", fontWeight: 500, color: "var(--resume-text)", paddingTop: "2px" }}>
-                    <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
-                    <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>├──</span>
-                    <span>{edu.degree}</span>
-                  </div>
-
-                  {/* Level 2: Date Leaf Node */}
-                  <div className="treemap-level-date" style={{ position: "relative", display: "flex", alignItems: "baseline", gap: "6px", fontSize: "0.8em", opacity: 0.65, fontStyle: "italic", paddingTop: "3px" }}>
-                    <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
-                    <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>└──</span>
-                    <time>{formattedDate}</time>
-                  </div>
-                </div>
-              </div>
+              </ResumeSection>
             );
           }
 
-          // Classic Mode
+          if (sidebarStyle === "treemap") {
+            return (
+              <ResumeSection title={t("education")}>
+                <div className="sidebar-treemap-education-list" style={{ display: "grid", gap: "calc(var(--resume-sidebar-section-spacing, 6mm) * 0.9)" }}>
+                  {(document.education || []).map((edu) => {
+                    const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
+                    return (
+                      <div key={edu.id} className="sidebar-treemap-entry" style={{ fontSize: "0.85em", lineHeight: 1.3 }}>
+                        <div style={{ fontWeight: 600, display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "4px", flexWrap: "wrap" }}>
+                          <span style={{ color: "var(--resume-text)" }}>📁 {edu.institution}</span>
+                          <span style={{ fontSize: "0.8em", opacity: 0.65, fontStyle: "italic", fontWeight: 400 }}>{formattedDate}</span>
+                        </div>
+                        <div style={{ marginLeft: "6px", paddingLeft: "8px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "2px", fontSize: "0.9em", fontWeight: 500, color: "var(--resume-text)" }}>
+                          <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
+                          {edu.degree}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </ResumeSection>
+            );
+          }
+
           return (
-            <article className="resume-entry compact education-classic-entry" key={edu.id} style={{ marginBottom: "var(--resume-item-spacing)" }}>
-              <div className="entry-heading" style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "6px" }}>
-                <h3 style={{ margin: 0, display: "inline" }}>{edu.institution}</h3>
-                <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontWeight: 400 }}>
-                  ({formattedDate})
-                </span>
-              </div>
-              <p style={{ margin: "2px 0 0", fontWeight: 500, fontSize: "0.95em" }}>{edu.degree}</p>
-            </article>
+            <ResumeSection title={t("education")}>
+              {(document.education || []).map((edu) => {
+                const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
+                return (
+                  <article className="resume-entry compact" key={edu.id} style={{ marginBottom: "var(--resume-sidebar-section-spacing, 6mm)" }}>
+                    <div className="entry-heading" style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                      <h3 style={{ margin: 0, fontSize: "0.95em" }}>{edu.institution}</h3>
+                      <time style={{ fontSize: "0.78em", opacity: 0.7 }}>{formattedDate}</time>
+                    </div>
+                    <p style={{ margin: "2px 0 0", fontWeight: 500, fontSize: "0.88em" }}>{edu.degree}</p>
+                  </article>
+                );
+              })}
+            </ResumeSection>
           );
-        })}
-      </ResumeSection>
-    ),
-    skills: (
-      <ResumeSection title={t("skills")}>
-        <div style={{ display: "grid", gap: "2mm" }}>
-          {document.hardSkills && (
-            <div>
-              <strong style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades duras</strong>
-              <p style={{ margin: 0 }}>{document.hardSkills}</p>
-            </div>
-          )}
-          {document.softSkills && (
-            <div>
-              <strong style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades blandas</strong>
-              <p style={{ margin: 0 }}>{document.softSkills}</p>
-            </div>
-          )}
-        </div>
-      </ResumeSection>
-    ),
-    languages: (
-      <ResumeSection title={t("languages")}>
-        <ul className="link-list">
-          {(document.languages || []).map((lang) => (
-            <li key={lang.id}>
-              <strong>{lang.name}:</strong> {lang.level}
-            </li>
-          ))}
-        </ul>
-      </ResumeSection>
-    ),
-    courses: (
-      <ResumeSection title={t("courses")}>
-        {document.courses.map((course) => <article className="resume-entry compact" key={course.id}><div className="entry-heading"><h3>{course.name}</h3><time>{course.obtainedOn}</time></div></article>)}
-      </ResumeSection>
-    ),
-    portfolio: (
-      <ResumeSection title={t("portfolio")}>
-        <ul className="link-list portfolio-list">
-          {document.portfolioLinks.map((link) => (
-            <li key={link.id} style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'flex-start' }}>
-              {link.icon && link.icon !== 'none' && (
-                <div style={{ marginTop: '2px' }}>
-                  <PortfolioIcon icon={link.icon} />
+        }
+
+        return (
+          <ResumeSection title={t("education")}>
+            {(document.education || []).map((edu) => {
+              const mode = document.educationDisplayMode || document.theme.educationDisplayMode || "classic";
+              const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
+
+              if (mode === "treemap") {
+                return (
+                  <div className="education-treemap-entry" key={edu.id} style={{ marginBottom: "calc(var(--resume-item-spacing) * 1.2)", position: "relative" }}>
+                    <div className="treemap-level-root" style={{ display: "flex", alignItems: "baseline", gap: "6px", fontWeight: 600, fontSize: "1em", color: "var(--resume-text)" }}>
+                      <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.9em", flexShrink: 0 }}>📁</span>
+                      <span style={{ letterSpacing: "0.01em" }}>{edu.institution}</span>
+                    </div>
+
+                    <div className="treemap-branches" style={{ marginLeft: "7px", paddingLeft: "14px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "3px" }}>
+                      <div className="treemap-level-degree" style={{ position: "relative", display: "flex", alignItems: "baseline", gap: "6px", fontSize: "0.9em", fontWeight: 500, color: "var(--resume-text)", paddingTop: "2px" }}>
+                        <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                        <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>├──</span>
+                        <span>{edu.degree}</span>
+                      </div>
+
+                      <div className="treemap-level-date" style={{ position: "relative", display: "flex", alignItems: "baseline", gap: "6px", fontSize: "0.8em", opacity: 0.65, fontStyle: "italic", paddingTop: "3px" }}>
+                        <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                        <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>└──</span>
+                        <time>{formattedDate}</time>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <article className="resume-entry compact education-classic-entry" key={edu.id} style={{ marginBottom: "var(--resume-item-spacing)" }}>
+                  <div className="entry-heading" style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "6px" }}>
+                    <h3 style={{ margin: 0, display: "inline" }}>{edu.institution}</h3>
+                    <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontWeight: 400 }}>
+                      ({formattedDate})
+                    </span>
+                  </div>
+                  <p style={{ margin: "2px 0 0", fontWeight: 500, fontSize: "0.95em" }}>{edu.degree}</p>
+                </article>
+              );
+            })}
+          </ResumeSection>
+        );
+      }
+
+      case "skills":
+        return (
+          <ResumeSection title={t("skills")}>
+            <div style={{ display: "grid", gap: "2mm" }}>
+              {document.hardSkills && (
+                <div>
+                  <strong style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades duras</strong>
+                  <p style={{ margin: 0 }}>{document.hardSkills}</p>
                 </div>
               )}
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <strong style={{ lineHeight: 1.2 }}>{link.label}</strong>
-                <a 
-                  href={link.url.startsWith('http') ? link.url : `https://${link.url}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  style={{ 
-                    fontSize: '0.85em', 
-                    opacity: 0.65, 
-                    color: 'inherit', 
-                    textDecoration: 'none', 
-                    wordBreak: 'break-all',
-                    lineHeight: 1.3,
-                    marginTop: '2px'
-                  }}
-                >
-                  {link.url}
-                </a>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </ResumeSection>
-    ),
+              {document.softSkills && (
+                <div>
+                  <strong style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades blandas</strong>
+                  <p style={{ margin: 0 }}>{document.softSkills}</p>
+                </div>
+              )}
+            </div>
+          </ResumeSection>
+        );
+
+      case "languages":
+        return (
+          <ResumeSection title={t("languages")}>
+            <ul className="link-list">
+              {(document.languages || []).map((lang) => (
+                <li key={lang.id}>
+                  <strong>{lang.name}:</strong> {lang.level}
+                </li>
+              ))}
+            </ul>
+          </ResumeSection>
+        );
+
+      case "courses": {
+        const sidebarStyle = document.sidebarAcademicStyle || document.theme.sidebarAcademicStyle || "shrink";
+
+        if (isSidebar) {
+          if (sidebarStyle === "shrink") {
+            return (
+              <ResumeSection title={t("courses")}>
+                <div className="sidebar-shrink-courses-list" style={{ display: "grid", gap: "var(--resume-sidebar-section-spacing, 6mm)" }}>
+                  {document.courses.map((course) => (
+                    <div key={course.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.05fr 1fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
+                      <div className="shrink-left" style={{ fontWeight: 600, color: "var(--resume-text)", wordBreak: "break-word" }}>
+                        {course.name}
+                      </div>
+                      <div className="shrink-right" style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                        <time style={{ fontSize: "0.82em", opacity: 0.7, color: "var(--resume-accent)", fontWeight: 500 }}>{course.obtainedOn}</time>
+                        {course.credentialUrl && (
+                          <a 
+                            href={course.credentialUrl.startsWith("http") ? course.credentialUrl : `https://${course.credentialUrl}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ fontSize: "0.78em", opacity: 0.65, color: "inherit", textDecoration: "none", wordBreak: "break-all" }}
+                          >
+                            🔗 Certificado
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ResumeSection>
+            );
+          }
+
+          if (sidebarStyle === "treemap") {
+            return (
+              <ResumeSection title={t("courses")}>
+                <div className="sidebar-treemap-courses-list" style={{ display: "grid", gap: "calc(var(--resume-sidebar-section-spacing, 6mm) * 0.9)" }}>
+                  {document.courses.map((course) => (
+                    <div key={course.id} className="sidebar-treemap-entry" style={{ fontSize: "0.85em", lineHeight: 1.3 }}>
+                      <div style={{ fontWeight: 600, display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "4px", flexWrap: "wrap" }}>
+                        <span style={{ color: "var(--resume-text)" }}>📜 {course.name}</span>
+                        <span style={{ fontSize: "0.8em", opacity: 0.65, fontStyle: "italic", fontWeight: 400 }}>{course.obtainedOn}</span>
+                      </div>
+                      {course.credentialUrl && (
+                        <div style={{ marginLeft: "6px", paddingLeft: "8px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "2px", fontSize: "0.82em", opacity: 0.75 }}>
+                          <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
+                          <a href={course.credentialUrl.startsWith("http") ? course.credentialUrl : `https://${course.credentialUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none", wordBreak: "break-all" }}>
+                            Certificado
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </ResumeSection>
+            );
+          }
+
+          return (
+            <ResumeSection title={t("courses")}>
+              {document.courses.map((course) => (
+                <article className="resume-entry compact" key={course.id} style={{ marginBottom: "var(--resume-sidebar-section-spacing, 6mm)" }}>
+                  <div className="entry-heading" style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                    <h3 style={{ margin: 0, fontSize: "0.95em" }}>{course.name}</h3>
+                    <time style={{ fontSize: "0.78em", opacity: 0.7 }}>{course.obtainedOn}</time>
+                  </div>
+                </article>
+              ))}
+            </ResumeSection>
+          );
+        }
+
+        return (
+          <ResumeSection title={t("courses")}>
+            {document.courses.map((course) => (
+              <article className="resume-entry compact" key={course.id}>
+                <div className="entry-heading"><h3>{course.name}</h3><time>{course.obtainedOn}</time></div>
+              </article>
+            ))}
+          </ResumeSection>
+        );
+      }
+
+      case "portfolio":
+        return (
+          <ResumeSection title={t("portfolio")}>
+            <ul className="link-list portfolio-list">
+              {document.portfolioLinks.map((link) => (
+                <li key={link.id} style={{ display: 'flex', gap: '8px', marginBottom: '8px', alignItems: 'flex-start' }}>
+                  {link.icon && link.icon !== 'none' && (
+                    <div style={{ marginTop: '2px' }}>
+                      <PortfolioIcon icon={link.icon} />
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <strong style={{ lineHeight: 1.2 }}>{link.label}</strong>
+                    <a 
+                      href={link.url.startsWith('http') ? link.url : `https://${link.url}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ 
+                        fontSize: '0.85em', 
+                        opacity: 0.65, 
+                        color: 'inherit', 
+                        textDecoration: 'none', 
+                        wordBreak: 'break-all',
+                        lineHeight: 1.3,
+                        marginTop: '2px'
+                      }}
+                    >
+                      {link.url}
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </ResumeSection>
+        );
+    }
   };
 
   const visibleSections = document.sections.filter((s) => s.inBody || s.inSidebar);
@@ -253,7 +406,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                 )}
                 {pageSidebarSections.length > 0 && isChronological && (
                   <div className="sidebar-sections" style={{ marginTop: isFirstPage ? "8mm" : "0" }}>
-                    {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+                    {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{renderSection(id as Exclude<ResumeSectionId, "summary">, true)}</div>)}
                   </div>
                 )}
               </header>
@@ -271,14 +424,14 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                 
                 {hasSidebar && !isChronological && (
                   <div className="sidebar-sections">
-                    {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{sections[id as Exclude<ResumeSectionId, "summary">]}</div>)}
+                    {pageSidebarSections.map(({ id }) => <div key={id} className="sidebar-section-wrap">{renderSection(id as Exclude<ResumeSectionId, "summary">, true)}</div>)}
                   </div>
                 )}
 
                 <div className="main-sections">
                   {pageMainSections.map(({ id }) => (
                     <div key={id}>
-                      {sections[id as Exclude<ResumeSectionId, "summary">]}
+                      {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}
                     </div>
                   ))}
                 </div>

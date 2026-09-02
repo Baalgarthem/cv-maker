@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { DragEvent } from "react";
-import type { ResumeSection, ResumeSectionId } from "../../types/resume";
+import { useTranslation } from "../../i18n/LanguageContext";
+import type { ResumeSection, ResumeSectionId, SidebarAcademicStyle } from "../../types/resume";
 
 interface SectionOrderProps {
   sections: ResumeSection[];
@@ -9,9 +10,21 @@ interface SectionOrderProps {
   onToggleSidebar: (sectionId: ResumeSectionId) => void;
   onUpdatePage: (sectionId: ResumeSectionId, page: number) => void;
   templateId: string;
+  sidebarAcademicStyle?: SidebarAcademicStyle;
+  onUpdateSidebarAcademicStyle?: (style: SidebarAcademicStyle) => void;
 }
 
-export function SectionOrder({ sections, onMove, onToggleBody, onToggleSidebar, onUpdatePage, templateId }: SectionOrderProps) {
+export function SectionOrder({ 
+  sections, 
+  onMove, 
+  onToggleBody, 
+  onToggleSidebar, 
+  onUpdatePage, 
+  templateId,
+  sidebarAcademicStyle,
+  onUpdateSidebarAcademicStyle
+}: SectionOrderProps) {
+  const { t } = useTranslation();
   const [draggedId, setDraggedId] = useState<ResumeSectionId | null>(null);
 
   const handleDrop = (event: DragEvent, targetId: ResumeSectionId) => {
@@ -87,6 +100,23 @@ export function SectionOrder({ sections, onMove, onToggleBody, onToggleSidebar, 
           );
         })}
       </ol>
+
+      {hasSidebar && onUpdateSidebarAcademicStyle && (
+        <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed #d6d2ca' }}>
+          <label style={{ display: 'grid', gap: '6px', fontSize: '0.82rem', fontWeight: 650, color: '#445064' }}>
+            {t("sidebarAcademicStyle")}
+            <select
+              value={sidebarAcademicStyle || "shrink"}
+              onChange={(e) => onUpdateSidebarAcademicStyle(e.target.value as any)}
+              style={{ padding: '6px 8px', borderRadius: '4px', border: '1px solid #cac6be', fontSize: '0.84rem' }}
+            >
+              <option value="shrink">{t("sidebarAcademicStyleShrink")}</option>
+              <option value="treemap">{t("sidebarAcademicStyleTreemap")}</option>
+              <option value="classic">{t("sidebarAcademicStyleClassic")}</option>
+            </select>
+          </label>
+        </div>
+      )}
     </section>
   );
 }

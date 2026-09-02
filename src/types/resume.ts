@@ -61,6 +61,7 @@ export interface Language {
 export type ResumeSectionId = "summary" | "experience" | "education" | "skills" | "languages" | "courses" | "portfolio";
 export type ContactDisplayMode = "icons" | "text";
 export type EducationDisplayMode = "classic" | "treemap";
+export type SidebarAcademicStyle = "shrink" | "treemap" | "classic";
 export type ProfileFrameStyle = "none" | "hexagon" | "top-bottom" | "circle" | "square";
 
 export interface ResumeSection {
@@ -103,6 +104,7 @@ export interface ResumeTheme {
   pictureAlignment?: 'left' | 'center' | 'right';
   pageSize: "A4" | "LETTER";
   educationDisplayMode?: EducationDisplayMode;
+  sidebarAcademicStyle?: SidebarAcademicStyle;
 }
 
 export interface ResumeDocument {
@@ -123,6 +125,7 @@ export interface ResumeDocument {
   templateVersion?: string;
   contactDisplayMode: ContactDisplayMode;
   educationDisplayMode?: EducationDisplayMode;
+  sidebarAcademicStyle?: SidebarAcademicStyle;
   theme: ResumeTheme;
 }
 

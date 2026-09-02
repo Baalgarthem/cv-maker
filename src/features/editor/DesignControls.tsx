@@ -120,6 +120,15 @@ export function DesignControls({ theme, onChange }: DesignControlsProps) {
             <option value="right">{t("sidebarRight")}</option>
           </select>
         </label>
+
+        <label style={{ marginTop: 16 }}>
+          {t("sidebarAcademicStyle")}
+          <select value={theme.sidebarAcademicStyle || "shrink"} onChange={(event) => onChange({ sidebarAcademicStyle: event.target.value as any })}>
+            <option value="shrink">{t("sidebarAcademicStyleShrink")}</option>
+            <option value="treemap">{t("sidebarAcademicStyleTreemap")}</option>
+            <option value="classic">{t("sidebarAcademicStyleClassic")}</option>
+          </select>
+        </label>
       </div>
 
       <div className="design-subsection">

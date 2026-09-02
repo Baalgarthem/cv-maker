@@ -138,11 +138,16 @@ export function ProfileManager({
                         }}
                         style={{ 
                           cursor: isEditing ? 'text' : 'grab', 
-                          padding: '10px 12px', 
+                          padding: '8px 10px', 
                           minHeight: 'auto', 
                           display: 'flex', 
                           alignItems: 'center', 
                           justifyContent: 'space-between',
+                          gap: '6px',
+                          width: '100%',
+                          minWidth: 0,
+                          boxSizing: 'border-box',
+                          overflow: 'hidden',
                           opacity: isDragging ? 0.35 : 1,
                           transform: isDragging ? 'scale(0.98)' : 'none',
                           transition: 'opacity 0.15s, transform 0.15s'
@@ -170,6 +175,8 @@ export function ProfileManager({
                               borderRadius: '4px', 
                               border: '1px solid var(--accent-color, #17243b)', 
                               width: '100%',
+                              minWidth: 0,
+                              boxSizing: 'border-box',
                               fontWeight: 600
                             }}
                           />
@@ -181,18 +188,18 @@ export function ProfileManager({
                               setEditingTitle(doc.title);
                             }}
                             title="Doble clic para renombrar"
-                            style={{ fontSize: '0.85rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, marginRight: '6px' }}
+                            style={{ fontSize: '0.85rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: '1 1 auto', minWidth: 0, marginRight: '4px' }}
                           >
                             📄 {doc.title}
                           </strong>
                         )}
                         
                         {doc.id === activeDocId && !isEditing && (
-                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                          <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexShrink: 0 }}>
                             <button 
                               className="text-button"
                               title="Renombrar CV"
-                              style={{ padding: 0, minWidth: 'auto', fontSize: '0.75rem', color: '#64748b' }}
+                              style={{ padding: '0 2px', minWidth: 'auto', fontSize: '0.72rem', color: '#64748b' }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditingDocId(doc.id);
@@ -203,7 +210,7 @@ export function ProfileManager({
                             </button>
                             <button 
                               className="text-button"
-                              style={{ padding: 0, minWidth: 'auto', fontSize: '0.75rem', color: 'var(--accent-color)' }}
+                              style={{ padding: '0 2px', minWidth: 'auto', fontSize: '0.72rem', color: 'var(--accent-color)' }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const title = prompt("Nombre del CV duplicado", `${doc.title} (Copia)`);
@@ -215,7 +222,7 @@ export function ProfileManager({
                             {documents.length > 1 && (
                               <button 
                                 className="text-button"
-                                style={{ padding: 0, minWidth: 'auto', fontSize: '0.75rem', color: '#ef4444' }}
+                                style={{ padding: '0 2px', minWidth: 'auto', fontSize: '0.72rem', color: '#ef4444' }}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   if (confirm(`¿Eliminar permanentemente "${doc.title}"?`)) deleteDocument(doc.id);
