@@ -133,11 +133,11 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                         const formattedDate = formatPeriod(exp.startDate, exp.endDate, exp.isCurrent, t);
                         const isLast = expIdx === group.items.length - 1;
                         return (
-                          <div key={exp.id} style={{ position: "relative", marginBottom: isLast ? "0" : "8px", paddingTop: "2px" }}>
-                            <div style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.95em", fontWeight: 500, color: "var(--resume-text)" }}>
-                              <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
-                              <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{isLast ? "└──" : "├──"}</span>
-                              <span>{exp.context || exp.companyName}</span>
+                          <div key={exp.id} className="treemap-item-wrapper" style={{ position: "relative", marginBottom: isLast ? "0" : "8px", paddingTop: "2px" }}>
+                            <div className="treemap-item-row" style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.95em", fontWeight: 500, color: "var(--resume-text)" }}>
+                              <span className="treemap-tick" style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                              <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{isLast ? "└──" : "├──"}</span>
+                              <span className="treemap-name">{exp.context || exp.companyName}</span>
                               {showExpDates && formattedDate && (
                                 <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontStyle: "italic", fontWeight: 400 }}>
                                   ({formattedDate})
@@ -228,11 +228,11 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                         const formattedDate = formatPeriod(edu.startDate, edu.endDate, edu.isCurrent, t);
                         const isLast = eduIdx === group.items.length - 1;
                         return (
-                          <div key={edu.id} style={{ position: "relative", marginBottom: isLast ? "0" : "6px", paddingTop: "2px" }}>
-                            <div style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.92em", fontWeight: 500, color: "var(--resume-text)" }}>
-                              <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
-                              <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{isLast ? "└──" : "├──"}</span>
-                              <span>{edu.degree}</span>
+                          <div key={edu.id} className="treemap-item-wrapper" style={{ position: "relative", marginBottom: isLast ? "0" : "6px", paddingTop: "2px" }}>
+                            <div className="treemap-item-row" style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.92em", fontWeight: 500, color: "var(--resume-text)" }}>
+                              <span className="treemap-tick" style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                              <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{isLast ? "└──" : "├──"}</span>
+                              <span className="treemap-name">{edu.degree}</span>
                               {showEduDates && formattedDate && (
                                 <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontStyle: "italic", fontWeight: 400 }}>
                                   ({formattedDate})
@@ -329,14 +329,14 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               <div className="sidebar-shrink-list" style={{ display: "grid", gap: "var(--resume-sidebar-section-spacing, 6mm)" }}>
                 {document.hardSkills && (
                   <div className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.8fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
-                    <strong style={{ color: "var(--resume-accent)", fontSize: "0.9em" }}>Duras</strong>
-                    <span style={{ fontSize: "0.88em", lineHeight: 1.35, color: "var(--resume-text)" }}>{document.hardSkills}</span>
+                    <strong className="shrink-left" style={{ color: "var(--resume-accent)", fontSize: "0.9em" }}>Duras</strong>
+                    <span className="shrink-right" style={{ fontSize: "0.88em", lineHeight: 1.35, color: "var(--resume-text)" }}>{document.hardSkills}</span>
                   </div>
                 )}
                 {document.softSkills && (
                   <div className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1fr 1.8fr", gap: "6px", alignItems: "start", fontSize: "0.85em", lineHeight: 1.25 }}>
-                    <strong style={{ color: "var(--resume-accent)", fontSize: "0.9em" }}>Blandas</strong>
-                    <span style={{ fontSize: "0.88em", lineHeight: 1.35, color: "var(--resume-text)" }}>{document.softSkills}</span>
+                    <strong className="shrink-left" style={{ color: "var(--resume-accent)", fontSize: "0.9em" }}>Blandas</strong>
+                    <span className="shrink-right" style={{ fontSize: "0.88em", lineHeight: 1.35, color: "var(--resume-text)" }}>{document.softSkills}</span>
                   </div>
                 )}
               </div>
@@ -346,17 +346,17 @@ export function ResumePreview({ document }: ResumePreviewProps) {
 
         return (
           <ResumeSection title={t("skills")}>
-            <div style={{ display: "grid", gap: "2mm" }}>
+            <div className="skills-classic-list" style={{ display: "grid", gap: "2mm" }}>
               {document.hardSkills && (
-                <div>
-                  <strong style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades duras</strong>
-                  <p style={{ margin: 0 }}>{document.hardSkills}</p>
+                <div className="skills-classic-row">
+                  <strong className="skills-classic-label" style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades duras</strong>
+                  <p className="skills-classic-desc" style={{ margin: 0 }}>{document.hardSkills}</p>
                 </div>
               )}
               {document.softSkills && (
-                <div>
-                  <strong style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades blandas</strong>
-                  <p style={{ margin: 0 }}>{document.softSkills}</p>
+                <div className="skills-classic-row">
+                  <strong className="skills-classic-label" style={{ display: "block", marginBottom: "1mm", color: "var(--resume-accent)" }}>Habilidades blandas</strong>
+                  <p className="skills-classic-desc" style={{ margin: 0 }}>{document.softSkills}</p>
                 </div>
               )}
             </div>
@@ -371,10 +371,10 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               <div className={isSidebar ? "sidebar-treemap-list" : "main-treemap-list"} style={{ display: "grid", gap: "calc(var(--resume-sidebar-section-spacing, 6mm) * 0.9)" }}>
                 {(document.languages || []).map((lang) => (
                   <div key={lang.id} className="sidebar-treemap-entry" style={{ fontSize: "0.85em", lineHeight: 1.3 }}>
-                    <div style={{ fontWeight: 600, color: "var(--resume-text)" }}>🌐 {lang.name}</div>
-                    <div style={{ marginLeft: "6px", paddingLeft: "8px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "2px", fontSize: "0.88em", color: "var(--resume-accent)", fontWeight: 500 }}>
-                      <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
-                      {lang.level}
+                    <div className="treemap-level-root" style={{ fontWeight: 600, color: "var(--resume-text)" }}>🌐 {lang.name}</div>
+                    <div className="treemap-branches" style={{ marginLeft: "6px", paddingLeft: "8px", borderLeft: "1.5px solid var(--resume-separator-color)", marginTop: "2px", fontSize: "0.88em", color: "var(--resume-accent)", fontWeight: 500 }}>
+                      <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
+                      <span className="treemap-name">{lang.level}</span>
                     </div>
                   </div>
                 ))}
@@ -389,8 +389,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
               <div className="sidebar-shrink-list" style={{ display: "grid", gap: "calc(var(--resume-sidebar-section-spacing, 6mm) * 0.8)" }}>
                 {(document.languages || []).map((lang) => (
                   <div key={lang.id} className="sidebar-shrink-card" style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: "6px", alignItems: "baseline", fontSize: "0.85em" }}>
-                    <strong style={{ color: "var(--resume-text)", fontSize: "0.92em" }}>{lang.name}</strong>
-                    <span style={{ color: "var(--resume-accent)", fontWeight: 600, fontSize: "0.85em", textAlign: "right" }}>{lang.level}</span>
+                    <strong className="shrink-left" style={{ color: "var(--resume-text)", fontSize: "0.92em" }}>{lang.name}</strong>
+                    <span className="shrink-right" style={{ color: "var(--resume-accent)", fontWeight: 600, fontSize: "0.85em", textAlign: "right" }}>{lang.level}</span>
                   </div>
                 ))}
               </div>
@@ -402,8 +402,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
           <ResumeSection title={t("languages")}>
             <ul className="link-list">
               {(document.languages || []).map((lang) => (
-                <li key={lang.id}>
-                  <strong>{lang.name}:</strong> {lang.level}
+                <li key={lang.id} className="lang-entry-row">
+                  <strong className="lang-name">{lang.name}:</strong> <span className="lang-level">{lang.level}</span>
                 </li>
               ))}
             </ul>
@@ -428,11 +428,11 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                       {group.courses.map((course, cIdx) => {
                         const isLast = cIdx === group.courses.length - 1;
                         return (
-                          <div key={course.id} style={{ position: "relative", marginBottom: isLast ? "0" : "6px", paddingTop: "2px" }}>
-                            <div style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.92em", fontWeight: 500, color: "var(--resume-text)" }}>
-                              <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
-                              <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{isLast && !course.credentialUrl ? "└──" : "├──"}</span>
-                              <span>{course.name}</span>
+                          <div key={course.id} className="treemap-item-wrapper" style={{ position: "relative", marginBottom: isLast ? "0" : "6px", paddingTop: "2px" }}>
+                            <div className="treemap-item-row" style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.92em", fontWeight: 500, color: "var(--resume-text)" }}>
+                              <span className="treemap-tick" style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>
+                              <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{isLast && !course.credentialUrl ? "└──" : "├──"}</span>
+                              <span className="treemap-name">{course.name}</span>
                               {showCourseDates && course.obtainedOn && (
                                 <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontStyle: "italic", fontWeight: 400 }}>
                                   ({course.obtainedOn})
@@ -440,8 +440,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                               )}
                             </div>
                             {course.credentialUrl && (
-                              <div style={{ marginLeft: "18px", marginTop: "2px", fontSize: "0.8em" }}>
-                                <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
+                              <div className="treemap-sub-branch" style={{ marginLeft: "18px", marginTop: "2px", fontSize: "0.8em" }}>
+                                <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
                                 <a 
                                   href={course.credentialUrl.startsWith("http") ? course.credentialUrl : `https://${course.credentialUrl}`} 
                                   target="_blank" 
@@ -471,11 +471,11 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                       {withoutInstitution.map((course, cIdx) => {
                         const isLast = cIdx === withoutInstitution.length - 1;
                         return (
-                          <div key={course.id} style={{ position: "relative", marginBottom: isLast ? "0" : "6px", paddingTop: "2px" }}>
-                            <div style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.92em", fontWeight: 500, color: "var(--resume-text)" }}>
-                              {withInstitution.length > 0 && <span style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>}
-                              <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{withInstitution.length > 0 ? (isLast && !course.credentialUrl ? "└──" : "├──") : "•"}</span>
-                              <span>{course.name}</span>
+                          <div key={course.id} className="treemap-item-wrapper" style={{ position: "relative", marginBottom: isLast ? "0" : "6px", paddingTop: "2px" }}>
+                            <div className="treemap-item-row" style={{ display: "flex", alignItems: "baseline", flexWrap: "wrap", gap: "6px", fontSize: isSidebar ? "0.85em" : "0.92em", fontWeight: 500, color: "var(--resume-text)" }}>
+                              {withInstitution.length > 0 && <span className="treemap-tick" style={{ position: "absolute", left: "-14px", top: "10px", width: "10px", height: "1.5px", background: "var(--resume-separator-color)" }}></span>}
+                              <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", fontSize: "0.85em", flexShrink: 0 }}>{withInstitution.length > 0 ? (isLast && !course.credentialUrl ? "└──" : "├──") : "•"}</span>
+                              <span className="treemap-name">{course.name}</span>
                               {showCourseDates && course.obtainedOn && (
                                 <span className="ghost-date" style={{ opacity: 0.65, fontSize: "0.85em", fontStyle: "italic", fontWeight: 400 }}>
                                   ({course.obtainedOn})
@@ -483,8 +483,8 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                               )}
                             </div>
                             {course.credentialUrl && (
-                              <div style={{ marginLeft: "18px", marginTop: "2px", fontSize: "0.8em" }}>
-                                <span style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
+                              <div className="treemap-sub-branch" style={{ marginLeft: "18px", marginTop: "2px", fontSize: "0.8em" }}>
+                                <span className="treemap-symbol" style={{ color: "var(--resume-accent)", fontFamily: "monospace", marginRight: "3px" }}>└──</span>
                                 <a 
                                   href={course.credentialUrl.startsWith("http") ? course.credentialUrl : `https://${course.credentialUrl}`} 
                                   target="_blank" 
