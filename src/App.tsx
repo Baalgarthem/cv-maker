@@ -13,7 +13,7 @@ export function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [zoom, setZoom] = useState(100);
   const { 
-    document, moveSection, replaceDocument, toggleSectionBody, toggleSectionSidebar, updateSectionPage, updateTheme, updateTemplateId, updateTemplateVersion,
+    document, moveSection, replaceDocument, toggleSectionBody, toggleSectionSidebar, updateSectionPage, updateSectionSide, updateTheme, updateTemplateId, updateTemplateVersion,
     profileFolders, documents, activeDocId, setActiveDocId, createFolder, createDocument, duplicateDocument, deleteDocument, loadMetadata,
     changeDocumentFolder, renameDocument
   } = useResumeEditor(sampleResume);
@@ -40,7 +40,7 @@ export function App() {
           <h1>Hazlo tuyo.</h1>
           <p>Edita la identidad visual, reorganiza el contenido y prepara el PDF.</p>
         </div>
-                  <div className="header-actions">
+        <div className="header-actions">
           <select value={language} onChange={(e) => setLanguage(e.target.value as 'en' | 'es')} style={{ border: '1px solid #17243b', color: '#17243b', background: 'transparent' }}>
             <option value="es">ES</option>
             <option value="en">EN</option>
@@ -67,35 +67,56 @@ export function App() {
           />
 
           <section className="control-group" aria-labelledby="template-title">
-            <div className="control-heading"><span>01</span><h2 id="template-title">Formato</h2></div>
-            <div className="template-list">
-              {templates.map(template => (
-                <div key={template.id}>
-                  <div className={`template-card ${document.templateId === template.id ? 'is-selected' : ''}`} onClick={() => updateTemplateId(template.id)} style={{ cursor: 'pointer', marginBottom: '8px' }}>
-                    <span className="template-monogram">{template.name.substring(0, 2)}</span>
-                    <div><strong>{template.name}</strong><p>{template.description}</p></div>
-                  </div>
-                  {document.templateId === template.id && template.versions && template.versions.length > 1 && (
-                    <div className="template-versions" style={{ display: 'flex', gap: '8px', marginBottom: '16px', marginLeft: '12px', flexWrap: 'wrap' }}>
-                      {template.versions.map(v => (
-                        <button 
-                          key={v.id} 
-                          type="button"
-                          onClick={() => updateTemplateVersion(v.id)}
-                          style={{ 
-                            padding: '6px 12px', 
-                            borderRadius: '16px', 
-                            border: `1px solid ${(document.templateVersion || 'v1') === v.id ? '#9a6b35' : '#ccc'}`,
-                            background: (document.templateVersion || 'v1') === v.id ? '#fffaf3' : '#fff',
-                            color: (document.templateVersion || 'v1') === v.id ? '#9a6b35' : '#555',
-                            fontSize: '0.8rem',
-                            cursor: 'pointer'
-                          }}
-                          title={v.description}
+            <div className="control-heading">
+              <span>01</span>
+              <h2 id="template-title">{t("template")}</h2>
+            </div>
+            <div className="template-grid" style={{ display: "grid", gap: "10px" }}>
+              {templates.map((tpl) => (
+                <div key={tpl.id} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <label
+                    className="template-card"
+                    style={{
+                      borderColor: tpl.id === document.templateId ? "var(--resume-accent, #9a6b35)" : "#dedad2",
+                      background: tpl.id === document.templateId ? "#fffaf3" : "white",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                      padding: "10px",
+                      borderRadius: "6px",
+                      border: "1px solid"
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="template-choice"
+                      value={tpl.id}
+                      checked={tpl.id === document.templateId}
+                      onChange={() => updateTemplateId(tpl.id)}
+                      style={{ display: "none" }}
+                    />
+                    <div className="template-monogram">{tpl.name.slice(0, 2).toUpperCase()}</div>
+                    <div>
+                      <strong style={{ display: "block", fontSize: "0.95rem" }}>{tpl.name}</strong>
+                      <span style={{ fontSize: "0.78rem", color: "#666" }}>{tpl.description}</span>
+                    </div>
+                  </label>
+
+                  {tpl.id === document.templateId && tpl.versions && tpl.versions.length > 1 && (
+                    <div style={{ paddingLeft: "12px", marginTop: "2px" }}>
+                      <label style={{ fontSize: "0.8rem", color: "#555", display: "flex", alignItems: "center", gap: "6px" }}>
+                        Variante:
+                        <select
+                          value={document.templateVersion || "v1"}
+                          onChange={(e) => updateTemplateVersion(e.target.value)}
+                          style={{ fontSize: "0.8rem", padding: "2px 6px", borderRadius: "4px", border: "1px solid #ccc" }}
                         >
-                          {v.name}
-                        </button>
-                      ))}
+                          {tpl.versions.map((v) => (
+                            <option key={v.id} value={v.id}>{v.name}</option>
+                          ))}
+                        </select>
+                      </label>
                     </div>
                   )}
                 </div>
@@ -110,6 +131,7 @@ export function App() {
             onToggleBody={toggleSectionBody} 
             onToggleSidebar={toggleSectionSidebar}
             onUpdatePage={updateSectionPage}
+            onUpdateSide={updateSectionSide}
             templateId={document.templateId}
             sidebarAcademicStyle={document.sidebarAcademicStyle || document.theme.sidebarAcademicStyle || "shrink"}
             onUpdateSidebarAcademicStyle={(style) => {

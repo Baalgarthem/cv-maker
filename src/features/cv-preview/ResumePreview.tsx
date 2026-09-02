@@ -676,6 +676,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
   const maxPage = Math.max(1, ...visibleSections.map(s => s.page || 1));
   const pages = Array.from({ length: maxPage }, (_, i) => i + 1);
   const isChronological = template.id === "chronological";
+  const isMindmap = template.id === "mindmap";
 
   return (
     <>
@@ -762,13 +763,36 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                   </div>
                 )}
 
-                <div className="main-sections">
-                  {pageMainSections.map(({ id }) => (
-                    <div key={id}>
-                      {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}
+                {isMindmap ? (
+                  <div className="main-sections">
+                    <div className="mindmap-col-left">
+                      {pageMainSections
+                        .filter((s, idx) => (s.side ? s.side === "left" : (idx % 2 === 0)))
+                        .map(({ id }) => (
+                          <div key={id} data-side="left" className="mindmap-branch-left">
+                            {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}
+                          </div>
+                        ))}
                     </div>
-                  ))}
-                </div>
+                    <div className="mindmap-col-right">
+                      {pageMainSections
+                        .filter((s, idx) => (s.side ? s.side === "right" : (idx % 2 === 1)))
+                        .map(({ id }) => (
+                          <div key={id} data-side="right" className="mindmap-branch-right">
+                            {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="main-sections">
+                    {pageMainSections.map(({ id }) => (
+                      <div key={id}>
+                        {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </article>
           );

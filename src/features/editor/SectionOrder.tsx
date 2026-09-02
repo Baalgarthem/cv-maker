@@ -9,6 +9,7 @@ interface SectionOrderProps {
   onToggleBody: (sectionId: ResumeSectionId) => void;
   onToggleSidebar: (sectionId: ResumeSectionId) => void;
   onUpdatePage: (sectionId: ResumeSectionId, page: number) => void;
+  onUpdateSide?: (sectionId: ResumeSectionId, side: "left" | "right" | "none") => void;
   templateId: string;
   sidebarAcademicStyle?: SidebarAcademicStyle;
   onUpdateSidebarAcademicStyle?: (style: SidebarAcademicStyle) => void;
@@ -22,6 +23,7 @@ export function SectionOrder({
   onToggleBody, 
   onToggleSidebar, 
   onUpdatePage, 
+  onUpdateSide,
   templateId,
   sidebarAcademicStyle,
   onUpdateSidebarAcademicStyle,
@@ -38,9 +40,7 @@ export function SectionOrder({
   };
 
   const hasSidebar = templateId === "chronological" || templateId === "mixed";
-  
-  // Highest page currently used by any visible section
-  const currentMaxPage = Math.max(1, ...sections.filter(s => s.inBody || s.inSidebar).map(s => s.page || 1));
+  const isMindmap = templateId === "mindmap";
 
   return (
     <section className="control-group" aria-labelledby="sections-title">
@@ -50,7 +50,7 @@ export function SectionOrder({
       </div>
       <p className="control-help">Arrastra cada bloque para cambiar el orden o envíalos a una nueva página.</p>
       <ol className="section-list">
-        {sections.filter((s) => s.id !== "summary").map((section) => {
+        {sections.filter((s) => s.id !== "summary").map((section, index) => {
           const sectionPage = section.page || 1;
           
           // To prevent empty pages, the maximum page this section can move to is 
@@ -96,10 +96,33 @@ export function SectionOrder({
               ) : (
                 hasSidebar ? <span /> : null
               )}
-              <label className="visibility-toggle">
-                <input type="checkbox" checked={section.inBody} onChange={() => onToggleBody(section.id)} />
-                Cuerpo
-              </label>
+
+              {isMindmap ? (
+                <select
+                  value={!section.inBody ? "none" : (section.side || (index % 2 === 0 ? "left" : "right"))}
+                  onChange={(e) => onUpdateSide ? onUpdateSide(section.id, e.target.value as "left" | "right" | "none") : null}
+                  style={{
+                    fontSize: "0.74rem",
+                    fontWeight: 600,
+                    padding: "2px 4px",
+                    borderRadius: "4px",
+                    border: "1px solid #cac6be",
+                    background: !section.inBody ? "#f0eee9" : ((section.side || (index % 2 === 0 ? "left" : "right")) === "right" ? "#f2f7ff" : "#fff8f0"),
+                    color: !section.inBody ? "#888" : ((section.side || (index % 2 === 0 ? "left" : "right")) === "right" ? "#295b9a" : "#9a6b35"),
+                    cursor: "pointer"
+                  }}
+                  title="Lado en el mapa conceptual"
+                >
+                  <option value="left">◧ Izquierdo</option>
+                  <option value="right">◨ Derecho</option>
+                  <option value="none">⊘ Ocultar</option>
+                </select>
+              ) : (
+                <label className="visibility-toggle">
+                  <input type="checkbox" checked={section.inBody} onChange={() => onToggleBody(section.id)} />
+                  Cuerpo
+                </label>
+              )}
             </li>
           );
         })}

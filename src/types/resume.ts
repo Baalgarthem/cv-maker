@@ -71,6 +71,7 @@ export interface ResumeSection {
   label: string;
   inBody: boolean;
   inSidebar?: boolean;
+  side?: "left" | "right";
   page?: number;
 }
 

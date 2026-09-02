@@ -209,6 +209,21 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     }));
   };
 
+  const updateSectionSide = (sectionId: ResumeSectionId, side: "left" | "right" | "none") => {
+    updateActiveDocument(current => ({
+      ...current,
+      sections: current.sections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              side: side === "none" ? undefined : side,
+              inBody: side !== "none",
+            }
+          : section
+      ),
+    }));
+  };
+
   const updateTemplateId = (templateId: string) => {
     updateActiveDocument(current => ({ ...current, templateId, templateVersion: "v1" }));
   };
@@ -273,6 +288,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
     toggleSectionBody,
     toggleSectionSidebar,
     updateSectionPage,
+    updateSectionSide,
     updateTheme,
     updateTemplateId,
     updateTemplateVersion,
