@@ -218,6 +218,7 @@ export function useResumeEditor(initialDocument: ResumeDocument) {
               ...section,
               side: side === "none" ? undefined : side,
               inBody: side !== "none",
+              inSidebar: side === "none" ? false : section.inSidebar,
             }
           : section
       ),

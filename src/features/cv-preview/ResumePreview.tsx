@@ -667,16 +667,23 @@ export function ResumePreview({ document }: ResumePreviewProps) {
     }
   };
 
-  const visibleSections = document.sections.filter((s) => s.inBody || s.inSidebar);
   const hasSidebar = template.id === "chronological" || template.id === "mixed";
+  const isMindmap = template.id === "mindmap";
+  const visibleSections = document.sections.filter((s) => hasSidebar ? (s.inBody || s.inSidebar) : s.inBody);
   const sidebarSections = hasSidebar ? visibleSections.filter((s) => s.inSidebar && s.id !== "summary" && s.id !== "experience") : [];
-  const mainSections = visibleSections.filter((s) => !sidebarSections.includes(s) && s.id !== "summary");
+  const mainSections = visibleSections.filter((s) => (hasSidebar ? !s.inSidebar : s.inBody) && s.id !== "summary");
   const summarySection = visibleSections.find((s) => s.id === "summary");
+
+  const getMindmapSide = (section: (typeof document.sections)[number]) => {
+    if (section.side) return section.side;
+    const nonSummary = document.sections.filter(s => s.id !== "summary");
+    const gIdx = nonSummary.findIndex(s => s.id === section.id);
+    return gIdx % 2 === 0 ? "left" : "right";
+  };
 
   const maxPage = Math.max(1, ...visibleSections.map(s => s.page || 1));
   const pages = Array.from({ length: maxPage }, (_, i) => i + 1);
   const isChronological = template.id === "chronological";
-  const isMindmap = template.id === "mindmap";
 
   return (
     <>
@@ -767,7 +774,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                   <div className="main-sections">
                     <div className="mindmap-col-left">
                       {pageMainSections
-                        .filter((s, idx) => (s.side ? s.side === "left" : (idx % 2 === 0)))
+                        .filter((s) => s.inBody && getMindmapSide(s) === "left")
                         .map(({ id }) => (
                           <div key={id} data-side="left" className="mindmap-branch-left">
                             {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}
@@ -776,7 +783,7 @@ export function ResumePreview({ document }: ResumePreviewProps) {
                     </div>
                     <div className="mindmap-col-right">
                       {pageMainSections
-                        .filter((s, idx) => (s.side ? s.side === "right" : (idx % 2 === 1)))
+                        .filter((s) => s.inBody && getMindmapSide(s) === "right")
                         .map(({ id }) => (
                           <div key={id} data-side="right" className="mindmap-branch-right">
                             {renderSection(id as Exclude<ResumeSectionId, "summary">, false)}

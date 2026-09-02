@@ -47,7 +47,7 @@ export function SectionOrder({
           
           // To prevent empty pages, the maximum page this section can move to is 
           // determined by the maximum page used by ALL OTHER visible sections, plus 1.
-          const otherVisibleSections = sections.filter(s => s.id !== section.id && (s.inBody || s.inSidebar));
+          const otherVisibleSections = sections.filter(s => s.id !== section.id && (hasSidebar ? (s.inBody || s.inSidebar) : s.inBody));
           const maxPageByOthers = Math.max(1, ...otherVisibleSections.map(s => s.page || 1));
           
           // However, if the section is currently on a page higher than maxPageByOthers + 1, 
