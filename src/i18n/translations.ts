@@ -15,8 +15,8 @@ export const translations = {
     rename: "Renombrar",
     saveTitle: "Guardar",
     emptyFolderDrop: "Carpeta vacía (arrastra un CV aquí)",
-    newFolder: "Nueva carpeta",
-    addFolder: "+ Carpeta",
+    newFolder: "Nuevo perfil...",
+    addFolder: "+ Perfil",
     tabDesign: "Diseño",
     tabSections: "Secciones",
     
@@ -190,8 +190,8 @@ export const translations = {
     rename: "Rename",
     saveTitle: "Save",
     emptyFolderDrop: "Empty folder (drag a CV here)",
-    newFolder: "New folder",
-    addFolder: "+ Folder",
+    newFolder: "New profile...",
+    addFolder: "+ Profile",
     tabDesign: "Design",
     tabSections: "Sections",
     
