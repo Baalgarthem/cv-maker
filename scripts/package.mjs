@@ -18,7 +18,7 @@ const findPackages = (directory) =>
 execFileSync(
   process.platform === "win32" ? "npm.cmd" : "npm",
   ["run", "tauri:build"],
-  { cwd: projectRoot, stdio: "inherit" },
+  { cwd: projectRoot, stdio: "inherit", shell: true },
 );
 
 mkdirSync(outputDirectory, { recursive: true });
